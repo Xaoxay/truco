@@ -45,7 +45,7 @@ También se compila con **GitHub Actions → Build Android** al subir cambios a 
 
 ## iPhone / iPad
 
-El proyecto `ios/` está preparado para **iOS 15 o superior**, usando Swift Package Manager. Compilarlo requiere **macOS y Xcode 26 o superior**:
+El proyecto `ios/` está preparado para **iOS 16 o superior**, usando Swift Package Manager. Compilarlo requiere **macOS y Xcode 26 o superior**:
 
 ```sh
 npm ci
