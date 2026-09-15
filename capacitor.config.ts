@@ -3,7 +3,7 @@ const config: CapacitorConfig = {
   appId: "com.xaoxay.truco",
   appName: "Truco",
   webDir: "dist",
-  backgroundColor: "#123d32",
+  backgroundColor: "#392319",
   ios: { contentInset: "automatic" },
 };
 export default config;

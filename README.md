@@ -2,6 +2,10 @@
 
 Anotador de **truco argentino**, pensado para la mesa y el celular. React + TypeScript + Capacitor. Una base de código para Android, iPhone y web instalable.
 
+## Edición gaucha · 1.1.0
+
+El marcador ocupa todo el ancho y alto disponible, con controles siempre a mano y una guarda pampa sobre papel cálido y tonos de cuero. Tocá el lápiz junto a cada equipo para cambiar nombres sin reiniciar la partida. Historial, serie y ajustes están en el menú superior. El diseño se adapta también a orientación horizontal.
+
 ## Qué incluye
 
 - Dos equipos con nombres editables, partidas a 15 o 30.

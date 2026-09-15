@@ -5,6 +5,8 @@ import { Preferences } from "@capacitor/preferences";
 import { Haptics, ImpactStyle } from "@capacitor/haptics";
 import {
   ArrowRight,
+  Pencil,
+  Menu,
   Check,
   ChevronRight,
   CircleHelp,
@@ -34,6 +36,7 @@ import {
   type Team,
 } from "./game";
 import "./style.css";
+import "./gaucho.css";
 
 const STORAGE_KEY = "truco-state-v1";
 let saveQueue = Promise.resolve();
@@ -63,7 +66,9 @@ function Matches({ count }: { count: number }) {
 function App({ saved, warning }: { saved: State; warning: boolean }) {
   const [state, setState] = useState(saved);
   const [tab, setTab] = useState<"board" | "history" | "settings">("board");
-  const [modal, setModal] = useState<"new" | "help" | "points" | null>(null);
+  const [modal, setModal] = useState<
+    "new" | "help" | "points" | "names" | "menu" | null
+  >(null);
   const [customTeam, setCustomTeam] = useState<Team>(0);
   const [notice, setNotice] = useState(
     warning ? "No pudimos recuperar la partida guardada." : "",
@@ -89,9 +94,14 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
     return () => clearTimeout(timer);
   }, [notice]);
   useEffect(() => {
-    if (modal) dialog.current?.showModal();
-    else dialog.current?.close();
-  }, [modal]);
+    if (modal) {
+      dialog.current?.showModal();
+      if (modal === "names")
+        dialog.current
+          ?.querySelector<HTMLInputElement>(`[name="name${customTeam}"]`)
+          ?.focus();
+    } else dialog.current?.close();
+  }, [modal, customTeam]);
   function feedback() {
     if (latest.current.haptics && Capacitor.isNativePlatform())
       void Haptics.impact({ style: ImpactStyle.Light }).catch(() => {});
@@ -115,53 +125,30 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
   );
   const last = state.match.moves.at(-1);
   return (
-    <div className="shell">
+    <div className={"shell " + (tab === "board" ? "board-mode" : "")}>
       <header className="header">
         <div className="brand">
           <img src="./icon.svg" alt="" />
           <div>
-            <span className="brand-title">
-              truco<span>.</span>
-            </span>
-            <span className="eyebrow">EL ANOTADOR</span>
+            <span className="brand-title">Truco</span>
+            <span className="eyebrow">BIEN DE CAMPO</span>
           </div>
         </div>
+        <span className="header-goal">
+          A {state.match.goal}
+          <small>TANTOS</small>
+        </span>
         <button
           className="icon-button"
-          aria-label="Cómo usar el anotador"
-          onClick={() => setModal("help")}
+          aria-label="Abrir menú"
+          onClick={() => setModal("menu")}
         >
-          <CircleHelp size={22} />
+          <Menu size={24} />
         </button>
       </header>
       <main>
         {tab === "board" && (
           <>
-            <div className="intro">
-              <div>
-                <span className="eyebrow">LAS CARTAS EN LA MESA</span>
-                <h1>
-                  Que no se pierda
-                  <br />
-                  ningún tanto.
-                </h1>
-              </div>
-              <div
-                className="argentina"
-                aria-label="Hecho para el truco argentino"
-              >
-                <i />
-                <i />
-                <i />
-              </div>
-            </div>
-            <div className="table-heading">
-              <span className="live-dot" />
-              <span>
-                {won !== null ? "Partida terminada" : "Partida en curso"}
-              </span>
-              <span className="goal-tag">A {state.match.goal} tantos</span>
-            </div>
             <section className="scoreboard" aria-label="Marcador de la partida">
               <div className="score-columns">
                 {([0, 1] as Team[]).map((team) => {
@@ -173,9 +160,17 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
                       key={team}
                       aria-label={state.match.names[team]}
                     >
-                      <div className="team-caption">EQUIPO {team + 1}</div>
-                      <h2 title={state.match.names[team]}>
-                        {state.match.names[team]}
+                      <h2 className="team-name">
+                        <button
+                          aria-label={`Editar nombre de ${state.match.names[team]}`}
+                          onClick={() => {
+                            setCustomTeam(team);
+                            setModal("names");
+                          }}
+                        >
+                          <span>{state.match.names[team]}</span>
+                          <Pencil size={16} aria-hidden="true" />
+                        </button>
                       </h2>
                       <div
                         className="score"
@@ -296,39 +291,11 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
                 Nueva partida
               </button>
             </div>
-            <div className="last-move">
-              {last ? (
-                <>
-                  <span>
-                    {last.points > 0 ? "+" : ""}
-                    {last.points} para {state.match.names[last.team]}
-                  </span>
-                  <span>Último movimiento</span>
-                </>
-              ) : (
-                <>
-                  <span>Todo listo para la primera mano</span>
-                  <span>Sumá con los botones de cada equipo</span>
-                </>
-              )}
-            </div>
-            <section className="series">
-              <div className="series-icon">
-                <Trophy size={21} />
-              </div>
-              <div>
-                <h3>La serie de la mesa</h3>
-                <p>Partidas ganadas con estos equipos</p>
-              </div>
-              <strong aria-label={`${wins[0]} a ${wins[1]} en la serie`}>
-                {wins[0]} <span>:</span> {wins[1]}
-              </strong>
-            </section>
             <div className="saved">
               <ShieldCheck size={14} />
               {saveError
                 ? "No se pudo guardar. Mantené la app abierta."
-                : "Se guarda sola. Vos seguí jugando."}
+                : "Guardado · Que siga la ronda"}
             </div>
           </>
         )}
@@ -450,8 +417,8 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
               <button className="setting-row" onClick={() => setModal("new")}>
                 <ListRestart />
                 <span>
-                  <strong>Equipos y tantos</strong>
-                  <small>Elegilos al empezar una partida</small>
+                  <strong>Puntaje de la partida</strong>
+                  <small>Elegí 15 o 30 al empezar</small>
                 </span>
                 <ChevronRight />
               </button>
@@ -477,31 +444,33 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
               Cómo usar e instalar
             </button>
             <p className="version">
-              TRUCO · VERSIÓN 1.0.0
+              TRUCO · VERSIÓN 1.1.0
               <br />
               Hecho para una mano más.
             </p>
           </section>
         )}
       </main>
-      <nav className="bottom-nav" aria-label="Navegación principal">
-        {(
-          [
-            { key: "board", label: "Anotador", Icon: ListRestart },
-            { key: "history", label: "Historial", Icon: History },
-            { key: "settings", label: "Ajustes", Icon: Settings2 },
-          ] as const
-        ).map(({ key, label, Icon }) => (
-          <button
-            key={key}
-            aria-current={tab === key ? "page" : undefined}
-            onClick={() => setTab(key)}
-          >
-            <Icon size={21} />
-            <span>{label}</span>
-          </button>
-        ))}
-      </nav>
+      {tab !== "board" && (
+        <nav className="bottom-nav" aria-label="Navegación principal">
+          {(
+            [
+              { key: "board", label: "Anotador", Icon: ListRestart },
+              { key: "history", label: "Historial", Icon: History },
+              { key: "settings", label: "Ajustes", Icon: Settings2 },
+            ] as const
+          ).map(({ key, label, Icon }) => (
+            <button
+              key={key}
+              aria-current={tab === key ? "page" : undefined}
+              onClick={() => setTab(key)}
+            >
+              <Icon size={21} />
+              <span>{label}</span>
+            </button>
+          ))}
+        </nav>
+      )}
       <div className={"toast " + (notice ? "visible" : "")} role="status">
         {notice && (
           <>
@@ -513,11 +482,15 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
       <dialog
         ref={dialog}
         aria-label={
-          modal === "new"
-            ? "Nueva partida"
-            : modal === "points"
-              ? "Anotar tantos"
-              : "Cómo usar el anotador"
+          modal === "names"
+            ? "Nombres de los equipos"
+            : modal === "menu"
+              ? "Menú de la mesa"
+              : modal === "new"
+                ? "Nueva partida"
+                : modal === "points"
+                  ? "Anotar tantos"
+                  : "Cómo usar el anotador"
         }
         onCancel={() => setModal(null)}
         onClick={(e) => {
@@ -534,6 +507,109 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
             <X />
           </button>
         </div>
+        {modal === "names" && (
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              const data = new FormData(e.currentTarget);
+              const names = [
+                String(data.get("name0")).trim() || "Nosotros",
+                String(data.get("name1")).trim() || "Ellos",
+              ] as [string, string];
+              setState((s) => ({ ...s, match: { ...s.match, names } }));
+              setModal(null);
+              setNotice("Nombres guardados. Los tantos siguen igual.");
+            }}
+          >
+            <h2>¿Cómo se llaman?</h2>
+            <p className="muted">
+              Poné el nombre o apodo que quieras. Los puntos se mantienen.
+            </p>
+            <label>
+              Nosotros
+              <input
+                name="name0"
+                defaultValue={state.match.names[0]}
+                maxLength={24}
+                autoFocus={customTeam === 0}
+                autoComplete="off"
+              />
+            </label>
+            <label>
+              Ellos
+              <input
+                name="name1"
+                defaultValue={state.match.names[1]}
+                maxLength={24}
+                autoFocus={customTeam === 1}
+                autoComplete="off"
+              />
+            </label>
+            <button className="primary-button full" type="submit">
+              <Check size={18} />
+              Guardar nombres
+            </button>
+          </form>
+        )}
+        {modal === "menu" && (
+          <section className="mesa-menu">
+            <h2>La mesa está servida.</h2>
+            <p className="menu-series">
+              <Trophy size={18} /> La serie{" "}
+              <strong>
+                {wins[0]} : {wins[1]}
+              </strong>
+            </p>
+            <button
+              className="setting-row"
+              onClick={() => {
+                setTab("board");
+                setModal(null);
+              }}
+            >
+              <ListRestart />
+              <span>Volver al anotador</span>
+              <ChevronRight />
+            </button>
+            <button className="setting-row" onClick={() => setModal("names")}>
+              <Pencil />
+              <span>Cambiar nombres</span>
+              <ChevronRight />
+            </button>
+            <button className="setting-row" onClick={() => setModal("new")}>
+              <Plus />
+              <span>Nueva partida</span>
+              <ChevronRight />
+            </button>
+            <button
+              className="setting-row"
+              onClick={() => {
+                setTab("history");
+                setModal(null);
+              }}
+            >
+              <History />
+              <span>Historial de la mesa</span>
+              <ChevronRight />
+            </button>
+            <button
+              className="setting-row"
+              onClick={() => {
+                setTab("settings");
+                setModal(null);
+              }}
+            >
+              <Settings2 />
+              <span>Ajustes</span>
+              <ChevronRight />
+            </button>
+            <button className="setting-row" onClick={() => setModal("help")}>
+              <CircleHelp />
+              <span>Cómo se usa</span>
+              <ChevronRight />
+            </button>
+          </section>
+        )}
         {modal === "new" && (
           <form
             onSubmit={(e) => {

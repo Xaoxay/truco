@@ -15,3 +15,7 @@
 No se conectaron celulares físicos ni un simulador iOS. Faltan pruebas de instalación y uso en Android e iPhone, vibración real, comportamiento de barras del sistema, interrupciones del sistema operativo y distribución firmada de producción. El proyecto iOS requiere compilar y firmar en Xcode; no se generó un IPA.
 
 La caché offline de la web se genera con todos los recursos de la compilación. La experiencia offline debe probarse también en Safari/Chrome del teléfono después de alojar la web en HTTPS. La app nativa incluye esos recursos dentro del paquete.
+
+## Rediseño gaucho 1.1.0
+
+Comprobado en navegador: nombre modificado con 3 tantos conserva el puntaje; nombres de varias palabras; menú, ajustes y modo oscuro. El marcador no desborda horizontal ni verticalmente en 320 × 640 y 844 × 390; controles de anotación de al menos 48 × 48 píxeles. También se inspeccionó visualmente a 390 × 844.
