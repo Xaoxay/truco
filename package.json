@@ -1,0 +1,35 @@
+{
+  "name": "truco-anotador",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "tsc --noEmit && vite build && node scripts/service-worker.mjs",
+    "preview": "vite preview --host 127.0.0.1",
+    "test": "tsx --test tests/game.test.ts",
+    "sync": "npm run build && cap sync",
+    "android": "npm run sync && cap open android",
+    "ios": "npm run sync && cap open ios"
+  },
+  "dependencies": {
+    "@capacitor/android": "8.5.2",
+    "@capacitor/core": "8.5.2",
+    "@capacitor/haptics": "^8.0.0",
+    "@capacitor/ios": "8.5.2",
+    "@capacitor/preferences": "^8.0.0",
+    "lucide-react": "^0.577.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "overrides": { "xcode": { "uuid": "11.1.1" } },
+  "devDependencies": {
+    "@capacitor/cli": "8.5.2",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@vitejs/plugin-react": "^6.0.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "vite": "8.3.0"
+  }
+}
