@@ -7,6 +7,7 @@ import {
   ArrowRight,
   Pencil,
   Menu,
+  BookOpen,
   Check,
   ChevronRight,
   CircleHelp,
@@ -67,7 +68,7 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
   const [state, setState] = useState(saved);
   const [tab, setTab] = useState<"board" | "history" | "settings">("board");
   const [modal, setModal] = useState<
-    "new" | "help" | "points" | "names" | "menu" | null
+    "new" | "help" | "cards" | "names" | "menu" | null
   >(null);
   const [customTeam, setCustomTeam] = useState<Team>(0);
   const [notice, setNotice] = useState(
@@ -153,7 +154,7 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
               <div className="score-columns">
                 {([0, 1] as Team[]).map((team) => {
                   const phase = state.match.goal === 30 && total[team] >= 15;
-                  const matchCount = phase ? total[team] - 15 : total[team];
+
                   return (
                     <section
                       className={"team team-" + team}
@@ -183,16 +184,16 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
                         {total[team]}
                         <span className="sr-only"> tantos</span>
                       </div>
-                      <span className={"phase " + (phase ? "good" : "")}>
-                        {won === team
-                          ? "GANADORES"
-                          : state.match.goal === 15
-                            ? "TANTOS"
-                            : phase
-                              ? "BUENAS"
-                              : "MALAS"}
-                      </span>
-                      <Matches count={matchCount} />
+                      <div className={"tally-phases " + (state.match.goal === 15 ? "short-game" : "")}>
+                        <section className="tally-phase" aria-label={`${state.match.names[team]}: ${Math.min(total[team],15)} malas de 15`}>
+                          <h3>{state.match.goal === 30 ? "Malas" : "Tantos"}<span>{Math.min(total[team],15)}/15</span></h3>
+                          <Matches count={Math.min(total[team],15)}/>
+                        </section>
+                        {state.match.goal === 30 && <section className={"tally-phase buenas " + (phase ? "active" : "")} aria-label={`${state.match.names[team]}: ${Math.max(total[team]-15,0)} buenas de 15`}>
+                          <h3>Buenas<span>{Math.max(total[team]-15,0)}/15</span></h3>
+                          <Matches count={Math.max(total[team]-15,0)}/>
+                        </section>}
+                      </div>
                       <div className="distance">
                         {won === team
                           ? "¡La mesa es suya!"
@@ -214,29 +215,7 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
                           onClick={() => score(team, 1)}
                         >
                           <Plus size={24} />
-                          <span>1</span>
-                        </button>
-                      </div>
-                      <div className="quick-controls">
-                        {[2, 3, 4].map((n) => (
-                          <button
-                            key={n}
-                            disabled={won !== null}
-                            aria-label={`Sumar ${n} tantos a ${state.match.names[team]}`}
-                            onClick={() => score(team, n)}
-                          >
-                            +{n}
-                          </button>
-                        ))}
-                        <button
-                          disabled={won !== null}
-                          aria-label={`Otro puntaje para ${state.match.names[team]}`}
-                          onClick={() => {
-                            setCustomTeam(team);
-                            setModal("points");
-                          }}
-                        >
-                          Otro
+
                         </button>
                       </div>
                     </section>
@@ -444,7 +423,7 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
               Cómo usar e instalar
             </button>
             <p className="version">
-              TRUCO · VERSIÓN 1.1.0
+              TRUCO · VERSIÓN 1.2.0
               <br />
               Hecho para una mano más.
             </p>
@@ -488,8 +467,8 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
               ? "Menú de la mesa"
               : modal === "new"
                 ? "Nueva partida"
-                : modal === "points"
-                  ? "Anotar tantos"
+                : modal === "cards"
+                  ? "Valor de las cartas"
                   : "Cómo usar el anotador"
         }
         onCancel={() => setModal(null)}
@@ -603,6 +582,7 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
               <span>Ajustes</span>
               <ChevronRight />
             </button>
+            <button className="setting-row" onClick={() => setModal("cards")}><BookOpen/><span>Valor de las cartas en el truco</span><ChevronRight/></button>
             <button className="setting-row" onClick={() => setModal("help")}>
               <CircleHelp />
               <span>Cómo se usa</span>
@@ -682,42 +662,17 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
             </button>
           </form>
         )}
-        {modal === "points" && (
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              const d = new FormData(e.currentTarget);
-              score(customTeam, Number(d.get("points")));
-              setModal(null);
-            }}
-          >
-            <h2>
-              Tantos para
-              <br />
-              {state.match.names[customTeam]}
-            </h2>
-            <p className="muted">Anotá el valor que acordaron en la mesa.</p>
-            <label>
-              Cantidad de tantos
-              <input
-                type="number"
-                name="points"
-                inputMode="numeric"
-                min="1"
-                max={state.match.goal - total[customTeam]}
-                required
-                defaultValue="1"
-              />
-            </label>
-            <p className="muted">
-              Le faltan {state.match.goal - total[customTeam]} para ganar. La
-              falta envido se anota según la variante que jueguen.
-            </p>
-            <button className="primary-button full" type="submit">
-              Anotar tantos <Plus size={18} />
-            </button>
-          </form>
-        )}
+        {modal === "cards" && <section className="cards-guide"><h2>Valor de las cartas<br/>en el truco</h2><p className="muted">De mayor a menor. Cada carta le gana a las que están debajo.</p>
+          <ol className="card-ranking">{[
+            ["1", "Espada", "Ancho de espada"], ["1", "Basto", "Ancho de basto"], ["7", "Espada", "Siete bravo"], ["7", "Oro", "Siete bravo"],
+            ["3", "Todos los palos", ""], ["2", "Todos los palos", ""], ["1", "Copa y oro", "Anchos falsos"],
+            ["12", "Todos los palos", "Reyes"], ["11", "Todos los palos", "Caballos"], ["10", "Todos los palos", "Sotas"],
+            ["7", "Copa y basto", "Sietes falsos"], ["6", "Todos los palos", ""], ["5", "Todos los palos", ""], ["4", "Todos los palos", ""]
+          ].map(([number,suit,nickname],i)=><li key={i}><span className="rank">{i+1}.</span><b className="card-number">{number}</b><div><strong>{suit}</strong>{nickname && <small>{nickname}</small>}</div></li>)}</ol>
+          <p className="muted">Las cartas de la misma fila empatan: hacen parda. Se usa el mazo español de 40 cartas, sin 8, 9 ni comodines.</p>
+          <h3>Para el envido</h3><p>Del 1 al 7 valen su número. El 10, 11 y 12 valen 0. Con dos cartas del mismo palo, sumá sus valores y 20; sin dos del mismo palo, cuenta la de mayor valor. El máximo es 33.</p>
+          <button className="primary-button full" onClick={()=>setModal("menu")}>Volver al menú</button>
+        </section>}
         {modal === "help" && (
           <div className="help">
             <h2>
@@ -732,7 +687,7 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
               cinco.
             </p>
             <p>
-              Sumá con +1, +2, +3 o +4. Para otro valor, tocá «Otro puntaje». El
+              Sumá de a un tanto con +. El
               botón − resta un tanto y «Deshacer» revierte el último movimiento,
               incluso el que cerró la partida.
             </p>

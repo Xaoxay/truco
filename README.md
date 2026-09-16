@@ -2,7 +2,7 @@
 
 Anotador de **truco argentino**, pensado para la mesa y el celular. React + TypeScript + Capacitor. Una base de código para Android, iPhone y web instalable.
 
-## Edición gaucha · 1.1.0
+## Edición gaucha · 1.2.0
 
 El marcador ocupa todo el ancho y alto disponible, con controles siempre a mano y una guarda pampa sobre papel cálido y tonos de cuero. Tocá el lápiz junto a cada equipo para cambiar nombres sin reiniciar la partida. Historial, serie y ajustes están en el menú superior. El diseño se adapta también a orientación horizontal.
 
@@ -10,7 +10,8 @@ El marcador ocupa todo el ancho y alto disponible, con controles siempre a mano 
 
 - Dos equipos con nombres editables, partidas a 15 o 30.
 - Malas y buenas, marcador numérico y fósforos en grupos de cinco.
-- +1, +2, +3, +4, puntaje personalizado, restar y deshacer (incluso la victoria).
+- Botones + y − para anotar de a un tanto y deshacer (incluso la victoria).
+- Valor de las cartas para truco y envido en el menú.
 - Ganador, revancha, serie por nombres de equipos e historial de las últimas 100 partidas terminadas.
 - Guardado automático local con Capacitor Preferences. Sin cuenta, publicidad ni backend.
 - Modo claro/oscuro, vibración nativa y controles accesibles.
@@ -62,7 +63,7 @@ Sin compilar iOS, la versión web alojada en HTTPS se puede agregar desde Safari
 
 ## Reglas y decisiones
 
-No calcula automáticamente los cantos ni la falta envido: hay variantes de mesa. Usá «Otro puntaje» para el valor acordado. Al alcanzar 15 de 30, los fósforos se reinician visualmente y se muestra «Buenas», manteniendo el total numérico. El ganador queda limitado al objetivo. Para corregir una victoria, usá Deshacer. Una partida incompleta se descarta únicamente al confirmar «Empezar partida» en el formulario.
+No calcula automáticamente los cantos ni la falta envido: hay variantes de mesa. Sumá con + los tantos acordados. Se muestran dos columnas verticales por equipo: 15 malas y 15 buenas. Las malas permanecen marcadas al pasar a buenas. El ganador queda limitado al objetivo. Para corregir una victoria, usá Deshacer. Una partida incompleta se descarta únicamente al confirmar «Empezar partida» en el formulario.
 
 Los nombres se tratan como texto, nunca HTML. El guardado está versionado y valida movimientos antes de recuperarlos. Borrar datos/desinstalar la app elimina el historial; no hay sincronización entre dispositivos. La serie agrupa los mismos nombres en el mismo orden dentro de las últimas 100 terminadas y la partida actual.
 
@@ -75,3 +76,5 @@ Los nombres se tratan como texto, nunca HTML. El guardado está versionado y val
 Se revisaron [Anotador Pro](https://www.anotador.com.ar/) y [Anotador de Truco: Puntos](https://apps.apple.com/ar/app/anotador-de-truco-puntos/id6774312129) para identificar funciones habituales. Diseño y código propios; no se reutilizan sus recursos.
 
 Requisitos multiplataforma: [documentación oficial de Capacitor](https://capacitorjs.com/docs/getting-started/environment-setup).
+
+Orden de cartas contrastado con el [reglamento de Juegos Bonaerenses 2026](https://juegos.gba.gob.ar/wp-content/uploads/2026/reglamentos/especificos/deportes_adultos_mayores/truco.pdf).

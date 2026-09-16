@@ -19,3 +19,7 @@ La caché offline de la web se genera con todos los recursos de la compilación.
 ## Rediseño gaucho 1.1.0
 
 Comprobado en navegador: nombre modificado con 3 tantos conserva el puntaje; nombres de varias palabras; menú, ajustes y modo oscuro. El marcador no desborda horizontal ni verticalmente en 320 × 640 y 844 × 390; controles de anotación de al menos 48 × 48 píxeles. También se inspeccionó visualmente a 390 × 844.
+
+## Fósforos y guía 1.2.0
+
+Navegador: paso a 17 (15 malas y 2 buenas), resta a 16 conservando las malas, 12 cuadrados entre ambos equipos y guía de 14 niveles con valores de envido. Revisión visual a 390 × 844 y 320 × 640; sin desbordamiento a 320 × 640.

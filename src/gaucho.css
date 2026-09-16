@@ -502,3 +502,35 @@ dialog::backdrop {
     display: none;
   }
 }
+/* Treinta tantos visibles: columnas verticales de malas y buenas. */
+.board-mode .score {flex:0 0 auto;min-height:0;font-size:clamp(38px,7dvh,64px);line-height:1.1;margin:4px 0 8px;}
+.board-mode .team{padding-left:clamp(10px,3vw,36px);padding-right:clamp(10px,3vw,36px);}
+.tally-phases{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;flex:1;min-height:0;margin:0 0 10px;}
+.tally-phases.short-game{grid-template-columns:1fr;max-width:120px;width:100%;align-self:center;}
+.tally-phase{display:flex;flex-direction:column;min-width:0;min-height:0;}
+.tally-phase h3{display:flex;flex-direction:column;align-items:center;gap:3px;font:600 12px system-ui;color:var(--text);padding:5px 0 8px;text-transform:uppercase;letter-spacing:1px;}
+.tally-phase h3 span{font-size:10px;font-weight:400;letter-spacing:0;color:var(--muted);}
+.tally-phase.buenas{border-left:1px dashed var(--line);padding-left:8px;}
+.tally-phase.active h3{color:#883c27;}
+.board-mode .tally-phase .matches{display:grid;grid-template-columns:1fr;grid-template-rows:repeat(3,minmax(0,1fr));flex:1;min-height:0;height:auto;width:100%;max-width:none;margin:0;gap:8px;align-items:stretch;justify-items:center;}
+.board-mode .tally-phase .matches svg{width:100%;height:100%;max-width:110px;max-height:120px;min-height:0;overflow:visible;}
+.board-mode .main-controls{grid-template-columns:repeat(2,minmax(0,1fr));width:100%;gap:12px;}
+.board-mode .main-controls button{height:58px;}
+.board-mode .main-controls svg{width:28px;height:28px;}
+.board-mode .distance{margin:0 0 7px;}
+[data-theme="dark"] .tally-phase.active h3{color:#e6a878;}
+.cards-guide h3{font:24px Georgia,serif;margin:24px 0 12px;}
+.cards-guide>p{font-size:13px;line-height:1.7;}
+.card-ranking{list-style:none;padding:0;margin:18px 0;}
+.card-ranking li{display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--line);padding:10px 0;}
+.card-ranking .rank{font-size:11px;width:20px;color:var(--muted);}
+.card-number{display:grid;place-items:center;width:36px;height:48px;border:1px solid var(--line);border-radius:5px;background:var(--surface);font:24px Georgia,serif;}
+.card-ranking strong{font-size:14px;}.card-ranking small{display:block;font-size:11px;color:var(--muted);margin-top:4px;}
+@media(max-height:700px){.board-mode .score{font-size:36px;margin:2px 0 4px;}.board-mode .main-controls button{height:48px;}.tally-phase h3{font-size:10px;padding:3px 0 5px;}.board-mode .tally-phase .matches{gap:4px;}}
+@media(orientation:landscape) and (max-height:540px){
+ .board-mode .team{grid-template-columns:minmax(100px,1fr) minmax(120px,1.4fr);grid-template-rows:48px 1fr 48px;gap:3px 12px;padding:4px 12px;}
+ .board-mode .team-name{grid-column:1;grid-row:1;}.board-mode .score{grid-column:1;grid-row:2;align-self:center;font-size:40px;}
+ .board-mode .tally-phases{grid-column:2;grid-row:1/4;margin:0;align-self:stretch;}
+ .board-mode .main-controls{grid-column:1;grid-row:3;gap:8px;}.board-mode .main-controls button{height:48px;}
+ .board-mode .distance{display:none;}.board-mode .tally-phase .matches{display:grid;}
+}
