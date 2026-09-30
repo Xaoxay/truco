@@ -14,7 +14,9 @@ El marcador ocupa todo el ancho y alto disponible, con controles siempre a mano 
 - Valor de las cartas para truco y envido en el menú.
 - Ganador, revancha, serie por nombres de equipos e historial de las últimas 100 partidas terminadas.
 - Guardado automático local con Capacitor Preferences. Sin cuenta, publicidad ni backend.
-- Modo claro/oscuro, vibración nativa y controles accesibles.
+- Seis diseños: Fileteado (original), Moderno, Sakura, Retro, Anime/Cómic y Cyberpunk, cada uno con modo claro y oscuro. La bandera mantiene sus colores.
+- Vibración nativa al anotar, pulso de prueba en Ajustes y aviso ante errores del módulo.
+- Guía visual con las 40 cartas agrupadas por su jerarquía.
 - App nativa sin conexión; web sin conexión después de una primera carga completa.
 
 ## Desarrollo
@@ -78,3 +80,17 @@ Se revisaron [Anotador Pro](https://www.anotador.com.ar/) y [Anotador de Truco: 
 Requisitos multiplataforma: [documentación oficial de Capacitor](https://capacitorjs.com/docs/getting-started/environment-setup).
 
 Orden de cartas contrastado con el [reglamento de Juegos Bonaerenses 2026](https://juegos.gba.gob.ar/wp-content/uploads/2026/reglamentos/especificos/deportes_adultos_mayores/truco.pdf).
+
+## Actualización visual y nativa
+
+El historial muestra únicamente partidas terminadas (incluida la actual al ganar), con resultado, ganador y fecha. Los movimientos internos de la partida actual se conservan para permitir Deshacer. El menú ya no incluye Volver al anotador ni Cambiar nombres; los nombres siguen editándose desde el lápiz del marcador.
+
+El selector de diseño conserva las preferencias anteriores y guarda la variante elegida. Los recursos se incluyen en la aplicación para uso sin conexión. La procedencia de los JPG de cartas se registra en `public/cards/SOURCES.md`.
+
+La vibración utiliza `Haptics.vibrate`: 80 ms al anotar y 180 ms al activar o probar. El plugin aporta el permiso Android VIBRATE y se verifica su disponibilidad antes de llamarlo. Su respuesta física debe validarse en un teléfono; el navegador no sustituye esa prueba.
+
+Validado: compilación TypeScript/Vite, 14 pruebas de lógica, preferencias y migración, sincronización Capacitor Android y revisión visual de las 12 combinaciones a 375 × 812. No se generó un APK local: este entorno no tiene Android SDK ni JDK disponibles.
+
+### Diseño Fileteado
+
+La variante predeterminada para instalaciones nuevas reproduce la dirección visual de la referencia: texturas locales de cuero, madera y pergamino; mate con Sol de Mayo; filetes celestes y dorados; placas con nombres y fósforos funcionales. El marcador mantiene tres grupos de cinco por columna (15 malas y 15 buenas). Los temas retirados (Criollo, Patriota, Rosa, Rústico y Pampa) se migran a Fileteado conservando partidas, historial y preferencias. Moderno y las cuatro temáticas nuevas son diseños independientes; Fileteado sigue siendo el original y predeterminado. Las nuevas texturas y el mate se generaron para este proyecto; los ornamentos son SVG propios.

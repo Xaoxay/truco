@@ -1,0 +1,148 @@
+/* Fileteado: implementación funcional de la referencia del usuario. */
+:root[data-design="fileteado"] {
+  --bg: #251e17; --surface: #33271c; --text: #faecd0; --muted: #ddc6a1;
+  --line: #9a733d; --soft: #3d2c1c; --nav: #241b14;
+  --leather: #342116; --green: #3b2518; --poncho: #235578;
+  --team-ink: #efb6a3; --header-text: #fff1d1; --header-muted: #e0b869;
+  --silver: #f2d6a1; --button-bg: #e8d1a7; --button-text: #4b2918;
+  --guard-ink: #eee2c3; --gold: #c99a51; --gold-light: #f5df9f;
+  --blue: #b3dbee; --rose: #ecb5a3; --ghost: #b9ac8847;
+  --materials: url('../public/artesanal/materiales.webp');
+  --ornament: url('../public/artesanal/filete.svg');
+}
+:root[data-design="fileteado"][data-theme="dark"] {
+  --bg: #171614; --surface: #25211c; --soft: #2e251b;
+  --text: #f0e0c4; --muted: #d0bb97; --nav: #171614; --leather: #211910;
+  --blue: #a4cde2; --rose: #dba798;
+}
+[data-design="fileteado"] .shell {
+  background-color: #603718;
+  background-image: linear-gradient(#1c0e0840, #1c0e0840), var(--materials);
+  background-size: 100% 100%, 200% 200%; background-position: center, left bottom;
+}
+[data-design="fileteado"] .board-mode.shell { padding: max(5px, env(safe-area-inset-top)) max(5px, env(safe-area-inset-right)) max(5px, env(safe-area-inset-bottom)) max(5px, env(safe-area-inset-left)); min-height: 680px; }
+[data-design="fileteado"] .header {
+  height: 88px; padding-inline: 10px; gap: 10px; border: 1px solid #986a37;
+  border-radius: 10px 10px 4px 4px;
+  background-image: linear-gradient(#1b0f0870,#1b0f0870), var(--materials);
+  background-size: 100% 100%, 200% 200%; background-position: center, right top;
+  box-shadow: inset 0 0 0 2px #28170d, inset 0 0 0 3px #a2774280, 0 2px 4px #000a;
+  position: relative;
+}
+[data-design="fileteado"] .brand { gap: 3px; min-width: 0; }
+[data-design="fileteado"] .brand > img { width: 54px; height: 72px; object-fit: contain; filter: drop-shadow(0 3px 2px #0008); }
+[data-design="fileteado"] .brand-title { font: bold clamp(28px, 7.8vw, 48px)/1 Georgia, serif; letter-spacing: 1px; color: #fff1d7; text-shadow: 1px 1px #855323, 2px 2px #112e3c, 3px 3px 2px #000; }
+[data-design="fileteado"] .brand .brand-flag { width: 42px; margin-top: 6px; box-shadow: 0 2px 4px #0008; }
+[data-design="fileteado"] .header-goal { font-weight: bold; font-size: clamp(24px, 6vw, 35px); text-shadow: 1px 2px 2px #000; gap: 4px; }
+[data-design="fileteado"] .header-goal small { font: 12px Georgia, serif; letter-spacing: 1.5px; }
+[data-design="fileteado"] .header .icon-button { width: 48px; height: 48px; border: 2px solid var(--gold); color: #f6e4be; background: radial-gradient(ellipse at top, #4e3926,#19140f); box-shadow: inset 0 0 0 1px #ffe6ac, 0 2px 3px #000b; }
+[data-design="fileteado"] .mesa-heading {
+  min-height: 50px; padding: 4px 6px; gap: 8px; margin-block: 5px 7px; flex-shrink: 0;
+  color: #2e2117; font: italic bold clamp(17px, 4.6vw, 25px) Georgia, serif;
+  border-block: 4px double #5a94b3; box-shadow: 0 2px 2px #000a;
+  background-image: repeating-linear-gradient(0deg,#7b62400c 0 1px,transparent 1px 3px), var(--materials);
+  background-size: 100% 100%,200% 200%; background-position: center,right bottom;
+}
+[data-design="fileteado"] .mesa-heading::before { content: "❧"; color: #9b652d; font-size: 28px; text-shadow: 0 1px #fff1d7; }
+[data-design="fileteado"] .mesa-edition { display: none; }
+[data-design="fileteado"] .criollo-hat { width: 35px; height: 39px; object-fit: contain; transform: rotate(8deg); }
+[data-design="fileteado"] .board-mode .scoreboard { border: 1px solid #c59758; border-radius: 10px; padding: 5px; box-shadow: 0 0 0 2px #392214, inset 0 0 0 2px #381b10; }
+[data-design="fileteado"] .scoreboard::before, [data-design="fileteado"] .scoreboard::after { display: none; }
+[data-design="fileteado"] .score-columns { gap: 7px; position: relative; }
+[data-design="fileteado"] .score-columns::after { content: ""; position: absolute; z-index: 2; pointer-events: none; top: 55%; left: 50%; transform: translate(-50%,-50%); width: 34px; height: 42px; background: url('../public/artesanal/sol.svg') center / contain no-repeat; filter: drop-shadow(0 1px 1px #000); }
+[data-design="fileteado"] .board-mode .team {
+  padding: 13px 9px 11px; border: 1px solid #a6763a; border-radius: 8px;
+  outline: 1px dashed #b07d3e85; outline-offset: -5px;
+  background-image: linear-gradient(#100d0b72,#100d0b72), var(--materials);
+  background-size: 100% 100%,200% 200%; background-position: center,left top;
+  box-shadow: inset 0 0 0 2px #16120e, inset 0 0 0 3px #9b713455, 0 1px 2px #0008;
+}
+[data-design="fileteado"] .team::before, [data-design="fileteado"] .team::after { content: ""; position: absolute; width: 40px; height: 60px; pointer-events: none; background: var(--ornament) center / contain no-repeat; opacity: .9; }
+[data-design="fileteado"] .team::before { left: 2px; top: 2px; }
+[data-design="fileteado"] .team::after { right: 2px; bottom: 2px; transform: rotate(180deg); }
+[data-design="fileteado"] .team-caption { color: #e7bd75; font: bold 9px Georgia, serif; letter-spacing: 1.2px; margin-bottom: 8px; text-shadow: 0 1px 1px #000; }
+[data-design="fileteado"] .board-mode .team-name { position: relative; min-height: 44px; margin: 0 0 6px; }
+[data-design="fileteado"] .team-name button {
+  min-height: 44px; padding: 4px 5px; gap: 5px; font: bold clamp(22px, 6vw, 34px)/1.1 Georgia, serif;
+  color: #261c13; background: var(--materials) right bottom / 200% 200%;
+  border: 1px solid #d1a263; border-radius: 5px; box-shadow: inset 0 0 0 2px #f5e3bb, inset 0 0 0 3px #ac845449, 0 3px 4px #0009;
+}
+[data-design="fileteado"] .team-1 .team-name button { color: #69251e; }
+[data-design="fileteado"] .team-name button svg { color: #493525; width: 13px; }
+[data-design="fileteado"] .board-mode .score { font: 76px/.95 Georgia, serif; margin: 2px 0 10px; color: var(--blue); text-shadow: 0 1px 0 #f3fcff, 1px 2px 0 #45718a, 2px 4px 3px #000; position: relative; }
+[data-design="fileteado"] .board-mode .team-1 .score { color: var(--rose); text-shadow: 0 1px 0 #ffebdf, 1px 2px 0 #a76d5c, 2px 4px 3px #000; }
+[data-design="fileteado"] .score::before, [data-design="fileteado"] .score::after { content: ""; position: absolute; width: 30px; height: 43px; bottom: 0; background: var(--ornament) center / contain no-repeat; pointer-events: none; }
+[data-design="fileteado"] .score::before { left: 0; transform: rotate(-35deg); }
+[data-design="fileteado"] .score::after { right: 0; transform: scaleX(-1) rotate(-35deg); }
+[data-design="fileteado"] .tally-phases { gap: 6px; margin-bottom: 8px; border-top: 1px solid #b08a4b; }
+[data-design="fileteado"] .tally-phase h3 { border-top: 0; color: var(--blue); font: bold 13px Georgia, serif; letter-spacing: .5px; gap: 3px; padding-block: 7px; }
+[data-design="fileteado"] .tally-phase h3 span { color: #f0e5cb; font: 13px Georgia, serif; }
+[data-design="fileteado"] .tally-phase.active h3 { color: var(--gold-light); }
+[data-design="fileteado"] .tally-phase.buenas { padding-left: 6px; border-color: #bb8b4770; }
+[data-design="fileteado"] .board-mode .tally-phase .matches { gap: 7px; }
+[data-design="fileteado"] .board-mode .matches svg { max-width: 108px; max-height: 108px; filter: drop-shadow(0 1px 1px #000a); }
+[data-design="fileteado"] .board-mode .unlit line { stroke: #91836a55; stroke-width: 2; }
+[data-design="fileteado"] .board-mode .distance { color: #efd29c; font: bold 12px/1.3 Georgia, serif; margin: 8px 0 8px; }
+[data-design="fileteado"] .board-mode .main-controls { gap: 8px; }
+[data-design="fileteado"] .board-mode .main-controls button { height: 50px; min-height: 48px; border-radius: 7px; border: 2px solid #c19860; outline: 1px solid #f0cf8e; outline-offset: -5px; box-shadow: inset 0 0 0 1px #ffebbf, inset 0 0 0 4px #53311760, 0 3px 2px #000b; }
+[data-design="fileteado"] .board-mode .subtract { background: var(--materials) right top / 200% 200%; color: #fff0c7; }
+[data-design="fileteado"] .board-mode .add { background: var(--materials) right bottom / 200% 200%; color: #572d18; }
+[data-design="fileteado"] .board-mode .team-1 .add { background-image: linear-gradient(#e5918670,#e5918670), var(--materials); background-position: center,right bottom; background-size: 100% 100%,200% 200%; color: #632a20; }
+[data-design="fileteado"] .board-mode .main-controls svg { width: 25px; height: 25px; stroke-width: 3; }
+[data-design="fileteado"] .board-mode .table-footer { display: flex; background: #174565; color: #ffefcd; border-block: 2px solid #c3924c; margin: 7px -5px -5px; padding: 7px 3px; gap: 5px; font: 10px Georgia, serif; border-radius: 0 0 7px 7px; }
+[data-design="fileteado"] .small-diamond { color: #e5c185; }
+[data-design="fileteado"] .board-mode .actions { padding: 9px 3px 0; gap: 10px; background: none; border: 0; }
+[data-design="fileteado"] .board-mode .actions button { min-height: 48px; border: 2px solid #bd945c; outline: 1px solid #d9b77c; outline-offset: -5px; border-radius: 8px; color: #fff0d0; box-shadow: inset 0 0 0 1px #ffedc5, 0 2px 3px #000b; font: bold 14px Georgia, serif; padding: 8px; background: var(--materials) right top / 200% 200%; }
+[data-design="fileteado"] .board-mode .actions .primary-button { background-image: linear-gradient(#064973c7,#064973c7),var(--materials); background-size: 100% 100%,200% 200%; background-position: center,left top; color: #fff0d0; border-color: #bd945c; }
+[data-design="fileteado"] .board-mode .saved { min-height: 28px; padding: 8px 3px 3px; background: transparent; color: #ffe4b9; font: 10px Georgia, serif; }
+[data-design="fileteado"] .shell:not(.board-mode) { background-image: linear-gradient(#100d0be6,#100d0be6), var(--materials); }
+[data-design="fileteado"] dialog { background-image: linear-gradient(#100d0bd9,#100d0bd9),var(--materials); background-position: center,left top; background-size: 100% 100%,200% 200%; border: 2px solid #b38a50; box-shadow: inset 0 0 0 3px #0008, 0 12px 50px #000b; }
+[data-design="fileteado"] .setting-row { background-color: #31291ed9; }
+[data-design="fileteado"] .design-option { background: #31291e; }
+.swatch-fileteado { --sample: #201d18; --sample-paper: #c99a51; --sample-accent: #8bc3dc; }
+
+
+@media (min-width: 700px) {
+  [data-design="fileteado"] .header { height: 100px; padding-inline: 28px; }
+  [data-design="fileteado"] .brand > img { width: 72px; height: 86px; }
+  [data-design="fileteado"] .board-mode .team { padding-inline: clamp(20px, 5vw, 85px); }
+  [data-design="fileteado"] .team::before, [data-design="fileteado"] .team::after { width: 65px; height: 90px; }
+  [data-design="fileteado"] .board-mode .score { font-size: 82px; }
+  [data-design="fileteado"] .board-mode .table-footer { font-size: 13px; }
+}
+@media (max-height: 740px) {
+  [data-design="fileteado"] .board-mode.shell { min-height: 600px; }
+  [data-design="fileteado"] .header { height: 70px; }
+  [data-design="fileteado"] .brand > img { height: 60px; width: 42px; }
+  [data-design="fileteado"] .mesa-heading { min-height: 38px; padding-block: 0; margin-block: 4px; }
+  [data-design="fileteado"] .criollo-hat { height: 30px; }
+  [data-design="fileteado"] .board-mode .team { padding-top: 9px; padding-bottom: 8px; }
+  [data-design="fileteado"] .team-caption { margin-bottom: 5px; }
+  [data-design="fileteado"] .board-mode .score { font-size: 53px; margin-bottom: 7px; }
+  [data-design="fileteado"] .tally-phase h3 { font-size: 11px; padding-block: 4px; }
+  [data-design="fileteado"] .board-mode .table-footer { display: none; }
+  [data-design="fileteado"] .board-mode .distance { margin-block: 4px; }
+}
+@media (orientation: landscape) and (max-height: 540px) {
+  [data-design="fileteado"] .board-mode.shell { min-height: 390px; }
+  [data-design="fileteado"] .header { height: 64px; }
+  [data-design="fileteado"] .mesa-heading { display: none; }
+  [data-design="fileteado"] .board-mode .team { grid-template-columns: minmax(95px,1fr) minmax(100px,1fr); padding: 8px; }
+  [data-design="fileteado"] .team-name button { font-size: 21px; }
+  [data-design="fileteado"] .board-mode .score { font-size: 50px; }
+  [data-design="fileteado"] .score::before,[data-design="fileteado"] .score::after { display: none; }
+  [data-design="fileteado"] .board-mode .actions { padding-top: 6px; }
+}
+@media (max-width: 350px) {
+  [data-design="fileteado"] .brand-title { font-size: 25px; }
+  [data-design="fileteado"] .brand > img { width: 40px; }
+  [data-design="fileteado"] .header { gap: 5px; padding-inline: 6px; }
+  [data-design="fileteado"] .team-name button { font-size: 20px; }
+  [data-design="fileteado"] .board-mode .team { padding-inline: 7px; }
+}
+[data-design="fileteado"] .mesa-heading { border-width: 7px 0; border-image: url('../public/artesanal/tejido.svg') 7 0 repeat; }
+[data-design="fileteado"] .mesa-heading::before { content: ""; width: 22px; height: 24px; flex-shrink: 0; background: url('../public/artesanal/tejido.svg') left center / 64px 24px; }
+[data-design="fileteado"] .board-mode .unlit line { stroke: #877c6559; stroke-width: 2.2; filter: drop-shadow(0 -0.4px 0 #e9d8b046); }
+
+[data-design="fileteado"][data-theme="dark"] .board-mode .team { background-image: linear-gradient(#070707a0,#070707a0),var(--materials); }
+[data-design="fileteado"][data-theme="dark"] .header { background-image: linear-gradient(#0c0806a0,#0c0806a0),var(--materials); }

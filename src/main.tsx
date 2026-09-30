@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useId, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { Capacitor } from "@capacitor/core";
 import { Preferences } from "@capacitor/preferences";
-import { Haptics, ImpactStyle } from "@capacitor/haptics";
+import { Haptics } from "@capacitor/haptics";
 import {
   ArrowRight,
   Pencil,
@@ -38,10 +38,13 @@ import {
 } from "./game";
 import "./style.css";
 import "./gaucho.css";
+import "./themes.css";
+import "./fileteado.css";
 
 const STORAGE_KEY = "truco-state-v1";
 let saveQueue = Promise.resolve();
 function Matches({ count }: { count: number }) {
+  const id = useId().replaceAll(":", "");
   const lines = [
     [12, 10, 44, 10],
     [48, 12, 48, 44],
@@ -53,10 +56,29 @@ function Matches({ count }: { count: number }) {
     <div className="matches" aria-hidden="true">
       {[0, 1, 2].map((group) => (
         <svg key={group} viewBox="0 0 58 58">
+          <defs>
+            <linearGradient id={`${id}-wood-${group}`} x1="0" y1="0" x2="0" y2="1">
+              <stop stopColor="#a7773e" />
+              <stop offset=".32" stopColor="#f4d99b" />
+              <stop offset=".65" stopColor="#dfb674" />
+              <stop offset="1" stopColor="#aa7740" />
+            </linearGradient>
+            <radialGradient id={`${id}-head-${group}`} cx=".32" cy=".28" r=".75">
+              <stop stopColor="#cf6951" />
+              <stop offset=".5" stopColor="#9c392b" />
+              <stop offset="1" stopColor="#5c241e" />
+            </radialGradient>
+          </defs>
           {lines.map(([x1, y1, x2, y2], i) => (
             <g key={i} className={count > group * 5 + i ? "lit" : "unlit"}>
-              <line x1={x1} y1={y1} x2={x2} y2={y2} />
-              <circle cx={x2} cy={y2} r="2.4" />
+              {count > group * 5 + i ? (
+                <g className="real-match" transform={`translate(${x1} ${y1}) rotate(${Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI})`}>
+                  <rect className="match-shadow" x="0" y="-1" width={Math.hypot(x2 - x1, y2 - y1)} height="4" rx="1" />
+                  <rect x="0" y="-2" width={Math.hypot(x2 - x1, y2 - y1)} height="3.8" rx=".7" fill={`url(#${id}-wood-${group})`} />
+                  <path d={`M3 -.7 H${Math.hypot(x2 - x1, y2 - y1) - 4} M6 .8 H${Math.hypot(x2 - x1, y2 - y1) - 7}`} stroke="#815229" strokeWidth=".25" opacity=".5" />
+                  <ellipse cx={Math.hypot(x2 - x1, y2 - y1) - 1} cy="0" rx="3.5" ry="2.5" fill={`url(#${id}-head-${group})`} />
+                </g>
+              ) : <line x1={x1} y1={y1} x2={x2} y2={y2} />}
             </g>
           ))}
         </svg>
@@ -75,6 +97,8 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
     warning ? "No pudimos recuperar la partida guardada." : "",
   );
   const [saveError, setSaveError] = useState(false);
+  const nativeHaptics = Capacitor.isNativePlatform();
+  const vibrationAvailable = nativeHaptics;
   const dialog = useRef<HTMLDialogElement>(null);
   const latest = useRef(state);
   const total = scores(state.match);
@@ -82,6 +106,7 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
   useEffect(() => {
     latest.current = state;
     document.documentElement.dataset.theme = state.dark ? "dark" : "light";
+    document.documentElement.dataset.design = state.design;
     saveQueue = saveQueue
       .then(() =>
         Preferences.set({ key: STORAGE_KEY, value: JSON.stringify(state) }),
@@ -103,9 +128,18 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
           ?.focus();
     } else dialog.current?.close();
   }, [modal, customTeam]);
+  function vibrate(duration = 80) {
+    if (!nativeHaptics) return;
+    if (!Capacitor.isPluginAvailable("Haptics")) {
+      setNotice("Esta instalación no tiene el módulo de vibración. Actualizá la app.");
+      return;
+    }
+    void Haptics.vibrate({ duration }).catch(() => {
+      setNotice("No se pudo vibrar. Revisá la vibración en los ajustes del celular.");
+    });
+  }
   function feedback() {
-    if (latest.current.haptics && Capacitor.isNativePlatform())
-      void Haptics.impact({ style: ImpactStyle.Light }).catch(() => {});
+    if (latest.current.haptics) vibrate();
   }
   function score(team: Team, amount: number) {
     feedback();
@@ -125,14 +159,18 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
       ).length + (won === i ? 1 : 0),
   );
   const last = state.match.moves.at(-1);
+  const completedMatches = (won === null
+    ? state.finished
+    : [...state.finished.filter((m) => m.id !== state.match.id), state.match]
+  ).slice(-100);
   return (
     <div className={"shell " + (tab === "board" ? "board-mode" : "")}>
       <header className="header">
         <div className="brand">
-          <img src="./icon.svg" alt="" />
+          <img src={state.design === "fileteado" ? "./artesanal/mate.webp" : "./mate-criollo.svg"} alt="" />
           <div>
             <span className="brand-title">Truco</span>
-            <span className="eyebrow">BIEN DE CAMPO</span>
+            <img className="brand-flag" src="./bandera-argentina.svg" alt="Bandera argentina" />
           </div>
         </div>
         <span className="header-goal">
@@ -150,6 +188,11 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
       <main>
         {tab === "board" && (
           <>
+            <div className="mesa-heading">
+              <span>Entre mates y cantos</span>
+              <img className="criollo-hat" src={state.design === "fileteado" ? "./artesanal/mate.webp" : "./sombrero-criollo.svg"} alt="" />
+              <span className="mesa-edition">ANOTADOR CRIOLLO</span>
+            </div>
             <section className="scoreboard" aria-label="Marcador de la partida">
               <div className="score-columns">
                 {([0, 1] as Team[]).map((team) => {
@@ -161,6 +204,7 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
                       key={team}
                       aria-label={state.match.names[team]}
                     >
+                      <span className="team-caption">{team === 0 ? "DE ESTE LADO" : "DEL OTRO LADO"}</span>
                       <h2 className="team-name">
                         <button
                           aria-label={`Editar nombre de ${state.match.names[team]}`}
@@ -223,13 +267,13 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
                 })}
               </div>
               <div className="table-footer">
-                <span className="small-diamond">◆</span>
+                <span className="small-diamond" aria-hidden="true">◆</span>
                 <span>
                   {state.match.goal === 30
                     ? "15 malas · 15 buenas · un solo ganador"
                     : "15 tantos · una mano más · un solo ganador"}
                 </span>
-                <span className="small-diamond">◆</span>
+                <span className="small-diamond" aria-hidden="true">◆</span>
               </div>
             </section>
             {won !== null && (
@@ -286,67 +330,25 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
               <br />
               de la mesa.
             </h1>
-            <h2>Esta partida</h2>
-            {!last ? (
+            <h2>Partidas terminadas</h2>
+            {completedMatches.length === 0 ? (
               <div className="empty">
                 <History />
-                <h3>Todavía no hay tantos</h3>
-                <p>Los puntos que anotes aparecen acá.</p>
-                <button
-                  className="primary-button"
-                  onClick={() => setTab("board")}
-                >
-                  Ir al anotador <ArrowRight size={18} />
-                </button>
+                <h3>Todavía no hay partidas terminadas</h3>
+                <p>Cuando un equipo llegue a 15 o 30, vas a ver acá el resultado final.</p>
               </div>
             ) : (
-              <>
-                <button className="secondary-button" onClick={goBack}>
-                  <Undo2 size={18} />
-                  Deshacer último
-                </button>
-                <ol className="move-list">
-                  {state.match.moves
-                    .map((m, i) => (
-                      <li key={i}>
-                        <span className="move-points">
-                          {m.points > 0 ? "+" : ""}
-                          {m.points}
-                        </span>
-                        <div>
-                          <strong>{state.match.names[m.team]}</strong>
-                          <small>Movimiento {i + 1}</small>
-                        </div>
-                        <time>
-                          {new Date(m.at).toLocaleTimeString("es-AR", {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          })}
-                        </time>
-                      </li>
-                    ))
-                    .reverse()}
-                </ol>
-              </>
-            )}
-            <h2>Partidas anteriores</h2>
-            {state.finished.length === 0 ? (
-              <p className="muted">
-                Cuando termines una partida y empieces otra, la vas a encontrar
-                acá.
-              </p>
-            ) : (
               <div className="past-matches">
-                {[...state.finished].reverse().map((m) => (
+                {[...completedMatches].reverse().map((m) => (
                   <article key={m.id}>
                     <Trophy size={20} />
                     <div>
-                      <strong>{m.names[winner(m)!]}</strong>
+                      <strong>Ganó {m.names[winner(m)!]}</strong>
                       <p>
                         {m.names.join(" vs. ")} · A {m.goal}
                       </p>
                       <small>
-                        {new Date(m.startedAt).toLocaleDateString("es-AR")}
+                        {new Date(m.moves.at(-1)?.at ?? m.startedAt).toLocaleString("es-AR", { dateStyle: "short", timeStyle: "short" })}
                       </small>
                     </div>
                     <b>{scores(m).join(" : ")}</b>
@@ -364,6 +366,26 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
               <br />
               tus costumbres.
             </h1>
+            <fieldset className="design-picker">
+              <legend>Elegí tu mesa</legend>
+              <p className="muted">Elegí un estilo, de día o de noche. La bandera siempre es la misma.</p>
+              <div className="design-options">
+                {([
+                  ["fileteado", "Fileteado · Original", "Cuero, madera y detalles dorados"],
+                  ["moderno", "Moderno", "Simple, limpio y sin adornos"],
+                  ["sakura", "Sakura", "Flores de cerezo, rosa y delicadeza"],
+                  ["retro", "Retro", "Crema, naranja y ondas setenteras"],
+                  ["comic", "Anime / Cómic", "Viñetas, tinta y colores intensos"],
+                  ["cyberpunk", "Cyberpunk", "Neón, circuitos y contraste"],
+                ] as const).map(([value, name, description]) => (
+                  <label className="design-option" key={value}>
+                    <input type="radio" name="design" value={value} checked={state.design === value} onChange={() => setState(s => ({ ...s, design: value }))} />
+                    <span className={`design-swatch swatch-${value}`} aria-hidden="true"><i /><i /><i /></span>
+                    <span><strong>{name}</strong><small>{description}</small></span>
+                  </label>
+                ))}
+              </div>
+            </fieldset>
             <div className="settings-card">
               <button
                 className="setting-row"
@@ -381,18 +403,27 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
               </button>
               <button
                 className="setting-row"
-                aria-pressed={state.haptics}
-                onClick={() => setState((s) => ({ ...s, haptics: !s.haptics }))}
+                aria-pressed={vibrationAvailable && state.haptics}
+                disabled={!vibrationAvailable}
+                onClick={() => {
+                  if (!state.haptics) vibrate(180);
+                  setState((s) => ({ ...s, haptics: !s.haptics }));
+                }}
               >
                 <Vibrate />
                 <span>
                   <strong>Vibración al anotar</strong>
-                  <small>Disponible en la app nativa</small>
+                  <small>{vibrationAvailable ? "Vibra al sumar o restar tantos" : "Disponible en la app instalada en tu celular"}</small>
                 </span>
-                <span className={"switch " + (state.haptics ? "on" : "")}>
+                <span className={"switch " + (vibrationAvailable && state.haptics ? "on" : "")}>
                   <i />
                 </span>
               </button>
+              {nativeHaptics && <button className="setting-row" onClick={() => vibrate(180)}>
+                <Vibrate />
+                <span><strong>Probar vibración</strong><small>Un pulso de prueba, sin cambiar tu preferencia</small></span>
+                <ChevronRight />
+              </button>}
               <button className="setting-row" onClick={() => setModal("new")}>
                 <ListRestart />
                 <span>
@@ -539,22 +570,6 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
                 {wins[0]} : {wins[1]}
               </strong>
             </p>
-            <button
-              className="setting-row"
-              onClick={() => {
-                setTab("board");
-                setModal(null);
-              }}
-            >
-              <ListRestart />
-              <span>Volver al anotador</span>
-              <ChevronRight />
-            </button>
-            <button className="setting-row" onClick={() => setModal("names")}>
-              <Pencil />
-              <span>Cambiar nombres</span>
-              <ChevronRight />
-            </button>
             <button className="setting-row" onClick={() => setModal("new")}>
               <Plus />
               <span>Nueva partida</span>
@@ -568,7 +583,7 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
               }}
             >
               <History />
-              <span>Historial de la mesa</span>
+              <span>Historial de partidas</span>
               <ChevronRight />
             </button>
             <button
@@ -668,7 +683,15 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
             ["3", "Todos los palos", ""], ["2", "Todos los palos", ""], ["1", "Copa y oro", "Anchos falsos"],
             ["12", "Todos los palos", "Reyes"], ["11", "Todos los palos", "Caballos"], ["10", "Todos los palos", "Sotas"],
             ["7", "Copa y basto", "Sietes falsos"], ["6", "Todos los palos", ""], ["5", "Todos los palos", ""], ["4", "Todos los palos", ""]
-          ].map(([number,suit,nickname],i)=><li key={i}><span className="rank">{i+1}.</span><b className="card-number">{number}</b><div><strong>{suit}</strong>{nickname && <small>{nickname}</small>}</div></li>)}</ol>
+          ].map(([number,suit,nickname],i) => {
+            const suits = suit === "Todos los palos" ? ["espada", "basto", "oro", "copa"]
+              : suit === "Copa y oro" ? ["copa", "oro"]
+              : suit === "Copa y basto" ? ["copa", "basto"] : [suit.toLowerCase()];
+            return <li key={i}>
+              <div className="rank-heading"><span className="rank">{i+1}.</span><div><strong>{nickname || `Los ${number}`}</strong><small>{number} · {suit}</small></div></div>
+              <div className="rank-cards">{suits.map(palo => <img key={palo} src={`./cards/${number}-${palo}.jpg`} alt={`${number} de ${palo}`} width="200" height="321" loading="lazy" />)}</div>
+            </li>;
+          })}</ol>
           <p className="muted">Las cartas de la misma fila empatan: hacen parda. Se usa el mazo español de 40 cartas, sin 8, 9 ni comodines.</p>
           <h3>Para el envido</h3><p>Del 1 al 7 valen su número. El 10, 11 y 12 valen 0. Con dos cartas del mismo palo, sumá sus valores y 20; sin dos del mismo palo, cuenta la de mayor valor. El máximo es 33.</p>
           <button className="primary-button full" onClick={()=>setModal("menu")}>Volver al menú</button>

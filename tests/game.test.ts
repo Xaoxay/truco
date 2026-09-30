@@ -96,3 +96,28 @@ test("limita el archivo a las últimas 100 partidas", () => {
   }
   assert.equal(s.finished.length, 100);
 });
+
+test("conserva cada diseño y modo oscuro al recuperar la partida", () => {
+  for (const design of ["fileteado", "moderno", "sakura", "retro", "comic", "cyberpunk"] as const) {
+    const s = { ...initialState(), design, dark: true };
+    assert.deepEqual(restore(JSON.stringify(s)), s);
+  }
+});
+test("recupera partidas anteriores al selector de diseño", () => {
+  const s = initialState();
+  const { design, ...legacy } = s;
+  assert.equal(restore(JSON.stringify(legacy))?.design, "fileteado");
+  assert.equal(restore(JSON.stringify({ ...s, design: "inexistente" })), null);
+});
+
+test("los temas retirados migran al original sin perder partida ni preferencias", () => {
+  const s = initialState();
+  s.match = addPoints(s.match, 1, 30);
+  const playing = startNext(s, s.match.names, 30);
+  playing.match = addPoints(playing.match, 0, 12);
+  playing.dark = true;
+  for (const design of ["criollo", "patriota", "rosa", "rustico", "pampa"]) {
+    const restored = restore(JSON.stringify({ ...playing, design }));
+    assert.deepEqual(restored, { ...playing, design: "fileteado" });
+  }
+});

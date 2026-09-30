@@ -1,5 +1,8 @@
 export type Team = 0 | 1;
 export type Goal = 15 | 30;
+export const designs = ["fileteado", "moderno", "sakura", "retro", "comic", "cyberpunk"] as const;
+const retiredDesigns = ["criollo", "patriota", "rosa", "rustico", "pampa"];
+export type Design = (typeof designs)[number];
 export type Move = { team: Team; points: number; at: number };
 export type Match = {
   id: string;
@@ -13,6 +16,7 @@ export type State = {
   match: Match;
   finished: Match[];
   dark: boolean;
+  design: Design;
   haptics: boolean;
 };
 export function newMatch(
@@ -38,6 +42,7 @@ export function initialState(): State {
     match: newMatch(),
     finished: [],
     dark: false,
+    design: "fileteado",
     haptics: true,
   };
 }
@@ -129,10 +134,11 @@ export function restore(raw: string): State | null {
       s.finished.length > 100 ||
       !s.finished.every((m: unknown) => validMatch(m) && winner(m) !== null) ||
       typeof s.dark !== "boolean" ||
+      (s.design !== undefined && !designs.includes(s.design) && !retiredDesigns.includes(s.design)) ||
       typeof s.haptics !== "boolean"
     )
       return null;
-    return s as State;
+    return { ...s, design: designs.includes(s.design) ? s.design : "fileteado" } as State;
   } catch {
     return null;
   }
