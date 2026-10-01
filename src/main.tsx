@@ -1,6 +1,6 @@
 import React, { useEffect, useId, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
-import { Capacitor } from "@capacitor/core";
+import { Capacitor, registerPlugin } from "@capacitor/core";
 import { Preferences } from "@capacitor/preferences";
 import { Haptics } from "@capacitor/haptics";
 import {
@@ -26,6 +26,7 @@ import {
 } from "lucide-react";
 import {
   addPoints,
+  clearHistory,
   initialState,
   restore,
   scores,
@@ -45,6 +46,7 @@ import { ThemeTally } from './ThemeTally';
 import { checkForUpdate, NativeUpdates } from './updates';
 
 const STORAGE_KEY = "truco-state-v1";
+const AndroidHaptics = registerPlugin<{ vibrate(options: { duration: number }): Promise<void> }>('TrucoHaptics');
 let saveQueue = Promise.resolve();
 function Matches({ count, design }: { count: number; design: State['design'] }) {
   const id = useId().replaceAll(":", "");
@@ -96,7 +98,7 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
   const [state, setState] = useState(saved);
   const [tab, setTab] = useState<"board" | "history" | "settings">("board");
   const [modal, setModal] = useState<
-    "new" | "help" | "cards" | "names" | "menu" | null
+    "new" | "help" | "cards" | "names" | "menu" | "clear-history" | null
   >(null);
   const [customTeam, setCustomTeam] = useState<Team>(0);
   const [notice, setNotice] = useState(
@@ -139,14 +141,16 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
           ?.focus();
     } else dialog.current?.close();
   }, [modal, customTeam]);
-  function vibrate(duration = 80) {
+  function vibrate(duration = 120) {
     if (!nativeHaptics) return;
-    if (!Capacitor.isPluginAvailable("Haptics")) {
+    const plugin = Capacitor.getPlatform() === 'android' ? 'TrucoHaptics' : 'Haptics';
+    if (!Capacitor.isPluginAvailable(plugin)) {
       setNotice("Esta instalación no tiene el módulo de vibración. Actualizá la app.");
       return;
     }
-    void Haptics.vibrate({ duration }).catch(() => {
-      setNotice("No se pudo vibrar. Revisá la vibración en los ajustes del celular.");
+    const pulse = Capacitor.getPlatform() === 'android' ? AndroidHaptics.vibrate({ duration }) : Haptics.vibrate({ duration });
+    void pulse.catch((error: { code?: string }) => {
+      setNotice(error.code === 'NO_VIBRATOR' ? 'Este dispositivo no tiene vibrador.' : "No se pudo vibrar. Revisá la vibración táctil en los ajustes del celular.");
     });
   }
   function feedback() {
@@ -168,10 +172,10 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
           m.names[0] === state.match.names[0] &&
           m.names[1] === state.match.names[1] &&
           winner(m) === i,
-      ).length + (won === i ? 1 : 0),
+      ).length + (won === i && state.clearedMatchId !== state.match.id ? 1 : 0),
   );
   const last = state.match.moves.at(-1);
-  const completedMatches = (won === null
+  const completedMatches = (won === null || state.clearedMatchId === state.match.id
     ? state.finished
     : [...state.finished.filter((m) => m.id !== state.match.id), state.match]
   ).slice(-100);
@@ -350,6 +354,7 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
               de la mesa.
             </h1>
             <h2>Partidas terminadas</h2>
+            <button className="secondary-button" disabled={completedMatches.length === 0} onClick={() => setModal('clear-history')}>Borrar historial</button>
             {completedMatches.length === 0 ? (
               <div className="empty">
                 <History />
@@ -532,7 +537,7 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
       <dialog
         ref={dialog}
         aria-label={
-          modal === "names"
+          modal === "clear-history" ? "Borrar historial de partidas" : modal === "names"
             ? "Nombres de los equipos"
             : modal === "menu"
               ? "Menú de la mesa"
@@ -557,6 +562,18 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
             <X />
           </button>
         </div>
+        {modal === "clear-history" && <section>
+          <h2>¿Borrar el historial?</h2>
+          <p className="muted">Se borrarán las partidas terminadas y las victorias de la serie. La partida del anotador conserva sus tantos. Esta acción no se puede deshacer.</p>
+          <div className="actions">
+            <button className="secondary-button" autoFocus onClick={() => setModal(null)}>Cancelar</button>
+            <button className="primary-button" onClick={() => {
+              setState(s => clearHistory(s));
+              setModal(null);
+              setNotice('Historial borrado');
+            }}>Sí, borrar historial</button>
+          </div>
+        </section>}
         {modal === "names" && (
           <form
             onSubmit={(e) => {
@@ -810,6 +827,8 @@ async function boot() {
     warning = true;
   }
   if (disposed) return;
+  document.documentElement.dataset.design = state.design;
+  document.documentElement.dataset.theme = state.dark ? 'dark' : 'light';
   root = createRoot(document.getElementById("root")!);
   root.render(
     <React.StrictMode>

@@ -2,6 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
   addPoints,
+  clearHistory,
   initialState,
   newMatch,
   restore,
@@ -17,6 +18,25 @@ test("15 malas pasan a buenas sin reiniciar el total", () => {
   m = addPoints(m, 0, 1);
   assert.deepEqual(scores(m), [15, 0]);
   assert.equal(winner(m), null);
+});
+test('Fileteado es el original para una instalación nueva', () => {
+  assert.equal(initialState().design, 'fileteado');
+});
+test('borrar historial conserva el anotador y las preferencias, y persiste el borrado', () => {
+  let state = initialState();
+  state.match = addPoints(state.match, 0, 30);
+  state = startNext(state, state.match.names, 30);
+  state.match = addPoints(state.match, 1, 30);
+  const cleared = clearHistory(state);
+  assert.equal(cleared.finished.length, 0);
+  assert.deepEqual(cleared.match, state.match);
+  assert.equal(cleared.design, state.design);
+  assert.equal(cleared.clearedMatchId, state.match.id);
+  assert.deepEqual(restore(JSON.stringify(cleared)), cleared);
+  const next = startNext(cleared, cleared.match.names, 30);
+  assert.equal(next.finished.length, 0);
+  next.match = addPoints(next.match, 0, 30);
+  assert.equal(startNext(next, next.match.names, 30).finished.length, 1);
 });
 test("no supera el objetivo y bloquea tantos después de ganar", () => {
   let m = addPoints(newMatch(), 0, 29);

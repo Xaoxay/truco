@@ -18,6 +18,7 @@ export type State = {
   dark: boolean;
   design: Design;
   haptics: boolean;
+  clearedMatchId?: string;
 };
 export function newMatch(
   names: [string, string] = ["Nosotros", "Ellos"],
@@ -84,14 +85,19 @@ export function startNext(
   names: [string, string],
   goal: Goal,
 ): State {
+  const { clearedMatchId, ...preserved } = state;
   return {
-    ...state,
+    ...preserved,
     finished:
-      winner(state.match) === null
+      winner(state.match) === null || state.clearedMatchId === state.match.id
         ? state.finished
         : [...state.finished, state.match].slice(-100),
     match: newMatch(names, goal),
   };
+}
+export function clearHistory(state: State): State {
+  const { clearedMatchId, ...preserved } = state;
+  return { ...preserved, finished: [], ...(winner(state.match) !== null ? { clearedMatchId: state.match.id } : {}) };
 }
 function validMatch(value: unknown): value is Match {
   if (!value || typeof value !== "object") return false;
@@ -134,6 +140,7 @@ export function restore(raw: string): State | null {
       s.finished.length > 100 ||
       !s.finished.every((m: unknown) => validMatch(m) && winner(m) !== null) ||
       typeof s.dark !== "boolean" ||
+      (s.clearedMatchId !== undefined && typeof s.clearedMatchId !== 'string') ||
       (s.design !== undefined && !designs.includes(s.design) && !retiredDesigns.includes(s.design)) ||
       typeof s.haptics !== "boolean"
     )

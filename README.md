@@ -98,3 +98,7 @@ La variante predeterminada para instalaciones nuevas reproduce la dirección vis
 ### Actualizaciones desde Android
 En Ajustes, Buscar actualización compara el versionCode instalado con la última release android-N de GitHub. Si hay una nueva, Descargar actualización abre el APK oficial en el navegador del celular; el usuario confirma su instalación en Android. Requiere conexión. Cada compilación exitosa de main publica truco.apk con la firma fija. El botón no instala en silencio ni envía partidas al servidor. La primera versión que incluye este botón debe instalarse manualmente; después permite buscar las siguientes desde la app.
 
+
+### Inicio, historial y vibración Android
+Fileteado es el tema inicial en el HTML y para instalaciones nuevas. El tema y modo guardados se aplican antes del primer render para evitar mostrar otro diseño al abrir; las selecciones explícitas se conservan. Historial ofrece Borrar historial con confirmación; conserva el marcador y evita volver a archivar la partida actual borrada. Android utiliza TrucoHaptics, registrado en MainActivity, con permiso VIBRATE explícito, detección hasVibrator y pulsos de 120 ms a amplitud 255 clasificados USAGE_TOUCH; la prueba usa 180 ms. Android puede suprimirlos según los ajustes táctiles del sistema. La respuesta física requiere verificación en un celular.
+
