@@ -94,3 +94,7 @@ Validado: compilación TypeScript/Vite, 14 pruebas de lógica, preferencias y mi
 ### Diseño Fileteado
 
 La variante predeterminada para instalaciones nuevas reproduce la dirección visual de la referencia: texturas locales de cuero, madera y pergamino; mate con Sol de Mayo; filetes celestes y dorados; placas con nombres y fósforos funcionales. El marcador mantiene tres grupos de cinco por columna (15 malas y 15 buenas). Los temas retirados (Criollo, Patriota, Rosa, Rústico y Pampa) se migran a Fileteado conservando partidas, historial y preferencias. Moderno y las cuatro temáticas nuevas son diseños independientes; Fileteado sigue siendo el original y predeterminado. Las nuevas texturas y el mate se generaron para este proyecto; los ornamentos son SVG propios.
+
+### Actualizaciones desde Android
+En Ajustes, Buscar actualización compara el versionCode instalado con la última release android-N de GitHub. Si hay una nueva, Descargar actualización abre el APK oficial en el navegador del celular; el usuario confirma su instalación en Android. Requiere conexión. Cada compilación exitosa de main publica truco.apk con la firma fija. El botón no instala en silencio ni envía partidas al servidor. La primera versión que incluye este botón debe instalarse manualmente; después permite buscar las siguientes desde la app.
+

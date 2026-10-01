@@ -42,6 +42,7 @@ import "./themes.css";
 import "./fileteado.css";
 import "./illustrated-themes.css";
 import { ThemeTally } from './ThemeTally';
+import { checkForUpdate, NativeUpdates } from './updates';
 
 const STORAGE_KEY = "truco-state-v1";
 let saveQueue = Promise.resolve();
@@ -102,6 +103,10 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
     warning ? "No pudimos recuperar la partida guardada." : "",
   );
   const [saveError, setSaveError] = useState(false);
+  const [updateBusy, setUpdateBusy] = useState(false);
+  const [updateMessage, setUpdateMessage] = useState('Consultá si hay una versión nueva');
+  const [updateUrl, setUpdateUrl] = useState<string | null>(null);
+  const androidUpdates = Capacitor.getPlatform() === 'android';
   const [declinedRematch, setDeclinedRematch] = useState<string | null>(null);
   const nativeHaptics = Capacitor.isNativePlatform();
   const vibrationAvailable = nativeHaptics;
@@ -460,6 +465,27 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
                 terminadas en este dispositivo.
               </p>
             </div>
+            <button className="setting-row" disabled={updateBusy || !androidUpdates} onClick={async () => {
+              setUpdateBusy(true);
+              try {
+                if (updateUrl) {
+                  await NativeUpdates.openDownload({ url: updateUrl });
+                  setUpdateMessage('Abrí el APK descargado y confirmá Actualizar en Android');
+                } else {
+                  const update = await checkForUpdate();
+                  setUpdateUrl(update?.url ?? null);
+                  setUpdateMessage(update ? 'Hay una versión nueva lista para descargar' : 'Tu app está actualizada');
+                }
+              } catch {
+                setUpdateMessage('No pudimos comprobar o abrir la actualización. Revisá tu conexión y volvé a intentar.');
+              } finally { setUpdateBusy(false); }
+            }}>
+              <ArrowRight />
+              <span><strong>{updateBusy ? 'Comprobando…' : updateUrl ? 'Descargar actualización' : 'Buscar actualización'}</strong>
+              <small role="status">{androidUpdates ? updateMessage : 'Disponible en la app de Android'}</small></span>
+              <ChevronRight />
+            </button>
+            {androidUpdates && <p className="muted">Android te pedirá confirmar la instalación. Actualizar conserva tus partidas.</p>}
             <button
               className="secondary-button"
               onClick={() => setModal("help")}

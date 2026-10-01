@@ -8,6 +8,11 @@ permissions:
   contents: read
 jobs:
   android:
+    permissions:
+      contents: write
+    concurrency:
+      group: android-${{ github.ref }}
+      cancel-in-progress: false
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -56,3 +61,16 @@ jobs:
           name: truco-android14-${{ github.event_name == 'pull_request' && 'pr-preview' || 'debug' }}
           path: android/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
+      - name: Publish installable Android update
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          cp android/app/build/outputs/apk/debug/app-debug.apk "$RUNNER_TEMP/truco.apk"
+          tag="android-$TRUCO_VERSION_CODE"
+          if gh release view "$tag" >/dev/null 2>&1; then
+            gh release upload "$tag" "$RUNNER_TEMP/truco.apk" --clobber
+          else
+            gh release create "$tag" "$RUNNER_TEMP/truco.apk" --target "$GITHUB_SHA" --title "Truco Android · $TRUCO_VERSION_CODE" --notes "Actualización de Truco para Android 14 o superior. Descargá truco.apk y confirmá Actualizar para conservar tus partidas." --latest
+          fi

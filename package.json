@@ -7,7 +7,7 @@
     "dev": "vite --host 127.0.0.1",
     "build": "tsc --noEmit && vite build && node scripts/service-worker.mjs",
     "preview": "vite preview --host 127.0.0.1",
-    "test": "tsx --test tests/game.test.ts",
+    "test": "tsx --test tests/*.test.ts",
     "sync": "npm run build && cap sync",
     "android": "npm run sync && cap open android",
     "ios": "npm run sync && cap open ios"
