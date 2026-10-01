@@ -7,7 +7,7 @@ android {
         applicationId "com.xaoxay.truco"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode (System.getenv('TRUCO_VERSION_CODE') ?: '4').toInteger()
+        versionCode = (System.getenv('TRUCO_VERSION_CODE') ?: '4').toInteger()
         versionName "1.2.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
