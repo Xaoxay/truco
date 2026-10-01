@@ -97,6 +97,7 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
     warning ? "No pudimos recuperar la partida guardada." : "",
   );
   const [saveError, setSaveError] = useState(false);
+  const [declinedRematch, setDeclinedRematch] = useState<string | null>(null);
   const nativeHaptics = Capacitor.isNativePlatform();
   const vibrationAvailable = nativeHaptics;
   const dialog = useRef<HTMLDialogElement>(null);
@@ -146,6 +147,7 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
     setState((s) => ({ ...s, match: addPoints(s.match, team, amount) }));
   }
   function goBack() {
+    setDeclinedRematch(null);
     setState((s) => ({ ...s, match: undo(s.match) }));
     setNotice("Último movimiento deshecho");
   }
@@ -276,7 +278,7 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
                 <span className="small-diamond" aria-hidden="true">◆</span>
               </div>
             </section>
-            {won !== null && (
+            {won !== null && declinedRematch !== state.match.id && (
               <section className="victory" role="status">
                 <Trophy />
                 <div>
@@ -285,16 +287,23 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
                     {total[0]} a {total[1]}. ¿Sale revancha?
                   </p>
                 </div>
+                <div className="rematch-actions">
                 <button
-                  className="icon-button"
-                  aria-label="Jugar revancha"
+                  className="primary-button"
                   onClick={() => {
                     setState((s) => startNext(s, s.match.names, s.match.goal));
                     setNotice("¡Arrancó la revancha!");
                   }}
                 >
-                  <ArrowRight />
+                  Sí
                 </button>
+                <button
+                  className="secondary-button"
+                  onClick={() => setDeclinedRematch(state.match.id)}
+                >
+                  No
+                </button>
+                </div>
               </section>
             )}
             <div className="actions">
@@ -716,8 +725,9 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
             </p>
             <h3>¿Sale revancha?</h3>
             <p>
-              Al llegar al objetivo aparece el ganador. Tocá la flecha para
-              jugar de nuevo con los mismos equipos. Las victorias se acumulan
+              Al llegar al objetivo aparece el ganador. Tocá «Sí» para
+              jugar de nuevo con los mismos equipos o «No» para cerrar el cartel
+              y conservar el resultado. Las victorias se acumulan
               en la serie.
             </p>
             <h3>Siempre a mano</h3>

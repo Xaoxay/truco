@@ -681,6 +681,7 @@ h1 {
 }
 .victory {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 12px;
   background: #f4dfb8;
@@ -696,6 +697,15 @@ h1 {
 }
 .victory strong {
   font-size: 14px;
+}
+.victory > .rematch-actions {
+  flex: 1 0 100%;
+  display: flex;
+  gap: 10px;
+}
+.rematch-actions button {
+  flex: 1;
+  min-height: 44px;
 }
 .victory p {
   font-size: 11px;
