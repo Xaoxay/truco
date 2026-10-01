@@ -388,7 +388,7 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
                   ["fileteado", "Fileteado · Original", "Cuero, madera y detalles dorados"],
                   ["moderno", "Moderno", "Simple, limpio y sin adornos"],
                   ["sakura", "Sakura", "Flores de cerezo, rosa y delicadeza"],
-                  ["retro", "Retro", "Pixel art, monedas y colores de arcade"],
+                  ["retro", "Retro · Arcade", "Máquina recreativa, botones y monedas pixeladas"],
                   ["comic", "Anime / Cómic", "Viñetas, tinta y colores intensos"],
                   ["cyberpunk", "Cyberpunk", "Neón, circuitos y contraste"],
                 ] as const).map(([value, name, description]) => (

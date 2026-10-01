@@ -115,6 +115,44 @@
 .tally-retro .coin-quarter { fill:#efb742; stroke:#8e481e; stroke-width:2; }
 .tally-retro .coin-stamp { fill:#9c4b20; stroke:#ffe694; stroke-width:1.5; fill-rule:evenodd; }
 .tally-retro .symbol-complete { filter:drop-shadow(2px 2px 0 #704125); }
+/* Arcade cabinet: painted bezel, CRT screen and tactile game buttons. */
+:root[data-design="retro"], :root[data-design="retro"][data-theme="dark"] {
+  --bg:#211633; --surface:#171b30; --text:#fff0bc; --muted:#d6c9eb;
+  --line:#7861a7; --soft:#302744; --leather:#211633; --green:#6fe3d3;
+  --poncho:#ff799b; --team-ink:#ff799b; --header-text:#fff0bc; --header-muted:#ffe490;
+  --silver:#ffe490; --button-bg:#ffce57; --button-text:#261b32;
+  --arcade-screen:#171b30; --arcade-frame:#9e6ec9;
+}
+:root[data-design="retro"][data-theme="dark"] { --bg:#100c1c; --surface:#101421; --leather:#120d20; --arcade-screen:#101421; --arcade-frame:#684995; }
+[data-design="retro"] .shell { background:repeating-linear-gradient(90deg,#ffffff02 0 1px,transparent 1px 5px),var(--bg); }
+[data-design="retro"] .board-mode .header { height:140px; padding-top:22px; background:var(--leather) url('../public/themes/arcade-marquee.svg') center / 100% 100% no-repeat; border:0; box-shadow:0 5px 0 #080612; }
+[data-design="retro"] .brand-title { font:bold 31px/1.1 'Courier New',monospace; letter-spacing:1px; color:#ffed9b; text-shadow:2px 0 #ed497f,0 2px #ed497f,3px 4px #733877; }
+[data-design="retro"] .brand > img { display:none; }
+[data-design="retro"] .brand-flag { margin-top:7px; }
+[data-design="retro"] .header .icon-button { border-radius:50%; background:#bc3557; color:#fff4c9; border:3px solid #f8728e; box-shadow:0 4px 0 #64243e,inset 0 2px #ffa4bb; }
+[data-design="retro"] .mesa-heading { min-height:38px; margin:8px 8px 0; background:#312443; color:#ffe89f; border:2px solid #9e6ec9; border-bottom:4px solid #110a21; font:bold 11px monospace; letter-spacing:.3px; }
+[data-design="retro"] .board-mode .score-columns { padding:8px 8px 0; gap:6px; }
+[data-design="retro"] .board-mode .team { background:repeating-linear-gradient(0deg,#0000000d 0 1px,transparent 1px 4px),radial-gradient(ellipse at 50% 25%,#32334d,var(--arcade-screen) 80%); border:3px solid var(--arcade-frame); border-radius:10px; box-shadow:inset 0 0 0 3px #090d1d,inset 0 0 22px #060912,0 4px 0 #0b0716; color:#fff0bc; }
+[data-design="retro"] .board-mode .team-0 { border-right:3px solid var(--arcade-frame); }
+[data-design="retro"] .board-mode .team-name button { color:#79e9dc; font:bold 22px 'Courier New',monospace; text-shadow:2px 2px #234c63; }
+[data-design="retro"] .board-mode .team-1 .team-name button { color:#ff90ad; text-shadow:2px 2px #6d254e; }
+[data-design="retro"] .board-mode .score { color:#ffe69b; text-shadow:3px 3px #a67134; }
+[data-design="retro"] .board-mode .team-1 .score { color:#ff8faa; text-shadow:3px 3px #8f365e; }
+[data-design="retro"] .team-caption { font-size:8px; letter-spacing:.8px; color:#e1c5ff; }
+[data-design="retro"] .tally-phases { border-top:2px solid #675478; }
+[data-design="retro"] .tally-phase h3 { color:#ffe89b; }
+[data-design="retro"] .tally-phase + .tally-phase { border-left-color:#796194; }
+[data-design="retro"] .main-controls button { border-radius:12px; border:2px solid #8ae4d9; box-shadow:0 4px 0 #246371,inset 0 2px 0 #cefff1; }
+[data-design="retro"] .board-mode .main-controls .add { background:#66d9c6; color:#143b46; border-color:#a8f5d8; }
+[data-design="retro"] .board-mode .team-1 .main-controls .add { background:#f26f93; color:#3c183b; border-color:#ffafbd; box-shadow:0 4px 0 #852c53,inset 0 2px #ffc8ce; }
+[data-design="retro"] .main-controls .subtract { background:#33304d; color:#e1d8f0; border-color:#68627f; box-shadow:0 4px #171326,inset 0 2px #79718a; }
+[data-design="retro"] .main-controls button:active, [data-design="retro"] .actions button:active { filter:brightness(.85); }
+[data-design="retro"] .table-footer { margin-top:9px; background:#2d213d; border:2px solid #78619b; color:#ffe6a0; }
+[data-design="retro"] .actions button { border-radius:8px; border:2px solid #9273af; box-shadow:0 4px #0d0918; font:bold 12px monospace; }
+[data-design="retro"] .actions .secondary-button { background:#352b4a; color:#ece0ff; }
+[data-design="retro"] .actions .primary-button { background:#ffce57; color:#322239; border-color:#fff0aa; }
+[data-design="retro"] .distance { color:#e2d3f4; }
+[data-design="retro"] .swatch-retro { --sample:#211633; --sample-paper:#ffce57; --sample-accent:#66d9c6; }
 @media(max-width:359px) {
   :is([data-design="sakura"],[data-design="cyberpunk"],[data-design="retro"]) .board-mode .header { padding-inline:10px; gap:6px; }
   :is([data-design="sakura"],[data-design="cyberpunk"],[data-design="retro"]) .brand-title { font-size:27px; }
