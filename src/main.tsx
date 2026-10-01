@@ -40,11 +40,16 @@ import "./style.css";
 import "./gaucho.css";
 import "./themes.css";
 import "./fileteado.css";
+import "./illustrated-themes.css";
+import { ThemeTally } from './ThemeTally';
 
 const STORAGE_KEY = "truco-state-v1";
 let saveQueue = Promise.resolve();
-function Matches({ count }: { count: number }) {
+function Matches({ count, design }: { count: number; design: State['design'] }) {
   const id = useId().replaceAll(":", "");
+  if (design === 'sakura' || design === 'cyberpunk' || design === 'retro') {
+    return <ThemeTally count={count} design={design} />;
+  }
   const lines = [
     [12, 10, 44, 10],
     [48, 12, 48, 44],
@@ -233,11 +238,11 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
                       <div className={"tally-phases " + (state.match.goal === 15 ? "short-game" : "")}>
                         <section className="tally-phase" aria-label={`${state.match.names[team]}: ${Math.min(total[team],15)} malas de 15`}>
                           <h3>{state.match.goal === 30 ? "Malas" : "Tantos"}<span>{Math.min(total[team],15)}/15</span></h3>
-                          <Matches count={Math.min(total[team],15)}/>
+                          <Matches count={Math.min(total[team],15)} design={state.design}/>
                         </section>
                         {state.match.goal === 30 && <section className={"tally-phase buenas " + (phase ? "active" : "")} aria-label={`${state.match.names[team]}: ${Math.max(total[team]-15,0)} buenas de 15`}>
                           <h3>Buenas<span>{Math.max(total[team]-15,0)}/15</span></h3>
-                          <Matches count={Math.max(total[team]-15,0)}/>
+                          <Matches count={Math.max(total[team]-15,0)} design={state.design}/>
                         </section>}
                       </div>
                       <div className="distance">
@@ -383,7 +388,7 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
                   ["fileteado", "Fileteado · Original", "Cuero, madera y detalles dorados"],
                   ["moderno", "Moderno", "Simple, limpio y sin adornos"],
                   ["sakura", "Sakura", "Flores de cerezo, rosa y delicadeza"],
-                  ["retro", "Retro", "Crema, naranja y ondas setenteras"],
+                  ["retro", "Retro", "Pixel art, monedas y colores de arcade"],
                   ["comic", "Anime / Cómic", "Viñetas, tinta y colores intensos"],
                   ["cyberpunk", "Cyberpunk", "Neón, circuitos y contraste"],
                 ] as const).map(([value, name, description]) => (

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300">
+<defs><linearGradient id="sky" x2="0" y2="1"><stop stop-color="#09051e"/><stop offset="1" stop-color="#161348"/></linearGradient><pattern id="windows" width="22" height="26" patternUnits="userSpaceOnUse"><path d="M6 5H10V16H6Z" fill="#177793"/><path d="M15 8H18V18H15Z" fill="#53317d"/></pattern></defs>
+<path fill="url(#sky)" d="M0 0H800V300H0Z"/>
+<g fill="#070c25" stroke="#304583" stroke-width="2"><path d="M0 0H80V300H0ZM90 85H160V300H90ZM172 166H244V300H172ZM271 112H335V300H271ZM370 184H411V300H370ZM445 142H509V300H445ZM540 73H611V300H540ZM624 15H711V300H624ZM731 0H800V300H731Z"/></g>
+<g fill="url(#windows)"><path d="M0 0H80V300H0ZM90 85H160V300H90ZM172 166H244V300H172ZM271 112H335V300H271ZM445 142H509V300H445ZM540 73H611V300H540ZM624 15H711V300H624ZM731 0H800V300H731Z"/></g>
+<g fill="none" stroke="#f130cf" stroke-width="3"><path d="M17 17V146H55V17ZM649 45H685V164H649ZM762 5V91H789M108 145H144V185H108M280 151H327M20 270H780"/></g>
+<g fill="none" stroke="#27d8ff" stroke-width="3"><path d="M77 21V243M160 132V282M542 81V270M716 33V253M25 283H776"/></g>
+<g stroke="#8823a0" opacity=".65"><path d="M400 236L0 300M400 236L100 300M400 236L240 300M400 236L560 300M400 236L700 300M400 236L800 300M0 294H800M70 276H734M162 258H641"/></g>
+<g transform="translate(47 146)"><path d="M0 28Q-14 65 4 97Q35 119 62 94Q77 61 59 28Z" fill="#100929" stroke="#e34acb" stroke-width="4"/><ellipse cx="30" cy="28" rx="30" ry="9" fill="#142049" stroke="#47eaff" stroke-width="4"/><path d="M28 28L51-76Q52-81 58-80" fill="none" stroke="#81efff" stroke-width="6"/><path d="M1 45Q26 57 60 45M5 69Q26 81 58 69" fill="none" stroke="#aa27d1" stroke-width="2"/></g>
+<g transform="translate(663 189) rotate(-17)"><rect width="42" height="67" rx="4" fill="#070d2a" stroke="#39dfff" stroke-width="3"/><path d="M21 19C17 26 10 27 10 34C10 41 17 42 21 36C25 42 32 41 32 34C32 27 25 26 21 19ZM18 45H24L21 35Z" fill="none" stroke="#39dfff" stroke-width="2"/></g>
+<g transform="translate(707 190) rotate(17)"><rect width="42" height="67" rx="4" fill="#180c27" stroke="#f23cdc" stroke-width="3"/><path d="M21 17L30 32 21 47 12 32Z" fill="none" stroke="#f23cdc" stroke-width="2"/></g>
+</svg>

@@ -1,0 +1,129 @@
+/* Three illustrated skins; the score and controls remain live UI. */
+:root[data-design="sakura"] {
+  --bg:#fbe7d5; --surface:#fff0e1; --text:#38201d; --muted:#764647;
+  --line:#c98a84; --soft:#f8cfca; --leather:#fbe1d2; --green:#ad435e;
+  --poncho:#b52f57; --team-ink:#b52f57; --header-text:#38201d; --header-muted:#38201d;
+  --silver:#38201d; --button-bg:#c0526c; --button-text:#fff8ef;
+}
+:root[data-design="sakura"][data-theme="dark"] {
+  --bg:#271923; --surface:#38212e; --text:#ffe9dc; --muted:#e3b7bc;
+  --line:#976276; --soft:#4a2b3c; --leather:#291b2a; --green:#efa2b7;
+  --poncho:#ffb6cc; --team-ink:#ffb6cc; --header-text:#ffe9dc; --header-muted:#ffe9dc;
+  --silver:#ffe9dc; --button-bg:#eaa0b4; --button-text:#361b2a;
+}
+:root[data-design="cyberpunk"], :root[data-design="cyberpunk"][data-theme="dark"] {
+  --bg:#08081b; --surface:#0b1025; --text:#d5faff; --muted:#c5b4ee;
+  --line:#654785; --soft:#151534; --leather:#07071d; --green:#32e4ff;
+  --poncho:#fb45d2; --team-ink:#fb45d2; --header-text:#c9faff; --header-muted:#7adeff;
+  --silver:#b9f8ff; --button-bg:#2ce1f7; --button-text:#081323;
+}
+:root[data-design="retro"] {
+  --bg:#f1daa8; --surface:#173528; --text:#ffe8a5; --muted:#f0d48f;
+  --line:#bb783b; --soft:#284936; --leather:#eddaa9; --green:#efd49a;
+  --poncho:#f47c50; --team-ink:#f47c50; --header-text:#322212; --header-muted:#322212;
+  --silver:#322212; --button-bg:#ebcf91; --button-text:#203526;
+}
+:root[data-design="retro"][data-theme="dark"] {
+  --bg:#211c16; --surface:#102a20; --text:#ffe6a2; --muted:#dcc58d;
+  --line:#b27c41; --soft:#243a2b; --leather:#35281d; --green:#f5da9c;
+  --poncho:#ff9468; --team-ink:#ff9468; --header-text:#ffe6a2; --header-muted:#ffe6a2;
+  --silver:#ffe6a2; --button-bg:#f1d091; --button-text:#173528;
+}
+:is([data-design="sakura"],[data-design="cyberpunk"],[data-design="retro"]) .board-mode .header {
+  height:150px; align-items:flex-start; padding-top:22px; gap:10px; background-size:cover; background-position:center;
+  position:relative; border:1px solid var(--line); box-shadow:inset 0 0 0 4px color-mix(in srgb,var(--line) 20%,transparent);
+}
+:is([data-design="sakura"],[data-design="cyberpunk"],[data-design="retro"]) .brand { position:relative; z-index:1; }
+:is([data-design="sakura"],[data-design="cyberpunk"],[data-design="retro"]) .brand-title { font-size:32px; }
+:is([data-design="sakura"],[data-design="cyberpunk"],[data-design="retro"]) .header-goal { padding-top:8px; font-size:24px; z-index:1; }
+:is([data-design="sakura"],[data-design="cyberpunk"],[data-design="retro"]) .header .icon-button { width:44px; height:44px; min-width:44px; background:color-mix(in srgb,var(--leather) 85%,transparent); z-index:1; }
+:is([data-design="sakura"],[data-design="cyberpunk"],[data-design="retro"]) .board-mode .score-columns { gap:0; padding:0 8px 8px; }
+:is([data-design="sakura"],[data-design="cyberpunk"],[data-design="retro"]) .board-mode .team { border-radius:0; padding:16px 10px 12px; box-shadow:none; position:relative; }
+:is([data-design="sakura"],[data-design="cyberpunk"],[data-design="retro"]) .board-mode .team-0 { border-right:0; }
+:is([data-design="sakura"],[data-design="cyberpunk"],[data-design="retro"]) .team-name button { padding:0; font-size:clamp(21px,5.6vw,30px); gap:5px; min-height:44px; }
+:is([data-design="sakura"],[data-design="cyberpunk"],[data-design="retro"]) .team-1 .team-name button { color:var(--team-ink); }
+:is([data-design="sakura"],[data-design="cyberpunk"],[data-design="retro"]) .tally-phases { gap:8px; border-top:1px solid var(--line); }
+:is([data-design="sakura"],[data-design="cyberpunk"],[data-design="retro"]) .tally-phase h3 { border:0; font-size:10px; }
+:is([data-design="sakura"],[data-design="cyberpunk"],[data-design="retro"]) .tally-phase + .tally-phase { border-left:1px dashed var(--line); padding-left:8px; }
+:is([data-design="sakura"],[data-design="cyberpunk"],[data-design="retro"]) .board-mode .score { font-size:64px; margin:3px 0 8px; }
+:is([data-design="sakura"],[data-design="cyberpunk"],[data-design="retro"]) .board-mode .main-controls button { border-radius:4px; min-height:48px; box-shadow:inset 0 0 0 3px color-mix(in srgb,var(--line) 25%,transparent),0 3px 5px #0002; border:1px solid var(--line); }
+:is([data-design="sakura"],[data-design="cyberpunk"],[data-design="retro"]) .main-controls .subtract { background:color-mix(in srgb,var(--text) 20%,var(--bg)); color:var(--text); }
+:is([data-design="sakura"],[data-design="cyberpunk"],[data-design="retro"]) .table-footer { font-size:10px; text-align:center; padding:8px; margin:0 8px; border:1px solid var(--line); background:var(--surface); }
+:is([data-design="sakura"],[data-design="cyberpunk"],[data-design="retro"]) .actions { padding:12px 8px 0; }
+:is([data-design="sakura"],[data-design="cyberpunk"],[data-design="retro"]) .actions button { border-radius:4px; border:1px solid var(--line); min-height:48px; }
+:is([data-design="sakura"],[data-design="cyberpunk"],[data-design="retro"]) .board-mode .saved { padding:12px 8px; margin:0; font-size:10px; color:var(--muted); }
+.themed-tally svg { overflow:visible; }
+.themed-tally .symbol-placeholder { fill:none; stroke:var(--line); stroke-width:1; opacity:.55; }
+.themed-tally:has(.filled) .symbol-placeholder { opacity:.3; }
+.themed-tally .symbol-part.empty { opacity:0; }
+.themed-tally .symbol-part.filled { opacity:1; }
+.themed-tally .symbol-part { transition:opacity .16s ease; }
+.themed-tally .symbol-complete .symbol-placeholder { opacity:0; }
+.tally-sakura { --petal:#f8b3bd; --petal-line:#ad4965; }
+.tally-sakura .petal { fill:var(--petal); stroke:var(--petal-line); stroke-width:1; }
+.tally-sakura .petal-vein { fill:none; stroke:var(--petal-line); stroke-width:.65; }
+.tally-sakura .flower-heart { fill:#f5cf7a; stroke:#a43b55; stroke-width:.8; }
+[data-theme="dark"] .tally-sakura { --petal:#e995b3; --petal-line:#ffdbdf; }
+[data-design="sakura"] .shell { background:var(--bg) url('../public/themes/sakura.svg') top left / 290px auto repeat-y; }
+[data-design="sakura"] .board-mode .header { background-image:linear-gradient(var(--leather),transparent 70%),url('../public/themes/sakura-landscape.svg'); }
+[data-design="sakura"] .brand > img { display:none; }
+[data-design="sakura"] .mesa-heading { margin:0 8px; min-height:36px; border-block:1px solid var(--line); color:var(--text); background:color-mix(in srgb,var(--bg) 80%,transparent); font:bold italic 15px Georgia,serif; }
+[data-design="sakura"] .board-mode .team { background:color-mix(in srgb,var(--surface) 93%,transparent); border-color:var(--line); }
+[data-design="sakura"] .board-mode .team-1 .score { color:var(--poncho); }
+[data-design="sakura"] .board-mode .team-name button { font-family:Georgia,serif; }
+[data-design="sakura"] .tally-phase { position:relative; }
+[data-design="sakura"] .actions .secondary-button { background:#604043; color:#fff1e1; }
+[data-theme="dark"][data-design="sakura"] .header { background-blend-mode:normal,soft-light; }
+[data-design="cyberpunk"] .shell { background:var(--bg) url('../public/themes/neon-city.svg') top center / 800px auto no-repeat; }
+[data-design="cyberpunk"] .board-mode .header { background-image:linear-gradient(#08081b22,#08081b33),url('../public/themes/neon-city.svg'); border-color:#5b2096; box-shadow:inset 0 0 0 4px #51177050,0 0 12px #d62ce02b; }
+[data-design="cyberpunk"] .brand > img { visibility:hidden; width:26px; }
+[data-design="cyberpunk"] .brand-title { font:bold italic 32px Georgia,serif; color:#ff53d3; text-shadow:0 0 5px #ff42cf,0 0 18px #d600ff; letter-spacing:1px; transform:rotate(-7deg); display:block; }
+[data-design="cyberpunk"] .brand-flag { margin-top:7px; }
+[data-design="cyberpunk"] .mesa-heading { background:#070b20; color:#39e7ff; text-transform:none; font:bold italic 14px Georgia,serif; letter-spacing:0; border-block:1px solid #bb25c0; margin:5px 8px; box-shadow:0 0 8px #a72be13b; }
+[data-design="cyberpunk"] .board-mode .team { background:linear-gradient(#081322f5,#080c1bf5); border:1px solid #23a2d4; box-shadow:inset 0 0 0 3px #06517e33; }
+[data-design="cyberpunk"] .board-mode .team-1 { border-color:#c132b2; }
+[data-design="cyberpunk"] .team-caption, [data-design="cyberpunk"] .tally-phase h3 { color:var(--green); }
+[data-design="cyberpunk"] .team-1 .team-caption, [data-design="cyberpunk"] .team-1 .tally-phase h3 { color:var(--poncho); }
+[data-design="cyberpunk"] .team-name button { color:var(--green); text-shadow:0 0 9px #36dfff65; }
+[data-design="cyberpunk"] .board-mode .score { text-shadow:0 0 8px #00dfff90,0 0 22px #00dfff40; }
+[data-design="cyberpunk"] .board-mode .team-1 .score { text-shadow:0 0 8px #ef27ca90,0 0 22px #ef27ca40; }
+[data-design="cyberpunk"] .main-controls .add { background:var(--green); color:#061c29; box-shadow:0 0 12px #22e5ff55; }
+[data-design="cyberpunk"] .main-controls .subtract { background:#10122c; color:#adabf9; }
+[data-design="cyberpunk"] .team-1 .main-controls .add { background:var(--poncho); color:#220827; }
+[data-design="cyberpunk"] .actions .primary-button { background:#100d22; border-color:#f43bd6; color:#ff94e6; box-shadow:inset 0 0 12px #e33cdf24; }
+[data-design="cyberpunk"] .actions .secondary-button { background:#080f22; border-color:#3bd8ff; color:#80eaff; }
+.tally-cyberpunk .neon-edge { fill:none; stroke:#3bdfff; stroke-width:2.5; filter:drop-shadow(0 0 2px #35d4ff); }
+.tally-cyberpunk .neon-spade { fill:#ae26b82b; stroke:#ff63df; stroke-width:2; filter:drop-shadow(0 0 3px #fa24cf); }
+.tally-cyberpunk .card-corner { fill:#ff72e6; }
+.tally-cyberpunk .card-glint { fill:none; stroke:#e3ffff; stroke-width:1.5; }
+.tally-cyberpunk .symbol-placeholder { stroke:#3d668d; }
+[data-design="retro"] .shell { background:var(--bg); }
+[data-design="retro"] .board-mode .header { height:140px; padding-top:20px; background:var(--leather) url('../public/themes/retro-landscape.svg') center bottom / 100% auto no-repeat; image-rendering:pixelated; border:4px double #8d5126; }
+[data-design="retro"] .brand-title { font:bold 29px/1.2 'Courier New',monospace; font-style:normal; letter-spacing:-1.5px; text-shadow:2px 2px #9b724450; }
+[data-design="retro"] .brand > img { width:32px; height:44px; image-rendering:pixelated; filter:sepia(.3); }
+[data-design="retro"] .header .icon-button { border-radius:0; background:#8f3823; color:#ffe4aa; border:3px double #d8a664; }
+[data-design="retro"] .mesa-heading { background:var(--bg); color:var(--header-text); font:bold 11px monospace; text-transform:none; letter-spacing:0; border-bottom:4px double #9a602b; margin-top:0; }
+[data-design="retro"] .board-mode .team { background:linear-gradient(135deg,#21432e,#10281e); border:4px double #c89249; color:#ffe7a6; }
+[data-design="retro"] .board-mode .team-name button { font:bold 22px 'Courier New',monospace; font-style:normal; text-shadow:1px 1px #917035; }
+[data-design="retro"] .board-mode .score { font:bold 64px/1 'Courier New',monospace; text-shadow:3px 3px #4e6236; }
+[data-design="retro"] .team-1 .score { color:#ee8252; text-shadow:3px 3px #633c22; }
+[data-design="retro"] .main-controls .subtract { background:#244d37; color:#f7df9b; }
+[data-design="retro"] .main-controls button, [data-design="retro"] .actions button { border-radius:0; border:4px double #b8823c; box-shadow:2px 2px #624520; font-family:monospace; font-weight:bold; }
+[data-design="retro"] .actions .secondary-button { background:#21432e; color:#ffe6a0; }
+[data-design="retro"] .actions .primary-button { background:#8b3e23; color:#ffe6a0; }
+[data-design="retro"] .distance, [data-design="retro"] .tally-phase h3, [data-design="retro"] .team-caption { color:#ffe6a0; font-family:monospace; }
+.tally-retro svg { shape-rendering:crispEdges; }
+.tally-retro .symbol-placeholder { stroke:#d4a255; stroke-dasharray:2 2; }
+.tally-retro .coin-quarter { fill:#efb742; stroke:#8e481e; stroke-width:2; }
+.tally-retro .coin-stamp { fill:#9c4b20; stroke:#ffe694; stroke-width:1.5; fill-rule:evenodd; }
+.tally-retro .symbol-complete { filter:drop-shadow(2px 2px 0 #704125); }
+@media(max-width:359px) {
+  :is([data-design="sakura"],[data-design="cyberpunk"],[data-design="retro"]) .board-mode .header { padding-inline:10px; gap:6px; }
+  :is([data-design="sakura"],[data-design="cyberpunk"],[data-design="retro"]) .brand-title { font-size:27px; }
+  :is([data-design="sakura"],[data-design="cyberpunk"],[data-design="retro"]) .header-goal { font-size:20px; }
+}
+@media(orientation:landscape) and (max-height:540px) {
+  :is([data-design="sakura"],[data-design="cyberpunk"],[data-design="retro"]) .board-mode .header { height:70px; padding-top:10px; }
+  :is([data-design="sakura"],[data-design="cyberpunk"],[data-design="retro"]) .board-mode .team { padding:5px 14px; }
+}
+@media(prefers-reduced-motion:reduce) { .themed-tally .symbol-part { transition:none; } }
