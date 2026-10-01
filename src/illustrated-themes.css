@@ -92,10 +92,8 @@
 [data-design="cyberpunk"] .team-1 .main-controls .add { background:var(--poncho); color:#220827; }
 [data-design="cyberpunk"] .actions .primary-button { background:#100d22; border-color:#f43bd6; color:#ff94e6; box-shadow:inset 0 0 12px #e33cdf24; }
 [data-design="cyberpunk"] .actions .secondary-button { background:#080f22; border-color:#3bd8ff; color:#80eaff; }
-.tally-cyberpunk .neon-edge { fill:none; stroke:#3bdfff; stroke-width:2.5; filter:drop-shadow(0 0 2px #35d4ff); }
+.tally-cyberpunk .neon-edge { fill:none; stroke:#3bdfff; stroke-width:3; stroke-linecap:round; filter:drop-shadow(0 0 1px #35d4ff); }
 .tally-cyberpunk .neon-spade { fill:#ae26b82b; stroke:#ff63df; stroke-width:2; filter:drop-shadow(0 0 3px #fa24cf); }
-.tally-cyberpunk .card-corner { fill:#ff72e6; }
-.tally-cyberpunk .card-glint { fill:none; stroke:#e3ffff; stroke-width:1.5; }
 .tally-cyberpunk .symbol-placeholder { stroke:#3d668d; }
 [data-design="retro"] .shell { background:var(--bg); }
 [data-design="retro"] .board-mode .header { height:140px; padding-top:20px; background:var(--leather) url('../public/themes/retro-landscape.svg') center bottom / 100% auto no-repeat; image-rendering:pixelated; border:4px double #8d5126; }
