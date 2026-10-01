@@ -28,10 +28,31 @@ jobs:
       - run: npm run build
       - run: npx cap sync android
       - run: chmod +x android/gradlew
+      - name: Restore persistent test signing key
+        if: github.event_name != 'pull_request'
+        env:
+          KEYSTORE_BASE64: ${{ secrets.TRUCO_DEBUG_KEYSTORE_BASE64 }}
+        shell: bash
+        run: |
+          if [ -z "$KEYSTORE_BASE64" ]; then
+            echo "Missing TRUCO_DEBUG_KEYSTORE_BASE64; refusing to change the APK signing key."
+            exit 1
+          fi
+          umask 077
+          printf '%s' "$KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/truco-debug.p12"
+          echo "TRUCO_DEBUG_KEYSTORE=$RUNNER_TEMP/truco-debug.p12" >> "$GITHUB_ENV"
+      - name: Set increasing Android version
+        shell: bash
+        run: echo "TRUCO_VERSION_CODE=$((GITHUB_RUN_NUMBER + 1000))" >> "$GITHUB_ENV"
       - run: ./gradlew assembleDebug --no-daemon
         working-directory: android
+      - name: Verify APK signature
+        run: $ANDROID_HOME/build-tools/36.0.0/apksigner verify --verbose --print-certs android/app/build/outputs/apk/debug/app-debug.apk
+      - name: Remove temporary signing key
+        if: always()
+        run: rm -f "$RUNNER_TEMP/truco-debug.p12"
       - uses: actions/upload-artifact@v4
         with:
-          name: truco-android14-debug
+          name: truco-android14-${{ github.event_name == 'pull_request' && 'pr-preview' || 'debug' }}
           path: android/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
