@@ -185,13 +185,15 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
           await AndroidHaptics.vibrate({ duration });
           return;
         } catch (error) {
-          if ((error as { code?: string }).code === 'NO_VIBRATOR') throw error;
+          if (['NO_VIBRATOR', 'VIBRATION_DISABLED'].includes((error as { code?: string }).code ?? '')) throw error;
           // Compatibilidad con instalaciones donde falla el módulo propio.
         }
       }
       await Haptics.vibrate({ duration });
     } catch (error) {
-      setNotice((error as { code?: string }).code === 'NO_VIBRATOR'
+      setNotice((error as { code?: string }).code === 'VIBRATION_DISABLED'
+        ? 'Android tiene desactivada la vibración táctil. Activala en Ajustes del celular → Sonido y vibración.'
+        : (error as { code?: string }).code === 'NO_VIBRATOR'
         ? 'Este dispositivo no tiene vibrador.'
         : 'No se pudo vibrar. Activá la vibración táctil del celular y actualizá la app.');
     }

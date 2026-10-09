@@ -32,9 +32,9 @@ npm run build
 
 `npm run preview` sirve la compilación web. Los recursos y el service worker usan rutas relativas, por lo que se pueden alojar bajo `/truco/`. Para instalar la web en un teléfono, se necesita un alojamiento HTTPS. No se ha configurado automáticamente un servicio de hosting.
 
-## Android 14 o superior
+## Android 10 o superior
 
-El proyecto `android/` tiene **minSdkVersion 34 (Android 14)**. Android Studio y SDK 36, JDK 21.
+El proyecto `android/` tiene **minSdkVersion 29 (Android 10)**. Android Studio y SDK 36, JDK 21.
 
 ```sh
 npm ci
@@ -48,7 +48,7 @@ gradlew.bat assembleDebug
 
 APK: `android/app/build/outputs/apk/debug/app-debug.apk`.
 
-También se compila con **GitHub Actions → Build Android** al subir cambios a `main`. En una ejecución exitosa, descargá el artefacto **truco-android14-debug**, descomprimilo e instalá el APK en Android. Es una compilación de prueba firmada con clave debug; para Google Play hay que generar y firmar un AAB de producción con una clave propia. Las compilaciones de main usan una firma de prueba fija, guardada en el secreto de GitHub Actions TRUCO_DEBUG_KEYSTORE_BASE64 (PKCS12, alias androiddebugkey, contraseña android), y un versionCode creciente (1000 + GITHUB_RUN_NUMBER). No borrar ni reemplazar ese secreto: las futuras actualizaciones deben conservar la misma clave. Si falta, la compilación falla para evitar distribuir accidentalmente un APK incompatible. Las compilaciones de pull requests son previews con firma temporal y no sirven como actualizaciones. Para compilar localmente con la misma firma, configurar TRUCO_DEBUG_KEYSTORE con la ruta al PKCS12 privado y TRUCO_VERSION_CODE con un número mayor al instalado. Esta clave es solo para pruebas; producción requiere su propia firma protegida. Las versiones anteriores a este arreglo usaban claves efímeras: no se puede actualizar sobre ellas sin recuperar su clave original. Desinstalar borra las partidas locales; desde la primera instalación con la firma fija, las siguientes versiones de main pueden actualizarse conservando los datos.
+También se compila con **GitHub Actions → Build Android** al subir cambios a `main`. En una ejecución exitosa, descargá el artefacto **truco-android10-debug**, descomprimilo e instalá el APK en Android. Es una compilación de prueba firmada con clave debug; para Google Play hay que generar y firmar un AAB de producción con una clave propia. Las compilaciones de main usan una firma de prueba fija, guardada en el secreto de GitHub Actions TRUCO_DEBUG_KEYSTORE_BASE64 (PKCS12, alias androiddebugkey, contraseña android), y un versionCode creciente (1000 + GITHUB_RUN_NUMBER). No borrar ni reemplazar ese secreto: las futuras actualizaciones deben conservar la misma clave. Si falta, la compilación falla para evitar distribuir accidentalmente un APK incompatible. Las compilaciones de pull requests son previews con firma temporal y no sirven como actualizaciones. Para compilar localmente con la misma firma, configurar TRUCO_DEBUG_KEYSTORE con la ruta al PKCS12 privado y TRUCO_VERSION_CODE con un número mayor al instalado. Esta clave es solo para pruebas; producción requiere su propia firma protegida. Las versiones anteriores a este arreglo usaban claves efímeras: no se puede actualizar sobre ellas sin recuperar su clave original. Desinstalar borra las partidas locales; desde la primera instalación con la firma fija, las siguientes versiones de main pueden actualizarse conservando los datos.
 
 ## iPhone / iPad
 
@@ -65,7 +65,7 @@ Sin compilar iOS, la versión web alojada en HTTPS se puede agregar desde Safari
 
 ## Reglas y decisiones
 
-No calcula automáticamente los cantos ni la falta envido: hay variantes de mesa. Sumá con + los tantos acordados. Se muestran dos columnas verticales por equipo: 15 malas y 15 buenas. Las malas permanecen marcadas al pasar a buenas. El ganador queda limitado al objetivo. Para corregir una victoria, usá Deshacer. Una partida incompleta se descarta únicamente al confirmar «Empezar partida» en el formulario.
+No calcula automáticamente los cantos ni la falta envido: hay variantes de mesa. Sumá con + los tantos acordados. Se muestran dos columnas verticales por equipo: 15 malas y 15 buenas. Las malas permanecen marcadas al pasar a buenas. El ganador queda limitado al objetivo. Para corregir una victoria, restá con −; al bajar del objetivo se puede volver a sumar. Una partida incompleta se descarta únicamente al confirmar «Empezar partida» en el formulario.
 
 Los nombres se tratan como texto, nunca HTML. El guardado está versionado y valida movimientos antes de recuperarlos. Borrar datos/desinstalar la app elimina el historial; no hay sincronización entre dispositivos. La serie agrupa los mismos nombres en el mismo orden dentro de las últimas 100 terminadas y la partida actual.
 
@@ -101,4 +101,7 @@ En Ajustes, Buscar actualización compara el versionCode instalado con la últim
 
 ### Inicio, historial y vibración Android
 Fileteado es el tema inicial en el HTML y para instalaciones nuevas. El tema y modo guardados se aplican antes del primer render para evitar mostrar otro diseño al abrir; las selecciones explícitas se conservan. Historial ofrece Borrar historial con confirmación; conserva el marcador y evita volver a archivar la partida actual borrada. Android utiliza TrucoHaptics, registrado en MainActivity, con permiso VIBRATE explícito, detección hasVibrator y pulsos de 120 ms a amplitud 255 clasificados USAGE_TOUCH; la prueba usa 180 ms. Android puede suprimirlos según los ajustes táctiles del sistema. La respuesta física requiere verificación en un celular.
+
+
+Compatibilidad: Android 10 y posteriores con Android System WebView actualizado; iPhone/iPad con iOS 16 y posteriores. El SDK de compilación y el target de Android siguen en 36: ampliar el mínimo no limita versiones nuevas. La instalación nativa de iOS requiere firma Apple y pruebas con Xcode; no se entrega un IPA sin firmar como instalable.
 
