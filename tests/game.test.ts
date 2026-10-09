@@ -44,7 +44,12 @@ test("no supera el objetivo y bloquea tantos después de ganar", () => {
   assert.deepEqual(scores(m), [30, 0]);
   assert.equal(winner(m), 0);
   assert.deepEqual(addPoints(m, 1, 4), m);
-  assert.deepEqual(addPoints(m, 0, -1), m);
+  const corrected = addPoints(m, 0, -1);
+  assert.deepEqual(scores(corrected), [29, 0]);
+  assert.equal(winner(corrected), null);
+  const state = { ...initialState(), match: corrected };
+  assert.deepEqual(restore(JSON.stringify(state)), state);
+  assert.equal(winner(addPoints(corrected, 0, 1)), 0);
 });
 test("deshacer victoria devuelve el puntaje anterior exacto", () => {
   const m = addPoints(addPoints(newMatch(), 1, 28), 1, 4);
@@ -140,4 +145,18 @@ test("los temas retirados migran al original sin perder partida ni preferencias"
     const restored = restore(JSON.stringify({ ...playing, design }));
     assert.deepEqual(restored, { ...playing, design: "fileteado" });
   }
+});
+
+test("guarda el país y recupera partidas anteriores sin perder los puntos", () => {
+  for (const country of ["argentina", "paraguay", "uruguay"] as const) {
+    const s = initialState();
+    s.country = country;
+    s.match = addPoints(s.match, 0, 8);
+    assert.deepEqual(restore(JSON.stringify(s)), s);
+  }
+  const s = initialState();
+  s.match = addPoints(s.match, 1, 5);
+  const { country, ...legacy } = s;
+  assert.deepEqual(restore(JSON.stringify(legacy)), { ...s, country: "argentina" });
+  assert.equal(restore(JSON.stringify({ ...s, country: "inexistente" }))?.country, "argentina");
 });

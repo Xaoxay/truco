@@ -1,0 +1,49 @@
+@font-face { font-family:Teko;src:url('/fonts/Teko.ttf') format('truetype');font-weight:300 700;font-display:swap; }
+:root[data-design='moderno'] {
+ --bg:#e7f3fa;--surface:#fff;--text:#112d46;--muted:#506b7c;--line:#b5d2e2;--soft:#deeff8;--nav:#eef7fc;
+ --green:#1975a6;--poncho:#153b5c;--team-ink:#153b5c;--leather:#89c9ea;--header-text:#102e49;--header-muted:#254963;--silver:#153b5c;
+ --button-bg:#146a98;--button-text:#fff;--ghost:#6b8b9f45;--match:#173e5a;
+ --modern-panel:#ffffffed;--modern-stripe:#8bceee;--modern-shadow:#24587818;
+}
+:root[data-design='moderno'][data-theme='dark'] {
+ --bg:#08192b;--surface:#10283e;--text:#edf7ff;--muted:#adc7da;--line:#36576d;--soft:#16364e;--nav:#0c2135;
+ --green:#8dd5fa;--poncho:#c4dff0;--team-ink:#c4dff0;--leather:#102f47;--header-text:#eef8ff;--header-muted:#b4d7eb;--silver:#eef8ff;
+ --button-bg:#87d2fa;--button-text:#0b2437;--ghost:#9dbacc45;--match:#d7efff;
+ --modern-panel:#10283ef2;--modern-stripe:#164461;--modern-shadow:#0004;
+}
+[data-design='moderno'] .shell { background:radial-gradient(ellipse at 50% 0%,var(--soft),transparent 65%),var(--bg); }
+[data-design='moderno'] .header {
+ background:repeating-linear-gradient(90deg,var(--modern-stripe) 0 18%,var(--surface) 18% 36%);
+ border-bottom:3px solid #c7a34b;box-shadow:0 3px 12px var(--modern-shadow);
+}
+[data-design='moderno'] .brand-title { font:600 40px/1 Teko,sans-serif;letter-spacing:1px;color:var(--text);text-shadow:0 1px var(--surface); }
+[data-design='moderno'] .header-goal { font-family:Teko,sans-serif;font-size:26px;line-height:1; }
+[data-design='moderno'] .header-goal small { font:9px system-ui,sans-serif;letter-spacing:1px; }
+[data-design='moderno'] .header .icon-button { background:var(--surface);border:1px solid var(--line);border-radius:50%;color:var(--text); }
+[data-design='moderno'] .mesa-heading { font:600 11px system-ui,sans-serif;letter-spacing:2px;text-transform:uppercase;color:var(--muted); }
+[data-design='moderno'] .board-mode .team {
+ background:linear-gradient(90deg,transparent 31%,var(--soft) 31% 34%,transparent 34% 66%,var(--soft) 66% 69%,transparent 69%),var(--modern-panel);
+ border:1px solid var(--line);border-top:4px solid var(--green);border-radius:16px;
+ box-shadow:0 5px 16px var(--modern-shadow);
+}
+[data-design='moderno'] .board-mode .team-1 { border-top-color:var(--poncho); }
+[data-design='moderno'] .team-caption { font:600 8px system-ui,sans-serif;letter-spacing:1.2px;color:var(--muted); }
+[data-design='moderno'] .team-name button { font:500 clamp(25px,7vw,34px)/1 Teko,sans-serif;text-transform:uppercase;letter-spacing:.5px;color:var(--text); }
+[data-design='moderno'] .board-mode .score { font:600 62px/.95 Teko,sans-serif;letter-spacing:0;color:var(--text);text-shadow:2px 2px var(--soft); }
+[data-design='moderno'] .tally-phase h3 { font:500 18px/1 Teko,sans-serif;letter-spacing:.7px;color:var(--text); }
+[data-design='moderno'] .tally-phase h3 span { font:10px system-ui,sans-serif;color:var(--muted);margin-top:5px; }
+[data-design='moderno'] .board-mode .main-controls button { border:1px solid var(--line);outline:none;border-radius:12px;box-shadow:0 2px 4px var(--modern-shadow); }
+[data-design='moderno'] .board-mode .subtract { background:var(--soft);color:var(--text); }
+[data-design='moderno'] .board-mode .add { background:var(--button-bg);color:var(--button-text); }
+[data-design='moderno'] .board-mode .team-1 .add { background:var(--poncho);color:var(--button-text); }
+[data-design='moderno'] .board-mode .actions .primary-button { border:1px solid var(--line);border-radius:12px;font:500 24px/1 Teko,sans-serif;letter-spacing:.5px;box-shadow:0 3px 8px var(--modern-shadow); }
+[data-design='moderno'] .swatch-moderno { --sample:#8bceee;--sample-paper:#fff;--sample-accent:#153b5c; }
+@container (max-height:620px) {
+ [data-design='moderno'] .brand-title { font-size:32px; }
+ [data-design='moderno'] .board-mode .team { padding:6px 8px; }
+ [data-design='moderno'] .board-mode .score { font-size:44px;margin-bottom:4px; }
+ [data-design='moderno'] .team-name button { font-size:25px; }
+ [data-design='moderno'] .tally-phase h3 { font-size:16px; }
+}
+
+[data-design='moderno'] .board-mode .actions .primary-button { background:var(--button-bg);color:var(--button-text); }

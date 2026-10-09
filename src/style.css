@@ -74,8 +74,8 @@ button svg {
   background: var(--bg);
   min-height: 100dvh;
   color: var(--text);
-  padding: env(safe-area-inset-top) 24px
-    calc(100px + env(safe-area-inset-bottom));
+  padding: var(--safe-area-inset-top, env(safe-area-inset-top, 0px)) 24px
+    calc(100px + var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0px)));
   position: relative;
 }
 .header {
@@ -475,7 +475,7 @@ h1 {
   transform: translateX(-50%);
   max-width: 560px;
   width: 100%;
-  padding: 8px 24px calc(8px + env(safe-area-inset-bottom));
+  padding: 8px 24px calc(8px + var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0px)));
   background: var(--nav);
   border-top: 1px solid var(--line);
   display: grid;
@@ -713,7 +713,7 @@ h1 {
 }
 .toast {
   position: fixed;
-  bottom: calc(90px + env(safe-area-inset-bottom));
+  bottom: calc(90px + var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0px)));
   left: 50%;
   transform: translate(-50%, 15px);
   background: #173c32;

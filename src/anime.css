@@ -1,0 +1,273 @@
+/* Anime: paneles de manga, tinta y un arsenal de cinco espadas por fila. */
+:root[data-design='comic'] {
+ --bg:#e7eaf3;--surface:#fff9ec;--text:#20283d;--muted:#58617a;--line:#27334e;
+ --soft:#d7deed;--green:#17628a;--poncho:#b74736;--team-ink:#a13d31;
+ --leather:#172b45;--header-text:#fff1d5;--header-muted:#c9d8ec;--silver:#fff1d5;
+ --button-bg:#17628a;--button-text:#fff9ec;
+}
+:root[data-design='comic'][data-theme='dark'] {
+ --bg:#0c1222;--surface:#18243b;--text:#e8edf8;--muted:#a9b7d2;--line:#6f84a5;
+ --soft:#23324d;--green:#79c5f0;--poncho:#faac80;--team-ink:#ffc19b;
+ --button-bg:#79c5f0;--button-text:#142033;
+}
+[data-design='comic'] .shell { background:radial-gradient(#52658b22 .7px,transparent .8px) 0 0/5px 5px,var(--bg); }
+[data-design='comic'] .header {
+ background:repeating-linear-gradient(120deg,transparent 0 25px,#ffffff06 25px 27px),linear-gradient(115deg,#142439,#264e74);
+ border-bottom:3px solid #efae61;box-shadow:0 3px 0 #18263d;
+}
+[data-design='comic'] .brand-title { color:#fff4da;font:900 italic 33px system-ui;letter-spacing:-1px;text-shadow:2px 2px #c15d39,4px 4px #101c30; }
+[data-design='comic'] .header .icon-button { border:2px solid #adc3df;border-radius:7px;color:#eef4ff;background:#14243d;box-shadow:3px 3px #0b1626; }
+[data-design='comic'] .mesa-heading { background:#f2ba66;color:#192b46;font:800 italic 11px system-ui;letter-spacing:1px;margin:6px 8px;min-height:30px;border:2px solid #243450;transform:skew(-3deg); }
+[data-design='comic'] .mesa-heading .criollo-hat,[data-design='comic'] .mesa-edition { display:none; }
+[data-design='comic'] .scoreboard:before { display:none; }
+[data-design='comic'] .board-mode .score-columns { gap:10px;padding:5px 10px 9px; }
+[data-design='comic'] .board-mode .team {
+ background:linear-gradient(160deg,#ffffff0d,transparent 40%),var(--surface);
+ border:2px solid var(--line);border-radius:10px 2px 10px 2px;
+ box-shadow:3px 3px 0 #17253e; padding:12px 9px 10px;
+}
+[data-design='comic'] .team-caption { font:800 8px system-ui;letter-spacing:1px;color:var(--muted);margin-bottom:6px; }
+[data-design='comic'] .team-name button { color:var(--text);font:900 italic clamp(19px,5.3vw,28px) system-ui;min-height:48px; }
+[data-design='comic'] .team-1 .team-name button { color:var(--team-ink); }
+[data-design='comic'] .board-mode .score { color:var(--green);font:900 italic 50px/1 system-ui;letter-spacing:-2px;margin:3px 0 10px;text-shadow:2px 2px var(--soft); }
+[data-design='comic'] .board-mode .team-1 .score { color:var(--team-ink); }
+[data-design='comic'] .tally-phases { gap:7px;border-top:2px solid var(--line);padding-top:3px; }
+[data-design='comic'] .tally-phase h3 { font:800 10px system-ui;letter-spacing:.6px;color:var(--text); }
+[data-design='comic'] .tally-phase h3 span { color:var(--muted);font-weight:500; }
+[data-design='comic'] .tally-phase.buenas { border-color:var(--line);padding-left:7px; }
+[data-design='comic'] .board-mode .anime-tally { gap:6px; }
+[data-design='comic'] .board-mode .anime-tally > svg { max-width:180px;max-height:160px;width:100%;height:100%;overflow:visible; }
+.anime-sword { transition:opacity .15s,filter .15s; }
+.sword-filled { opacity:1;filter:drop-shadow(0 1px 1px #15263b70); }
+.sword-empty { opacity:.16;filter:grayscale(1); }
+[data-theme='dark'] .sword-empty { opacity:.22; }
+[data-design='comic'] .board-mode .main-controls button { outline:0;border:2px solid var(--line);border-radius:7px 2px 7px 2px;box-shadow:2px 3px 0 #17253e; }
+[data-design='comic'] .board-mode .add { background:#17628a;color:#fff5df; }
+[data-design='comic'] .board-mode .team-1 .add { background:#b74736;color:#fff5df;border-color:var(--line); }
+[data-design='comic'] .board-mode .subtract { background:var(--soft);color:var(--text); }
+[data-design='comic'] .table-footer { font:700 9px system-ui;color:var(--muted);border:0; }
+[data-design='comic'] .board-mode .actions { background:transparent;border:0;padding-top:5px; }
+[data-design='comic'] .board-mode .actions .primary-button { background:#f2ba66;color:#192b46;border:2px solid #243450;border-radius:7px 2px 7px 2px;box-shadow:3px 3px 0 #17253e;font:800 italic 14px system-ui; }
+[data-design='comic'] .saved { background:transparent;color:var(--muted); }
+@media(prefers-reduced-motion:reduce) { .anime-sword { transition:none; } }
+[data-design='comic'] .anime-brand-icon { width:32px;height:42px;color:#f2ba66;filter:drop-shadow(2px 2px #0c1b31); }
+/* Más manga: rayos de acción, viñetas y acentos de batalla. */
+[data-design='comic'] .shell {
+  background:repeating-conic-gradient(from 15deg at 50% 30%,transparent 0deg 12deg,#42619c12 12deg 13deg),radial-gradient(#52658b35 .8px,transparent 1px) 0 0/6px 6px,var(--bg);
+}
+[data-design='comic'] .header {
+  background:repeating-conic-gradient(from 12deg at 22% 110%,#ffffff00 0deg 10deg,#ffffff10 10deg 12deg),linear-gradient(115deg,#102238,#235c89);
+  border-bottom:4px solid #ffc56b;box-shadow:0 4px 0 #111d32;
+}
+[data-design='comic'] .brand-title {
+  font-size:38px;letter-spacing:-2px;transform:skew(-7deg);
+  text-shadow:2px 2px #ed793b,4px 4px #b6402c,6px 6px #091a30;
+  -webkit-text-stroke:.5px #fff6d5;
+}
+[data-design='comic'] .anime-brand-icon { color:#ffc366;filter:drop-shadow(2px 2px #b6402c); }
+[data-design='comic'] .header .icon-button { transform:rotate(4deg);border:2px solid #dce9fa;box-shadow:4px 4px #09172a;border-radius:3px; }
+[data-design='comic'] .mesa-heading {
+  background:repeating-linear-gradient(120deg,transparent 0 16px,#fff6d630 16px 18px),#ffbd58;
+  border:2px solid #182945;box-shadow:3px 3px #17253e;
+  font-weight:900;letter-spacing:1.3px;transform:skew(-5deg);margin-block:8px;
+}
+[data-design='comic'] .board-mode .score-columns { gap:12px;padding-inline:10px; }
+[data-design='comic'] .board-mode .team {
+  border:3px solid var(--line);border-radius:14px 2px 14px 2px;
+  box-shadow:4px 5px 0 #111d32;
+  background:radial-gradient(circle at 0 0,#3e98d91c,transparent 42%),radial-gradient(var(--soft) .8px,transparent 1px) 0 0/5px 5px,var(--surface);
+  isolation:isolate;
+}
+[data-design='comic'] .board-mode .team-1 {
+  background:radial-gradient(circle at 100% 0,#ff823c20,transparent 42%),radial-gradient(var(--soft) .8px,transparent 1px) 0 0/5px 5px,var(--surface);
+}
+[data-design='comic'] .team-caption { color:var(--text);font-size:7px;font-weight:900;letter-spacing:1.5px; }
+[data-design='comic'] .team-name button {
+  background:#17628a;color:#fff8e6;border:2px solid #142944;
+  border-radius:3px 10px 3px 10px;box-shadow:3px 3px #142944;
+  padding:5px 3px;transform:skew(-3deg);font-size:clamp(18px,5vw,27px);
+  text-shadow:2px 2px #10415b;
+}
+[data-design='comic'] .team-1 .team-name button { background:#b74736;color:#fff8e6;text-shadow:2px 2px #722a25; }
+[data-design='comic'] .team-name button svg { color:#fff1ce; }
+[data-design='comic'] .board-mode .score {
+  font-size:56px;line-height:1.15;color:var(--green);
+  text-shadow:2px 2px var(--surface),4px 4px var(--soft);
+  position:relative;margin-top:7px;
+}
+[data-design='comic'] .board-mode .score::before,
+[data-design='comic'] .board-mode .score::after {
+  content:'';position:absolute;top:45%;width:12px;height:3px;background:var(--green);
+  box-shadow:0 -7px 0 color-mix(in srgb,var(--green) 50%,transparent);transform:rotate(-24deg);opacity:.65;
+}
+[data-design='comic'] .board-mode .score::before { left:2px; }
+[data-design='comic'] .board-mode .score::after { right:2px;transform:rotate(24deg); }
+[data-design='comic'] .board-mode .team-1 .score::before,
+[data-design='comic'] .board-mode .team-1 .score::after { background:var(--team-ink); }
+[data-design='comic'] .tally-phases { border-top:3px solid var(--line); }
+[data-design='comic'] .tally-phase h3 { font-style:italic;letter-spacing:1px; }
+[data-design='comic'] .board-mode .anime-tally > svg { background:radial-gradient(ellipse,#51aff61a,transparent 65%); }
+[data-design='comic'] .board-mode .team-1 .anime-tally > svg { background:radial-gradient(ellipse,#ff98591a,transparent 65%); }
+[data-design='comic'] .sword-filled { filter:drop-shadow(0 0 1.2px #64bce7) drop-shadow(1px 2px 0 #13253b90); }
+[data-design='comic'] .main-controls .add { background:linear-gradient(140deg,#238ab8,#145b86);box-shadow:3px 4px #11243e; }
+[data-design='comic'] .board-mode .team-1 .add { background:linear-gradient(140deg,#d9683f,#a33531); }
+[data-design='comic'] .board-mode .main-controls button { border-width:3px;border-radius:3px 10px 3px 10px; }
+[data-design='comic'] .board-mode .actions .primary-button {
+  background:repeating-linear-gradient(120deg,transparent 0 19px,#fff6d630 19px 21px),#ffbe58;
+  font-size:15px;letter-spacing:.5px;border-width:3px;box-shadow:3px 4px #17253e;
+}
+[data-design='comic'][data-theme='dark'] .board-mode .team { border-color:#8aa1c4;box-shadow:4px 5px #050a13; }
+[data-design='comic'][data-theme='dark'] .shell { background-color:#090f20; }
+@media(max-width:359px) {
+  [data-design='comic'] .board-mode .score-columns { gap:8px;padding-inline:7px; }
+  [data-design='comic'] .team-name button { font-size:18px; }
+}
+@media(orientation:landscape) and (max-height:540px) {
+  [data-design='comic'] .team-name button { font-size:20px; }
+}
+/* Paisaje de cuento: cielo, bosque y papel cálido. */
+:root[data-design='comic'] {
+ --bg:#e8e7d4;--surface:#faf5e5;--text:#354d40;--muted:#6c7a64;--line:#a7b395;
+ --soft:#e1e5cd;--green:#476f58;--poncho:#ae7156;--team-ink:#98684f;
+}
+:root[data-design='comic'][data-theme='dark'] {
+ --bg:#172b2c;--surface:#203b3b;--text:#e9ead3;--muted:#b0c5ad;
+ --line:#64867b;--soft:#2c4a46;--green:#aed0aa;--poncho:#e0b38d;--team-ink:#e0b38d;
+}
+[data-design='comic'] .shell {
+ background:radial-gradient(ellipse at 30% 10%,#ffffff30,transparent 70%),var(--bg);
+}
+[data-design='comic'] .header {
+ background:#90b9c1 url('../public/themes/anime-meadow.svg') center 40% / cover;
+ color:#28483f;border-bottom:1px solid #93ab92;box-shadow:0 3px 12px #37594a18;
+}
+[data-design='comic'] .brand-title {
+ color:#fff7df;font:700 italic 36px Georgia,serif;letter-spacing:.5px;
+ text-shadow:1px 2px #466756;transform:none;-webkit-text-stroke:0;
+}
+[data-design='comic'] .anime-brand-icon { color:#fff4d0;filter:drop-shadow(0 1px 1px #466756); }
+[data-design='comic'] .header-goal { color:#fff8df;text-shadow:0 1px 2px #345545; }
+[data-design='comic'] .header-goal small { color:#fff8df; }
+[data-design='comic'] .header .icon-button { color:#fff8df;background:#355d5066;border:1px solid #fff6d18c;border-radius:50%;box-shadow:none;transform:none; }
+[data-design='comic'] .mesa-heading {
+ background:transparent;color:var(--muted);border:0;box-shadow:none;
+ font:italic 14px Georgia,serif;letter-spacing:.3px;transform:none;margin:6px 10px;
+}
+[data-design='comic'] .board-mode .score-columns { gap:10px;padding-inline:10px; }
+[data-design='comic'] .board-mode .team {
+ background:radial-gradient(ellipse at top left,#d9e6bf66,transparent 60%),var(--surface);
+ border:1px solid var(--line);border-radius:20px 10px 20px 10px;
+ box-shadow:0 3px 8px #36533d15;padding-top:12px;
+}
+[data-design='comic'] .board-mode .team-1 { background:radial-gradient(ellipse at top right,#ecd5b74d,transparent 60%),var(--surface); }
+[data-design='comic'] .team-caption { font:600 7px system-ui;letter-spacing:1.2px;color:var(--muted); }
+[data-design='comic'] .team-name button {
+ color:var(--text);background:transparent;border:0;border-radius:0;box-shadow:none;
+ font:700 italic clamp(20px,5vw,28px) Georgia,serif;transform:none;text-shadow:none;
+}
+[data-design='comic'] .team-1 .team-name button { color:var(--team-ink);background:transparent;text-shadow:none;box-shadow:none; }
+[data-design='comic'] .team-name button svg { color:var(--muted); }
+[data-design='comic'] .board-mode .score { color:var(--green);font:normal 700 52px/1.15 Georgia,serif;text-shadow:none; }
+[data-design='comic'] .board-mode .score::before,[data-design='comic'] .board-mode .score::after { display:none; }
+[data-design='comic'] .tally-phases { border-top:1px solid var(--line); }
+[data-design='comic'] .tally-phase h3 { color:var(--text);font:600 10px Georgia,serif;letter-spacing:.8px; }
+[data-design='comic'] .tally-phase.buenas { border-color:var(--line); }
+[data-design='comic'] .board-mode .anime-tally > svg { background:radial-gradient(ellipse,#c7d7b32b,transparent 70%); }
+[data-design='comic'] .board-mode .team-1 .anime-tally > svg { background:radial-gradient(ellipse,#e3c8a52b,transparent 70%); }
+[data-design='comic'] .sword-filled { filter:drop-shadow(0 1px 1px #24443940); }
+[data-design='comic'] .board-mode .main-controls button { border:1px solid var(--line);border-radius:13px;outline:0;box-shadow:0 2px 2px #36533d15; }
+[data-design='comic'] .board-mode .add { background:#537c61;color:#fff6df; }
+[data-design='comic'] .board-mode .team-1 .add { background:#b37b5e;color:#fff6df; }
+[data-design='comic'] .board-mode .subtract { background:var(--soft);color:var(--text); }
+[data-design='comic'] .table-footer,[data-design='comic'] .saved { color:var(--muted); }
+[data-design='comic'] .board-mode .actions .primary-button {
+ color:#fff6df;background:#537c61;border:1px solid #41654e;border-radius:14px;
+ box-shadow:0 3px 8px #36533d18;font:700 italic 15px Georgia,serif;letter-spacing:0;
+}
+[data-design='comic'][data-theme='dark'] .header { background-image:linear-gradient(#152e4766,#152e4766),url('../public/themes/anime-meadow.svg'); }
+[data-design='comic'][data-theme='dark'] .board-mode .team { border-color:var(--line);box-shadow:0 3px 10px #081b2425; }
+[data-design='comic'][data-theme='dark'] .shell { background:radial-gradient(ellipse at top,#304b4c,transparent 70%),var(--bg); }
+[data-design='comic'][data-theme='dark'] .board-mode .add { background:#477461; }
+[data-design='comic'][data-theme='dark'] .board-mode .team-1 .add { background:#95664f; }
+/* Cuento ilustrado: paisaje pintado, papel y encuadernación botánica. */
+[data-design='comic'] .shell {
+ background:#d3dfbc url('/themes/storybook-forest.png') center / cover no-repeat;
+}
+[data-design='comic'] .header {
+ height:94px;background:linear-gradient(#233f3b14,#263e2933),url('/themes/storybook-forest.png') center 15% / cover;
+ border-bottom:1px solid #e7d4a3;box-shadow:0 4px 14px #2d482e35;
+ padding-inline:18px;
+}
+[data-design='comic'] .brand-title {
+ color:#fff7d9;font:700 italic 37px Georgia,serif;letter-spacing:-1px;
+ text-shadow:0 2px 2px #294738b3,2px 3px #29473850;
+}
+[data-design='comic'] .header .icon-button { background:#31513a8f;backdrop-filter:blur(6px);border:1px solid #f5e7bf;box-shadow:inset 0 0 0 3px #eee5c01a; }
+[data-design='comic'] .mesa-heading {
+ width:fit-content;align-self:center;min-height:28px;padding:5px 18px;margin:8px 12px;
+ color:#354e35;background:#fff7dfdc;border:1px solid #aeb68a;border-radius:2px 14px;
+ box-shadow:0 2px 5px #314c2929;font:italic 12px Georgia,serif;
+}
+[data-design='comic'] .board-mode .score-columns { gap:12px;padding:0 12px 9px; }
+[data-design='comic'] .board-mode .team {
+ background:linear-gradient(110deg,#fcf6dbea,#f3eed6f2);
+ border:1px solid #a0ae7d;border-radius:24px 6px 24px 6px;
+ box-shadow:inset 0 0 0 4px #fcf8e155,inset 0 0 0 5px #8d9e6a3d,0 5px 12px #223c2940;
+ padding:16px 10px 12px;position:relative;
+}
+[data-design='comic'] .board-mode .team-1 { background:linear-gradient(250deg,#fff4dce8,#f5e8d6f2);border-color:#b4a080; }
+[data-design='comic'] .board-mode .team::before {
+ content:'';position:absolute;top:6px;left:7px;width:34px;height:45px;pointer-events:none;
+ background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 34 45'%3E%3Cpath d='M4 42Q4 12 29 4' fill='none' stroke='%23728c58' stroke-width='1'/%3E%3Cpath d='M7 29Q-1 23 3 15Q14 20 7 29M14 16Q8 9 14 4Q21 11 14 16M21 9Q22 0 31 1Q32 9 21 9M9 26Q18 16 24 21Q19 30 9 26M6 36Q15 28 20 34Q15 40 6 36' fill='%237a995d' opacity='.6'/%3E%3C/svg%3E") center / contain no-repeat;
+ opacity:.7;
+}
+[data-design='comic'] .board-mode .team-1::before { left:auto;right:7px;transform:scaleX(-1); }
+[data-design='comic'] .team-caption { color:#697951;margin-bottom:7px;font-size:7px;letter-spacing:1.3px; }
+[data-design='comic'] .team-name button {
+ font:700 italic clamp(20px,5vw,28px) Georgia,serif;color:#344d39;
+ background:linear-gradient(#fdf9e54f,#d8dfbe50);border-bottom:1px solid #a6b28688;
+ padding:3px 0;min-height:48px;
+}
+[data-design='comic'] .team-1 .team-name button { background:linear-gradient(#fff9e54f,#e6cfa750);color:#865b44;border-bottom-color:#baa58788; }
+[data-design='comic'] .board-mode .score { font-size:52px;color:#41694e;text-shadow:0 1px #fffbe6,1px 2px #becba570; }
+[data-design='comic'] .board-mode .team-1 .score { color:#a06f4d; }
+[data-design='comic'] .tally-phases { border-top:1px solid #9aaa784d; }
+[data-design='comic'] .tally-phase h3 { color:#3a513b;letter-spacing:1px; }
+[data-design='comic'] .tally-phase h3 span { color:#738063; }
+[data-design='comic'] .tally-phase.buenas { border-left:1px dashed #a0ad7b66; }
+[data-design='comic'] .board-mode .anime-tally > svg { background:radial-gradient(ellipse,#b2c38b21,transparent 68%); }
+[data-design='comic'] .board-mode .team-1 .anime-tally > svg { background:radial-gradient(ellipse,#d4b28621,transparent 68%); }
+[data-design='comic'] .sword-empty { opacity:.2; }
+[data-design='comic'] .board-mode .main-controls button {
+ border:1px solid #80905f;border-radius:8px 16px 8px 16px;
+ box-shadow:inset 0 0 0 3px #fff9dc20,0 3px 0 #63744640;
+}
+[data-design='comic'] .board-mode .add { background:linear-gradient(#729066,#4d7054);color:#fff6d9; }
+[data-design='comic'] .board-mode .team-1 .add { background:linear-gradient(#bf9569,#9a7352);border-color:#a28862; }
+[data-design='comic'] .board-mode .subtract { background:#dde1c7; }
+[data-design='comic'] .board-mode .distance { color:#6d7c5f; }
+[data-design='comic'] .board-mode .actions { background:transparent;padding:4px 12px 0; }
+[data-design='comic'] .board-mode .actions .primary-button {
+ background:linear-gradient(#637f50,#405f42);border:1px solid #d4d3a3;border-radius:9px 18px 9px 18px;
+ box-shadow:inset 0 0 0 3px #d5d9a521,0 3px 8px #233e2d55;color:#fff5d6;
+}
+[data-design='comic'] .saved,[data-design='comic'] .table-footer { color:#344f35;text-shadow:0 1px #fcf7db; }
+[data-design='comic'][data-theme='dark'] .shell { background-image:linear-gradient(#122a3e9c,#112b35a8),url('/themes/storybook-forest.png'); }
+[data-design='comic'][data-theme='dark'] .header { background-image:linear-gradient(#142e4866,#142e4866),url('/themes/storybook-forest.png'); }
+[data-design='comic'][data-theme='dark'] .board-mode .team,
+[data-design='comic'][data-theme='dark'] .board-mode .team-1 { background:linear-gradient(135deg,#243d40f2,#182f36f5);border-color:#719082;box-shadow:inset 0 0 0 4px #b4c9a30d,inset 0 0 0 5px #83a39333,0 4px 14px #0b202850; }
+[data-design='comic'][data-theme='dark'] .team-name button { color:#d3e3bb;background:transparent; }
+[data-design='comic'][data-theme='dark'] .team-1 .team-name button { color:#e5c8a0;background:transparent; }
+[data-design='comic'][data-theme='dark'] .board-mode .score { color:#b4d0a9;text-shadow:1px 2px #132a2e; }
+[data-design='comic'][data-theme='dark'] .board-mode .team-1 .score { color:#e3ba91; }
+[data-design='comic'][data-theme='dark'] .team-caption,
+[data-design='comic'][data-theme='dark'] .tally-phase h3,
+[data-design='comic'][data-theme='dark'] .tally-phase h3 span,
+[data-design='comic'][data-theme='dark'] .board-mode .distance { color:#b5c9ad; }
+[data-design='comic'][data-theme='dark'] .mesa-heading { background:#223e40e8;color:#e2e6c5;border-color:#789383; }
+[data-design='comic'][data-theme='dark'] .board-mode .subtract { background:#2d4b49; }
+[data-design='comic'][data-theme='dark'] .saved,[data-design='comic'][data-theme='dark'] .table-footer { color:#e2e8cb;text-shadow:0 1px #142e34; }
+
+
+[data-design='comic'] .table-footer,[data-design='comic'] .saved { align-self:center; width:fit-content; padding:3px 12px; border-radius:12px; background:#fff7dfdf; color:#344f35; text-shadow:none; }
+[data-design='comic'][data-theme='dark'] .table-footer,[data-design='comic'][data-theme='dark'] .saved { background:#19363be6;color:#e2e8cb; }

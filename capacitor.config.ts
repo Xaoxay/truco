@@ -4,6 +4,7 @@ const config: CapacitorConfig = {
   appName: "Truco",
   webDir: "dist",
   backgroundColor: "#392319",
-  ios: { contentInset: "automatic" },
+  ios: { contentInset: "never" },
+  plugins: { SystemBars: { insetsHandling: "css" } },
 };
 export default config;

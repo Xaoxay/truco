@@ -1,0 +1,75 @@
+/* Un único margen seguro: CSS nativo en Android, env() en iOS y web. */
+:root {
+  --safe-top: var(--safe-area-inset-top, env(safe-area-inset-top, 0px));
+  --safe-right: var(--safe-area-inset-right, env(safe-area-inset-right, 0px));
+  --safe-bottom: var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0px));
+  --safe-left: var(--safe-area-inset-left, env(safe-area-inset-left, 0px));
+}
+html,body,#root { width: 100%; min-width: 0; }
+:root[data-design] .board-mode.shell {
+  height: 100vh; height: 100dvh; min-height: 0;
+  padding: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left);
+  container-type: size;
+  overflow-y: auto;
+}
+:root[data-design='fileteado'] .board-mode.shell {
+  padding: calc(var(--safe-top) + 6px) calc(var(--safe-right) + 6px) calc(var(--safe-bottom) + 6px) calc(var(--safe-left) + 6px);
+}
+:root[data-design] .shell:not(.board-mode) {
+  padding-top: var(--safe-top);
+  padding-left: calc(24px + var(--safe-left));
+  padding-right: calc(24px + var(--safe-right));
+  padding-bottom: calc(100px + var(--safe-bottom));
+}
+:root[data-design] .bottom-nav {
+  padding-left: calc(16px + var(--safe-left)); padding-right: calc(16px + var(--safe-right));
+  padding-bottom: calc(8px + var(--safe-bottom));
+}
+:root[data-design] dialog {
+  max-width: calc(100vw - var(--safe-left) - var(--safe-right) - 24px);
+  max-height: calc(100dvh - var(--safe-top) - var(--safe-bottom) - 24px);
+  margin-block: auto;
+  overflow-y: auto; overscroll-behavior: contain;
+}
+:root[data-design] .board-mode .team { min-width: 0; }
+:root[data-design] .board-mode .scoreboard { min-height: 210px; }
+:root[data-design] .board-mode .header { flex-shrink: 0; }
+@container (max-height: 620px) {
+  :root[data-design] .board-mode .header { height: 60px; }
+  :root[data-design] .board-mode .brand-title { font-size: 28px; }
+  :root[data-design] .board-mode .brand > img { height: 43px; width: 32px; }
+  :root[data-design] .board-mode .brand .brand-flag { width: 25px; height: auto; margin-top: 2px; }
+  :root[data-design] .board-mode .header-goal { font-size: 23px; }
+  :root[data-design] .board-mode .mesa-heading { min-height: 28px; margin-block: 4px; padding-block: 0; font-size: 14px; }
+  :root[data-design] .board-mode .team { padding-top: 6px; padding-bottom: 7px; }
+  :root[data-design] .board-mode .team-caption { display: none; }
+  :root[data-design] .board-mode .score { font-size: 38px; margin: 3px 0 5px; }
+  :root[data-design] .board-mode .tally-phase h3 { padding-block: 4px; }
+  :root[data-design] .board-mode .main-controls button { height: 48px; }
+  :root[data-design] .board-mode .table-footer { display: none; }
+  :root[data-design] .board-mode .saved { min-height: 20px; padding-block: 4px; font-size: 9px; }
+}
+@container (max-height: 480px) {
+  :root[data-design] .board-mode .mesa-heading,
+  :root[data-design] .board-mode .saved,
+  :root[data-design] .board-mode .distance { display: none; }
+  :root[data-design] .board-mode .header { height: 54px; }
+  :root[data-design] .board-mode .actions { padding-block: 5px; }
+}
+@media (max-width: 359px) {
+  :root[data-design] .board-mode .header { gap: 6px; padding-inline: 8px; }
+  :root[data-design] .board-mode .brand { gap: 4px; }
+  :root[data-design] .board-mode .brand-title { font-size: 27px; }
+  :root[data-design] .board-mode .header-goal { font-size: 22px; }
+  :root[data-design] .board-mode .brand > img { width: 28px; }
+  :root[data-design] .board-mode .team-name button { font-size: 20px; }
+  :root[data-design] .board-mode .tally-phases { gap: 5px; }
+}
+
+@container (max-height: 350px) {
+  :root[data-design] .board-mode .scoreboard { min-height: 170px; }
+  :root[data-design] .board-mode .team { padding-block: 4px; }
+  :root[data-design] .board-mode .header { height: 50px; }
+  :root[data-design] .board-mode .score { font-size: 32px; margin: 0; }
+  :root[data-design] .board-mode .tally-phase h3 { font-size: 9px; padding-block: 3px; }
+}

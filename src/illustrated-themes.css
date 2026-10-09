@@ -163,3 +163,58 @@
   :is([data-design="sakura"],[data-design="cyberpunk"],[data-design="retro"]) .board-mode .team { padding:5px 14px; }
 }
 @media(prefers-reduced-motion:reduce) { .themed-tally .symbol-part { transition:none; } }
+/* Fichas de póker: cuatro sectores y el centro completan cinco tantos. */
+.tally-cyberpunk .chip-quarter { fill:#102e48;stroke:#3bdfff;stroke-width:.8; }
+.tally-cyberpunk .chip-stripe { fill:none;stroke:#baf5ff;stroke-width:3; }
+.tally-cyberpunk .chip-center { fill:#21143b;stroke:#ff63df;stroke-width:1.2; }
+.tally-cyberpunk .neon-edge { stroke-width:1.6; }
+.tally-cyberpunk .neon-spade { fill:#fa63db;stroke-width:.7; }
+[data-design='cyberpunk'] .board-mode .team { border-radius:20px; }
+[data-design='cyberpunk'] .board-mode .score-columns { gap:8px; }
+[data-design='cyberpunk'] .board-mode .main-controls button { border-radius:13px; }
+[data-design='cyberpunk'] .mesa-heading,[data-design='cyberpunk'] .table-footer { border-radius:12px; }
+[data-design='cyberpunk'] .actions .primary-button { border-radius:14px; }
+[data-design='cyberpunk'] .board-mode .header { border-radius:0 0 18px 18px; }
+
+@font-face {
+  font-family:'Pixelify Sans';
+  src:url('/fonts/PixelifySans.ttf') format('truetype');
+  font-weight:400 700;
+  font-display:swap;
+}
+/* La fuente pixel queda reservada al anotador principal. */
+[data-design='retro'] .board-mode > .header,
+[data-design='retro'] .board-mode > .header *,
+[data-design='retro'] .board-mode > main,
+[data-design='retro'] .board-mode > main * {
+  font-family:'Pixelify Sans',monospace !important;
+}
+[data-design='retro'] .brand-title { font-style:normal;letter-spacing:1px; }
+[data-design='retro'] .board-mode .score { font-weight:600;letter-spacing:0; }
+[data-design='retro'] .board-mode .team-name button { font-weight:600;letter-spacing:0; }
+[data-design='retro'] .tally-phase h3 { font-size:12px;letter-spacing:.4px; }
+[data-design='retro'] .tally-phase h3 span { font-size:11px; }
+[data-design='retro'] .team-caption { font-size:10px;letter-spacing:.3px; }
+[data-design='retro'] .actions .primary-button { font-size:17px; }
+[data-design='retro'] .saved,[data-design='retro'] .table-footer { font-size:12px; }
+[data-design='retro'] .board-mode .score { text-shadow:none;letter-spacing:2px; }
+[data-design='retro'] .arcade-digits { display:inline-block;height:49px;width:auto;max-width:100%;fill:currentColor;shape-rendering:crispEdges;filter:drop-shadow(0 2px 0 #070b18); }
+@container (max-height:620px) { [data-design='retro'] .arcade-digits { height:35px; } }
+.tally-retro .coin-quarter { fill:#f5bd43;stroke:#a56821;stroke-width:1; }
+.tally-retro .coin-rim { fill:#dc8f23;stroke:#ffe99a;stroke-width:2; }
+.tally-retro .coin-shine { fill:none;stroke:#fff3b8;stroke-width:2; }
+.tally-retro .coin-stamp { fill:#fff3bd;stroke:#9d531b;stroke-width:1; }
+.tally-retro .symbol-placeholder { stroke:#9883b7;stroke-dasharray:2 3; }
+.tally-retro .symbol-complete { filter:drop-shadow(1px 2px 0 #59351e); }
+
+.tally-retro .coin-quarter { fill:#efb742;stroke:#8e481e;stroke-width:2; }
+.tally-retro .coin-stamp { fill:#9c4b20;stroke:#ffe694;stroke-width:1.5;fill-rule:evenodd; }
+.tally-retro .symbol-complete { filter:drop-shadow(2px 2px 0 #704125); }
+/* Marco de ramas con esquinas fijas y trazos finos. */
+[data-design='sakura'] .board-mode .team,
+[data-design='sakura'] .board-mode .team-0,
+[data-design='sakura'] .board-mode .team-1 {
+ border:8px solid transparent;
+ border-image:url('/themes/sakura-branches-connected.svg') 20 / 8px / 0 stretch;
+ border-radius:0;box-shadow:none;padding-inline:7px;
+}

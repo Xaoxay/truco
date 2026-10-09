@@ -20,7 +20,7 @@ import {
   ShieldCheck,
   Sun,
   Trophy,
-  Undo2,
+  Swords,
   Vibrate,
   X,
 } from "lucide-react";
@@ -31,7 +31,6 @@ import {
   restore,
   scores,
   startNext,
-  undo,
   winner,
   type Goal,
   type State,
@@ -42,14 +41,37 @@ import "./gaucho.css";
 import "./themes.css";
 import "./fileteado.css";
 import "./illustrated-themes.css";
+import "./responsive.css";
 import { ThemeTally } from './ThemeTally';
+import { AnimeTally } from './AnimeTally';
+import './anime.css';
+import './moderno.css';
 import { checkForUpdate, NativeUpdates } from './updates';
 
 const STORAGE_KEY = "truco-state-v1";
 const AndroidHaptics = registerPlugin<{ vibrate(options: { duration: number }): Promise<void> }>('TrucoHaptics');
 let saveQueue = Promise.resolve();
+const arcadeDigits = [
+  ['01110','11011','11011','11011','11011','11011','01110'],
+  ['00100','01100','00100','00100','00100','00100','01110'],
+  ['01110','10001','00001','00010','00100','01000','11111'],
+  ['11110','00001','00001','01110','00001','00001','11110'],
+  ['00010','00110','01010','10010','11111','00010','00010'],
+  ['11111','10000','10000','11110','00001','00001','11110'],
+  ['01110','10000','10000','11110','10001','10001','01110'],
+  ['11111','00001','00010','00100','01000','01000','01000'],
+  ['01110','10001','10001','01110','10001','10001','01110'],
+  ['01110','10001','10001','01111','00001','00001','01110'],
+];
+function ArcadeScore({value}:{value:number}) {
+  const digits=String(value).split('');
+  return <><span className="sr-only">{value}</span><svg className="arcade-digits" viewBox={`0 0 ${digits.length*6-1} 7`} aria-hidden="true">
+    {digits.flatMap((digit,index)=>arcadeDigits[Number(digit)].flatMap((row,y)=>row.split('').map((pixel,x)=>pixel==='1'?<rect key={`${index}-${x}-${y}`} x={index*6+x} y={y} width="1" height="1"/>:null)))}
+  </svg></>;
+}
 function Matches({ count, design }: { count: number; design: State['design'] }) {
   const id = useId().replaceAll(":", "");
+  if (design === 'comic') return <AnimeTally count={count}/>;
   if (design === 'sakura' || design === 'cyberpunk' || design === 'retro') {
     return <ThemeTally count={count} design={design} />;
   }
@@ -66,25 +88,34 @@ function Matches({ count, design }: { count: number; design: State['design'] }) 
         <svg key={group} viewBox="0 0 58 58">
           <defs>
             <linearGradient id={`${id}-wood-${group}`} x1="0" y1="0" x2="0" y2="1">
-              <stop stopColor="#a7773e" />
-              <stop offset=".32" stopColor="#f4d99b" />
-              <stop offset=".65" stopColor="#dfb674" />
-              <stop offset="1" stopColor="#aa7740" />
+              <stop stopColor="#9a6532" />
+              <stop offset=".17" stopColor="#e5c38b" />
+              <stop offset=".36" stopColor="#fff0c8" />
+              <stop offset=".62" stopColor="#e8c590" />
+              <stop offset=".85" stopColor="#c69b61" />
+              <stop offset="1" stopColor="#8c5b30" />
             </linearGradient>
             <radialGradient id={`${id}-head-${group}`} cx=".32" cy=".28" r=".75">
-              <stop stopColor="#cf6951" />
-              <stop offset=".5" stopColor="#9c392b" />
-              <stop offset="1" stopColor="#5c241e" />
+              <stop stopColor="#df806c" />
+              <stop offset=".35" stopColor="#b64d3d" />
+              <stop offset=".72" stopColor="#843126" />
+              <stop offset="1" stopColor="#45231d" />
             </radialGradient>
           </defs>
           {lines.map(([x1, y1, x2, y2], i) => (
             <g key={i} className={count > group * 5 + i ? "lit" : "unlit"}>
               {count > group * 5 + i ? (
                 <g className="real-match" transform={`translate(${x1} ${y1}) rotate(${Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI})`}>
-                  <rect className="match-shadow" x="0" y="-1" width={Math.hypot(x2 - x1, y2 - y1)} height="4" rx="1" />
-                  <rect x="0" y="-2" width={Math.hypot(x2 - x1, y2 - y1)} height="3.8" rx=".7" fill={`url(#${id}-wood-${group})`} />
-                  <path d={`M3 -.7 H${Math.hypot(x2 - x1, y2 - y1) - 4} M6 .8 H${Math.hypot(x2 - x1, y2 - y1) - 7}`} stroke="#815229" strokeWidth=".25" opacity=".5" />
-                  <ellipse cx={Math.hypot(x2 - x1, y2 - y1) - 1} cy="0" rx="3.5" ry="2.5" fill={`url(#${id}-head-${group})`} />
+                  <rect className="match-shadow" x="0" y="-1" width={Math.hypot(x2 - x1, y2 - y1)} height="4.6" rx=".8" />
+                  <rect x="0" y="-2.2" width={Math.hypot(x2 - x1, y2 - y1)} height="4.2" rx=".35" fill={`url(#${id}-wood-${group})`} stroke="#885b35" strokeWidth=".18" />
+                  <path d={`M1 -1.4 Q10 -1.7 19 -1.3 T${Math.hypot(x2 - x1, y2 - y1) - 3} -1.5 M3 -.15 Q12 .35 23 -.1 T${Math.hypot(x2 - x1, y2 - y1) - 3} .1 M8 1.25 Q18 .8 27 1.3`} fill="none" stroke="#936032" strokeWidth=".2" opacity=".5" />
+                  <path d={`M1 -1.75 H${Math.hypot(x2 - x1, y2 - y1) - 4}`} stroke="#fff7dc" strokeWidth=".35" opacity=".8" />
+                  <path d="M.3 -1.7 L1.3 -.7 L.5 .4 L1.4 1.6" fill="none" stroke="#bc915d" strokeWidth=".3" />
+                  <g transform={`translate(${Math.hypot(x2 - x1, y2 - y1) - 1} 0)`}>
+                    <path d="M-3 -1.8 Q-2.8 -3.1 -.7 -3.2 Q1.8 -3.4 3.2 -1.5 Q4 .1 2.8 1.9 Q1.7 3.1 -.4 2.9 Q-2.7 2.8 -3 1.2 Q-3.6 -.2 -3 -1.8Z" fill={`url(#${id}-head-${group})`} stroke="#6d3025" strokeWidth=".2" />
+                    <path d="M-2 -1.3 Q-.5 -2.6 1.1 -1.9" fill="none" stroke="#f2ad91" strokeWidth=".5" strokeLinecap="round" opacity=".65" />
+                    {[[-1.7,.3],[-.5,-1],[.8,.3],[1.7,-.7],[-.4,1.5],[2,1.2]].map(([cx,cy],dot)=><circle key={dot} cx={cx} cy={cy} r=".24" fill={dot%2?'#f0a58a':'#52251e'} opacity=".5"/>)}
+                  </g>
                 </g>
               ) : <line x1={x1} y1={y1} x2={x2} y2={y2} />}
             </g>
@@ -98,7 +129,7 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
   const [state, setState] = useState(saved);
   const [tab, setTab] = useState<"board" | "history" | "settings">("board");
   const [modal, setModal] = useState<
-    "new" | "help" | "cards" | "names" | "menu" | "clear-history" | null
+    "new" | "help" | "cards" | "calls" | "names" | "menu" | "clear-history" | null
   >(null);
   const [customTeam, setCustomTeam] = useState<Team>(0);
   const [notice, setNotice] = useState(
@@ -111,7 +142,8 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
   const androidUpdates = Capacitor.getPlatform() === 'android';
   const [declinedRematch, setDeclinedRematch] = useState<string | null>(null);
   const nativeHaptics = Capacitor.isNativePlatform();
-  const vibrationAvailable = nativeHaptics;
+  const webHaptics = typeof navigator.vibrate === "function";
+  const vibrationAvailable = nativeHaptics || webHaptics;
   const dialog = useRef<HTMLDialogElement>(null);
   const latest = useRef(state);
   const total = scores(state.match);
@@ -141,29 +173,37 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
           ?.focus();
     } else dialog.current?.close();
   }, [modal, customTeam]);
-  function vibrate(duration = 120) {
-    if (!nativeHaptics) return;
-    const plugin = Capacitor.getPlatform() === 'android' ? 'TrucoHaptics' : 'Haptics';
-    if (!Capacitor.isPluginAvailable(plugin)) {
-      setNotice("Esta instalación no tiene el módulo de vibración. Actualizá la app.");
-      return;
+  async function vibrate(duration = 100) {
+    try {
+      if (!nativeHaptics) {
+        if (!webHaptics || !navigator.vibrate(duration))
+          setNotice("Este navegador no permite vibrar. Probá la app instalada en Android.");
+        return;
+      }
+      if (Capacitor.getPlatform() === 'android' && Capacitor.isPluginAvailable('TrucoHaptics')) {
+        try {
+          await AndroidHaptics.vibrate({ duration });
+          return;
+        } catch (error) {
+          if ((error as { code?: string }).code === 'NO_VIBRATOR') throw error;
+          // Compatibilidad con instalaciones donde falla el módulo propio.
+        }
+      }
+      await Haptics.vibrate({ duration });
+    } catch (error) {
+      setNotice((error as { code?: string }).code === 'NO_VIBRATOR'
+        ? 'Este dispositivo no tiene vibrador.'
+        : 'No se pudo vibrar. Activá la vibración táctil del celular y actualizá la app.');
     }
-    const pulse = Capacitor.getPlatform() === 'android' ? AndroidHaptics.vibrate({ duration }) : Haptics.vibrate({ duration });
-    void pulse.catch((error: { code?: string }) => {
-      setNotice(error.code === 'NO_VIBRATOR' ? 'Este dispositivo no tiene vibrador.' : "No se pudo vibrar. Revisá la vibración táctil en los ajustes del celular.");
-    });
-  }
-  function feedback() {
-    if (latest.current.haptics) vibrate();
   }
   function score(team: Team, amount: number) {
-    feedback();
-    setState((s) => ({ ...s, match: addPoints(s.match, team, amount) }));
-  }
-  function goBack() {
-    setDeclinedRematch(null);
-    setState((s) => ({ ...s, match: undo(s.match) }));
-    setNotice("Último movimiento deshecho");
+    const current = latest.current;
+    const next = addPoints(current.match, team, amount);
+    if (next === current.match) return;
+    if (winner(next) === null) setDeclinedRematch(null);
+    latest.current = { ...current, match: next };
+    setState(latest.current);
+    if (current.haptics) void vibrate(amount > 0 ? 100 : 70);
   }
   const wins = [0, 1].map(
     (i) =>
@@ -183,10 +223,10 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
     <div className={"shell " + (tab === "board" ? "board-mode" : "")}>
       <header className="header">
         <div className="brand">
-          <img src={state.design === "fileteado" ? "./artesanal/mate.webp" : "./mate-criollo.svg"} alt="" />
+          {state.design === "comic" ? <Swords className="anime-brand-icon" aria-hidden="true"/> : <img src={state.design === "fileteado" ? "./artesanal/mate.webp" : "./mate-criollo.svg"} alt="" />}
           <div>
             <span className="brand-title">Truco</span>
-            <img className="brand-flag" src="./bandera-argentina.svg" alt="Bandera argentina" />
+            <img className="brand-flag" src={`./bandera-${state.country}.svg`} alt={`Bandera de ${state.country === "argentina" ? "Argentina" : state.country === "paraguay" ? "Paraguay" : "Uruguay"}`} />
           </div>
         </div>
         <span className="header-goal">
@@ -205,7 +245,7 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
         {tab === "board" && (
           <>
             <div className="mesa-heading">
-              <span>Entre mates y cantos</span>
+              <span>{state.design === "comic" ? "Cada espada, un tanto" : "Entre mates y cantos"}</span>
               <img className="criollo-hat" src={state.design === "fileteado" ? "./artesanal/mate.webp" : "./sombrero-criollo.svg"} alt="" />
               <span className="mesa-edition">ANOTADOR CRIOLLO</span>
             </div>
@@ -241,7 +281,7 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
                         <span className="sr-only">
                           {state.match.names[team]}:{" "}
                         </span>
-                        {total[team]}
+                        {state.design === 'retro' ? <ArcadeScore value={total[team]}/> : total[team]}
                         <span className="sr-only"> tantos</span>
                       </div>
                       <div className={"tally-phases " + (state.match.goal === 15 ? "short-game" : "")}>
@@ -263,7 +303,7 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
                         <button
                           className="subtract"
                           aria-label={`Restar un tanto a ${state.match.names[team]}`}
-                          disabled={total[team] === 0 || won !== null}
+                          disabled={total[team] === 0}
                           onClick={() => score(team, -1)}
                         >
                           <Minus size={20} />
@@ -321,14 +361,6 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
               </section>
             )}
             <div className="actions">
-              <button
-                className="secondary-button"
-                disabled={!last}
-                onClick={goBack}
-              >
-                <Undo2 size={18} />
-                Deshacer
-              </button>
               <button
                 className="primary-button"
                 onClick={() => setModal("new")}
@@ -390,16 +422,29 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
               <br />
               tus costumbres.
             </h1>
+            <fieldset className="country-picker">
+              <legend>Elegí tu país</legend>
+              <p className="muted">La bandera de arriba acompaña tu elección.</p>
+              <div className="country-options">
+                {([['argentina', 'Argentina'], ['paraguay', 'Paraguay'], ['uruguay', 'Uruguay']] as const).map(([value, name]) => (
+                  <label className="country-option" key={value}>
+                    <input type="radio" name="country" value={value} checked={state.country === value} onChange={() => setState(s => ({ ...s, country: value }))}/>
+                    <img src={`./bandera-${value}.svg`} alt="" width="40" height="27"/>
+                    <span>{name}</span>
+                  </label>
+                ))}
+              </div>
+            </fieldset>
             <fieldset className="design-picker">
               <legend>Elegí tu mesa</legend>
-              <p className="muted">Elegí un estilo, de día o de noche. La bandera siempre es la misma.</p>
+              <p className="muted">Elegí un estilo, de día o de noche.</p>
               <div className="design-options">
                 {([
                   ["fileteado", "Fileteado · Original", "Cuero, madera y detalles dorados"],
-                  ["moderno", "Moderno", "Simple, limpio y sin adornos"],
+                  ["moderno", "Moderno · Celeste argentino", "Celeste y blanco con tipografía de camiseta"],
                   ["sakura", "Sakura", "Flores de cerezo, rosa y delicadeza"],
                   ["retro", "Retro · Arcade", "Máquina recreativa, botones y monedas pixeladas"],
-                  ["comic", "Anime / Cómic", "Viñetas, tinta y colores intensos"],
+                  ["comic", "Anime · Espadas", "Demon Slayer, Bleach, One Piece, Berserk y SAO"],
                   ["cyberpunk", "Cyberpunk", "Neón, circuitos y contraste"],
                 ] as const).map(([value, name, description]) => (
                   <label className="design-option" key={value}>
@@ -437,13 +482,13 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
                 <Vibrate />
                 <span>
                   <strong>Vibración al anotar</strong>
-                  <small>{vibrationAvailable ? "Vibra al sumar o restar tantos" : "Disponible en la app instalada en tu celular"}</small>
+                  <small>{vibrationAvailable ? "Vibra al sumar o restar tantos" : "Este navegador no admite vibración; usá la app del celular"}</small>
                 </span>
                 <span className={"switch " + (vibrationAvailable && state.haptics ? "on" : "")}>
                   <i />
                 </span>
               </button>
-              {nativeHaptics && <button className="setting-row" onClick={() => vibrate(180)}>
+              {vibrationAvailable && <button className="setting-row" onClick={() => vibrate(180)}>
                 <Vibrate />
                 <span><strong>Probar vibración</strong><small>Un pulso de prueba, sin cambiar tu preferencia</small></span>
                 <ChevronRight />
@@ -543,7 +588,7 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
               ? "Menú de la mesa"
               : modal === "new"
                 ? "Nueva partida"
-                : modal === "cards"
+                : modal === "calls" ? "Valor de los cantos" : modal === "cards"
                   ? "Valor de las cartas"
                   : "Cómo usar el anotador"
         }
@@ -655,6 +700,7 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
               <ChevronRight />
             </button>
             <button className="setting-row" onClick={() => setModal("cards")}><BookOpen/><span>Valor de las cartas en el truco</span><ChevronRight/></button>
+            <button className="setting-row" onClick={() => setModal("calls")}><Trophy/><span>Valor de los cantos</span><ChevronRight/></button>
             <button className="setting-row" onClick={() => setModal("help")}>
               <CircleHelp />
               <span>Cómo se usa</span>
@@ -734,6 +780,36 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
             </button>
           </form>
         )}
+        {modal === "calls" && <section className="calls-guide">
+          <span className="eyebrow">CADA CANTO TIENE SU TANTO</span>
+          <h2>Valor de los cantos</h2>
+          <p className="muted">Los puntos son para el equipo que gana la mano o cuyo canto no se acepta.</p>
+          <div className="calls-table"><table><thead><tr><th>Canto</th><th>Quiero</th><th>No quiero</th></tr></thead><tbody>
+            <tr><th>Sin cantar truco</th><td>1</td><td>—</td></tr>
+            <tr><th>Truco</th><td>2</td><td>1</td></tr>
+            <tr><th>Retruco</th><td>3</td><td>2</td></tr>
+            <tr><th>Vale cuatro</th><td>4</td><td>3</td></tr>
+          </tbody></table></div>
+          <p>Son tantos totales, no se suman entre sí. Si se acepta vale cuatro, la mano vale 4, no 2 + 3 + 4. El retruco sube el truco aceptado; vale cuatro sube el retruco aceptado.</p>
+          <h3>Envido</h3>
+          <div className="calls-table"><table><thead><tr><th>Canto</th><th>Quiero</th><th>No quiero</th></tr></thead><tbody>
+            <tr><th>Envido</th><td>2</td><td>1</td></tr>
+            <tr><th>Real envido</th><td>3</td><td>1</td></tr>
+            <tr><th>Envido + envido</th><td>4</td><td>2</td></tr>
+            <tr><th>Envido + real envido</th><td>5</td><td>2</td></tr>
+            <tr><th>Envido + envido + real envido</th><td>7</td><td>4</td></tr>
+            <tr><th>Falta envido directa</th><td>Según tanteador*</td><td>1</td></tr>
+            <tr><th>Subir a falta envido</th><td>Según tanteador*</td><td>Lo anterior</td></tr>
+          </tbody></table></div>
+          <p>En el envido, las subidas aceptadas se acumulan. Si no se acepta una subida, se cobra lo apostado antes de esa subida.</p>
+          <h3>¿Cuánto vale la falta envido?</h3>
+          <p>* No tiene un valor fijo. En la variante al resto, vale lo que le falta al equipo que va adelante para llegar al objetivo. Por ejemplo, a 30, si van 24 a 20, la falta vale 6. Otras mesas distinguen malas y buenas; acuerden la variante antes de jugar.</p>
+          <p>Si no se quiere una falta directa, se cobra 1. Si llega después de otros cantos, se cobra lo aceptado antes: 2 tras envido, 4 tras envido + envido y 7 tras envido + envido + real envido. Si se quiere, vale la falta acordada, sin sumarle los cantos anteriores.</p>
+          <h3>Flor</h3>
+          <p>Flor vale 3 si juegan con flor; contraflor y contraflor al resto se rigen por lo acordado en la mesa.</p>
+          <a className="rules-source" href="https://www.casi.com.ar/sites/default/files/Reglamento%20Truco.pdf" target="_blank" rel="noreferrer">Consultar reglamento de referencia</a>
+          <button className="primary-button full" onClick={()=>setModal("menu")}>Volver al menú</button>
+        </section>}
         {modal === "cards" && <section className="cards-guide"><h2>Valor de las cartas<br/>en el truco</h2><p className="muted">De mayor a menor. Cada carta le gana a las que están debajo.</p>
           <ol className="card-ranking">{[
             ["1", "Espada", "Ancho de espada"], ["1", "Basto", "Ancho de basto"], ["7", "Espada", "Siete bravo"], ["7", "Oro", "Siete bravo"],
@@ -767,9 +843,8 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
               cinco.
             </p>
             <p>
-              Sumá de a un tanto con +. El
-              botón − resta un tanto y «Deshacer» revierte el último movimiento,
-              incluso el que cerró la partida.
+              Sumá de a un tanto con + y usá el botón − para restar un tanto
+              mientras la partida esté en curso.
             </p>
             <h3>¿Sale revancha?</h3>
             <p>

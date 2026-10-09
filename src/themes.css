@@ -176,3 +176,12 @@
   [data-design="retro"] .board-mode .team { border-radius: 12px; }
   :where(:root:not([data-design="fileteado"])) .mesa-heading { display: none; }
 }
+.country-picker { border: 0; padding: 0; margin: 0 0 28px; }
+.country-picker legend { font: 24px Georgia,serif; margin-bottom: 8px; }
+.country-picker p { font-size: 13px; margin-bottom: 14px; }
+.country-options { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 8px; }
+.country-option { display: flex; flex-direction: column; align-items: center; gap: 9px; padding: 14px 6px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface); color: var(--text); cursor: pointer; font-size: 12px; }
+.country-option input { accent-color: var(--text); width: 17px; height: 17px; }
+.country-option img { object-fit: contain; border-radius: 2px; }
+.country-option:has(input:checked) { border-color: var(--text); box-shadow: inset 0 0 0 1px var(--text); background: var(--soft); }
+.country-option:focus-within { outline: 2px solid var(--text); outline-offset: 3px; }

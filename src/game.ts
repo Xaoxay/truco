@@ -1,4 +1,6 @@
 export type Team = 0 | 1;
+export const countries = ["argentina", "paraguay", "uruguay"] as const;
+export type Country = (typeof countries)[number];
 export type Goal = 15 | 30;
 export const designs = ["fileteado", "moderno", "sakura", "retro", "comic", "cyberpunk"] as const;
 const retiredDesigns = ["criollo", "patriota", "rosa", "rustico", "pampa"];
@@ -18,6 +20,7 @@ export type State = {
   dark: boolean;
   design: Design;
   haptics: boolean;
+  country: Country;
   clearedMatchId?: string;
 };
 export function newMatch(
@@ -45,6 +48,7 @@ export function initialState(): State {
     dark: false,
     design: "fileteado",
     haptics: true,
+    country: "argentina",
   };
 }
 export function scores(match: Match): [number, number] {
@@ -62,7 +66,7 @@ export function winner(match: Match): Team | null {
 }
 export function addPoints(match: Match, team: Team, points: number): Match {
   if (
-    winner(match) !== null ||
+    (winner(match) !== null && points > 0) ||
     !Number.isInteger(points) ||
     points === 0 ||
     ![0, 1].includes(team)
@@ -122,7 +126,7 @@ function validMatch(value: unknown): value is Match {
       !Number.isInteger(move.points) ||
       move.points === 0 ||
       !Number.isFinite(move.at) ||
-      totals.some((t) => t >= m.goal)
+      (totals.some((t) => t >= m.goal) && move.points > 0)
     )
       return false;
     totals[move.team] += move.points;
@@ -145,7 +149,7 @@ export function restore(raw: string): State | null {
       typeof s.haptics !== "boolean"
     )
       return null;
-    return { ...s, design: designs.includes(s.design) ? s.design : "fileteado" } as State;
+    return { ...s, design: designs.includes(s.design) ? s.design : "fileteado", country: countries.includes(s.country) ? s.country : "argentina" } as State;
   } catch {
     return null;
   }

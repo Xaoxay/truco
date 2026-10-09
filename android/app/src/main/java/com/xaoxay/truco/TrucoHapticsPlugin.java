@@ -24,7 +24,7 @@ public class TrucoHapticsPlugin extends Plugin {
         try {
             // Explicit touch usage avoids the UNKNOWN category used by the generic plugin.
             VibrationAttributes attributes = new VibrationAttributes.Builder().setUsage(VibrationAttributes.USAGE_TOUCH).build();
-            vibrator.vibrate(VibrationEffect.createOneShot(duration, 255), attributes);
+            vibrator.vibrate(VibrationEffect.createOneShot(duration, VibrationEffect.DEFAULT_AMPLITUDE), attributes);
             call.resolve();
         } catch (Exception e) {
             call.reject("No se pudo activar la vibración", e);

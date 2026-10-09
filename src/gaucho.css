@@ -54,7 +54,7 @@
 .header-goal small { color: #d1b991; font: 8px system-ui; letter-spacing: 2px; }
 .board-mode.shell {
   width: 100%; max-width: none; height: 100dvh; min-height: 640px;
-  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  padding: var(--safe-area-inset-top, env(safe-area-inset-top, 0px)) var(--safe-area-inset-right, env(safe-area-inset-right, 0px)) var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0px)) var(--safe-area-inset-left, env(safe-area-inset-left, 0px));
   display: flex; flex-direction: column; border: 0;
 }
 .board-mode main { display: flex; flex-direction: column; flex: 1; min-height: 0; }
@@ -105,7 +105,7 @@
 .board-mode .actions .primary-button { background: transparent; color: var(--text); border: 1px solid var(--muted); }
 .board-mode .saved { background: var(--soft); margin: 0; padding: 9px; font-size: 10px; min-height: 30px; flex-shrink: 0; }
 .board-mode .victory { position: absolute; left: 50%; top: 42%; transform: translate(-50%, -50%); z-index: 3; width: min(440px, calc(100% - 32px)); background: var(--surface); color: var(--text); border: 2px solid var(--line); box-shadow: 0 12px 60px #20170d55; }
-.toast { background: var(--leather); border-color: #af9166; bottom: calc(110px + env(safe-area-inset-bottom)); }
+.toast { background: var(--leather); border-color: #af9166; bottom: calc(110px + var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0px))); }
 dialog { border-radius: 8px; border: 1px solid var(--line); border-top: 7px solid var(--poncho); box-shadow: 0 20px 90px #21160c66; }
 dialog::backdrop { background: #211a15cf; }
 .goal-options input { accent-color: var(--poncho); }
@@ -178,3 +178,6 @@ button:focus-visible, input:focus-visible { outline: 3px solid #3b8eae; outline-
 .card-ranking .rank { width: 28px; height: 28px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 50%; color: var(--text); }
 .rank-cards { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
 .rank-cards img { display: block; width: 100%; height: auto; aspect-ratio: 200 / 321; object-fit: contain; background: white; border-radius: 5px; box-shadow: 0 2px 5px #30201725; }
+
+/* Una sola acción al pie del anotador. */
+.board-mode .actions > .primary-button:only-child { flex: 1 1 auto; width: 100%; }
