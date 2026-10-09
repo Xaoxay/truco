@@ -1,5 +1,5 @@
 {
-  "id": "./", "name": "Truco · Anotador argentino", "short_name": "Truco",
+  "id": "./", "name": "Tru-Co · Anotador argentino", "short_name": "Tru-Co",
   "lang": "es-AR", "start_url": "./", "scope": "./", "display": "standalone",
   "background_color": "#392319", "theme_color": "#392319",
   "icons": [

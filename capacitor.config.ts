@@ -1,7 +1,7 @@
 import type { CapacitorConfig } from "@capacitor/cli";
 const config: CapacitorConfig = {
   appId: "com.xaoxay.truco",
-  appName: "Truco",
+  appName: "Tru-Co",
   webDir: "dist",
   backgroundColor: "#392319",
   ios: { contentInset: "never" },

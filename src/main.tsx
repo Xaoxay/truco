@@ -227,7 +227,7 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
         <div className="brand">
           {state.design === "comic" ? <Swords className="anime-brand-icon" aria-hidden="true"/> : <img src={state.design === "fileteado" ? "./artesanal/mate.webp" : "./mate-criollo.svg"} alt="" />}
           <div>
-            <span className="brand-title">Truco</span>
+            <span className="brand-title">Tru-Co</span>
             <img className="brand-flag" src={`./bandera-${state.country}.svg`} alt={`Bandera de ${state.country === "argentina" ? "Argentina" : state.country === "paraguay" ? "Paraguay" : "Uruguay"}`} />
           </div>
         </div>
@@ -546,7 +546,7 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
               Cómo usar e instalar
             </button>
             <p className="version">
-              TRUCO · VERSIÓN 1.2.0
+              TRU-CO · VERSIÓN 1.2.0
               <br />
               Hecho para una mano más.
             </p>
@@ -600,7 +600,7 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
         }}
       >
         <div className="dialog-head">
-          <span className="eyebrow">TRUCO · EL ANOTADOR</span>
+          <span className="eyebrow">TRU-CO · EL ANOTADOR</span>
           <button
             className="icon-button"
             aria-label="Cerrar"
