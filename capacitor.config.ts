@@ -5,6 +5,6 @@ const config: CapacitorConfig = {
   webDir: "dist",
   backgroundColor: "#392319",
   ios: { contentInset: "never" },
-  plugins: { SystemBars: { insetsHandling: "css" } },
+  plugins: { SystemBars: { insetsHandling: "native" } },
 };
 export default config;

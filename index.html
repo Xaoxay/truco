@@ -6,6 +6,14 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     />
+    <script>
+      // Android reserves system-bar space natively; do not request it again in the WebView.
+      // Keep viewport-fit=cover on iOS for its CSS safe-area handling.
+      if (/Android/i.test(navigator.userAgent)) {
+        document.querySelector('meta[name="viewport"]').content =
+          'width=device-width, initial-scale=1.0';
+      }
+    </script>
     <meta name="theme-color" content="#392319" />
     <meta
       name="description"
