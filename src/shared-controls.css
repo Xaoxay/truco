@@ -1,0 +1,71 @@
+/* Keep the title centered between the mate and national flag. */
+:root[data-design] .shell .header {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr) 48px;
+  gap: 6px;
+}
+:root[data-design] .shell .header .brand {
+  grid-column: 2;
+  grid-row: 1;
+  justify-content: center;
+  gap: 6px;
+  min-width: 0;
+}
+:root[data-design] .shell .header .brand-title {
+  font-size: clamp(22px, 7vw, 32px);
+  white-space: nowrap;
+}
+:root[data-design] .shell .header .brand > img {
+  width: 44px;
+  height: 60px;
+  object-fit: contain;
+}
+:root[data-design] .shell .header .brand .brand-flag {
+  width: 30px;
+  height: 22px;
+  margin: 0;
+  border-radius: 0;
+}
+:root[data-design] .shell .header > .icon-button {
+  grid-column: 3;
+  grid-row: 1;
+}
+
+:root[data-design] .shell .header {
+  grid-template-columns: 48px minmax(0, 1fr) 48px;
+}
+:root[data-design] .shell .header .brand { gap: 8px; }
+:root[data-design] .shell .header .brand > img {
+  width: 44px;
+  height: 60px;
+}
+:root[data-design] .shell .header .brand .brand-flag {
+  width: 44px;
+  height: 30px;
+}
+
+.touch-tally {
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+.touch-tally:focus-visible {
+  outline: 2px solid var(--gold, #c99a51);
+  outline-offset: 3px;
+}
+.touch-tally[aria-disabled="true"] { cursor: default; }
+.touch-tally:not([aria-disabled="true"]):active { filter: brightness(1.2); }
+
+:root[data-design] .shell .header .brand > img {
+  display: block;
+  flex-shrink: 0;
+}
+@media (max-width: 359px) {
+  :root[data-design] .shell .header { grid-template-columns: 40px minmax(0, 1fr) 40px; gap: 3px; padding-inline: 6px; }
+  :root[data-design] .shell .header .brand { gap: 4px; }
+  :root[data-design] .shell .header .brand-title { font-size: 22px; }
+  :root[data-design] .shell .header .brand > img { width: 36px; height: 48px; }
+  :root[data-design] .shell .header .brand .brand-flag { width: 36px; height: 25px; }
+  :root[data-design] .shell .header > .icon-button { width: 40px; height: 40px; }
+}

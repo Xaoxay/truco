@@ -350,3 +350,23 @@
 .calls-table td { font-weight: 700; font-variant-numeric: tabular-nums; }
 .calls-table tr:last-child > * { border-bottom: 0; }
 .rules-source { display: inline-block; color: var(--text); margin: 0 0 20px; font-size: 13px; text-decoration: underline; }
+
+/* Original composition, with subtle depth in the existing materials. */
+[data-design='fileteado'] .header {
+ box-shadow:inset 0 1px 2px #ffe5b245,inset 0 -3px 5px #10070590,0 2px 4px #0007;
+}
+[data-design='fileteado'] .board-mode .team {
+ box-shadow:inset 0 0 0 3px #100d0d,inset 0 0 0 4px #bd96543d,inset 0 0 17px #0007,0 2px 4px #0008;
+}
+[data-design='fileteado'] .team-name button {
+ box-shadow:inset 0 1px 2px #fff6d9a0,inset 0 0 0 3px #b2905125,0 3px 5px #0008;
+}
+:root[data-design='fileteado'] .board-mode .team-0 .score {
+ color:#8bd3f4;text-shadow:0 1px #e3f8ff,1px 2px #467e9a,2px 3px #25475a,3px 5px 5px #000c;
+}
+:root[data-design='fileteado'] .board-mode .team-1 .score {
+ color:#fffdf4;text-shadow:0 1px #fff,1px 2px #c2d5df,2px 3px #5d7888,3px 5px 5px #000c;
+}
+[data-design='fileteado'] .board-mode .main-controls button {
+ box-shadow:inset 0 1px 2px #fff1c550,inset 0 -2px 3px #24170e70,0 3px 4px #0009;
+}

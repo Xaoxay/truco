@@ -46,6 +46,7 @@ import { ThemeTally } from './ThemeTally';
 import { AnimeTally } from './AnimeTally';
 import './anime.css';
 import './moderno.css';
+import './shared-controls.css';
 import { checkForUpdate, NativeUpdates } from './updates';
 
 const STORAGE_KEY = "truco-state-v1";
@@ -71,6 +72,7 @@ function ArcadeScore({value}:{value:number}) {
 }
 function Matches({ count, design }: { count: number; design: State['design'] }) {
   const id = useId().replaceAll(":", "");
+  if (design === 'moderno') return <ThemeTally count={count} design={design} />;
   if (design === 'comic') return <AnimeTally count={count}/>;
   if (design === 'sakura' || design === 'cyberpunk' || design === 'retro') {
     return <ThemeTally count={count} design={design} />;
@@ -225,16 +227,10 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
     <div className={"shell " + (tab === "board" ? "board-mode" : "")}>
       <header className="header">
         <div className="brand">
-          {state.design === "comic" ? <Swords className="anime-brand-icon" aria-hidden="true"/> : <img src={state.design === "fileteado" ? "./artesanal/mate.webp" : "./mate-criollo.svg"} alt="" />}
-          <div>
-            <span className="brand-title">Tru-Co</span>
+          <img src={state.design === "fileteado" ? "./artesanal/mate.webp" : "./mate-criollo.svg"} alt="" />
+          <span className="brand-title">Tru-Co</span>
             <img className="brand-flag" src={`./bandera-${state.country}.svg`} alt={`Bandera de ${state.country === "argentina" ? "Argentina" : state.country === "paraguay" ? "Paraguay" : "Uruguay"}`} />
-          </div>
         </div>
-        <span className="header-goal">
-          A {state.match.goal}
-          <small>TANTOS</small>
-        </span>
         <button
           className="icon-button"
           aria-label="Abrir menú"
@@ -246,11 +242,11 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
       <main>
         {tab === "board" && (
           <>
-            <div className="mesa-heading">
+            {state.design === "moderno" ? <div className="champions-banner"><img src="./champions-cup.svg" alt="Copa del Mundo"/><div><span className="champions-stars" aria-label="Tres estrellas">★ ★ ★</span><strong>CAMPEONES DEL MUNDO</strong><span className="champions-years">1978 · 1986 · 2022</span></div></div> : <div className="mesa-heading">
               <span>{state.design === "comic" ? "Cada espada, un tanto" : "Entre mates y cantos"}</span>
               <img className="criollo-hat" src={state.design === "fileteado" ? "./artesanal/mate.webp" : "./sombrero-criollo.svg"} alt="" />
               <span className="mesa-edition">ANOTADOR CRIOLLO</span>
-            </div>
+            </div>}
             <section className="scoreboard" aria-label="Marcador de la partida">
               <div className="score-columns">
                 {([0, 1] as Team[]).map((team) => {
@@ -286,7 +282,20 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
                         {state.design === 'retro' ? <ArcadeScore value={total[team]}/> : total[team]}
                         <span className="sr-only"> tantos</span>
                       </div>
-                      <div className={"tally-phases " + (state.match.goal === 15 ? "short-game" : "")}>
+                      <div
+                        className={"tally-phases touch-tally " + (state.match.goal === 15 ? "short-game" : "")}
+                        role="button"
+                        tabIndex={won === null ? 0 : -1}
+                        aria-label={`Sumar un tanto a ${state.match.names[team]} tocando ${state.design === "moderno" ? "las pelotas" : "los fósforos"}`}
+                        aria-disabled={won !== null}
+                        onClick={() => { if (won === null) score(team, 1); }}
+                        onKeyDown={(event) => {
+                          if (event.key === "Enter" || event.key === " ") {
+                            event.preventDefault();
+                            if (!event.repeat && won === null) score(team, 1);
+                          }
+                        }}
+                      >
                         <section className="tally-phase" aria-label={`${state.match.names[team]}: ${Math.min(total[team],15)} malas de 15`}>
                           <h3>{state.match.goal === 30 ? "Malas" : "Tantos"}<span>{Math.min(total[team],15)}/15</span></h3>
                           <Matches count={Math.min(total[team],15)} design={state.design}/>
@@ -323,15 +332,6 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
                     </section>
                   );
                 })}
-              </div>
-              <div className="table-footer">
-                <span className="small-diamond" aria-hidden="true">◆</span>
-                <span>
-                  {state.match.goal === 30
-                    ? "15 malas · 15 buenas · un solo ganador"
-                    : "15 tantos · una mano más · un solo ganador"}
-                </span>
-                <span className="small-diamond" aria-hidden="true">◆</span>
               </div>
             </section>
             {won !== null && declinedRematch !== state.match.id && (
@@ -443,7 +443,7 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
               <div className="design-options">
                 {([
                   ["fileteado", "Fileteado · Original", "Cuero, madera y detalles dorados"],
-                  ["moderno", "Moderno · Celeste argentino", "Celeste y blanco con tipografía de camiseta"],
+                  ["moderno", "Moderno · Campeones del mundo", "Tres estrellas, la copa y la celeste y blanca"],
                   ["sakura", "Sakura", "Flores de cerezo, rosa y delicadeza"],
                   ["retro", "Retro · Arcade", "Máquina recreativa, botones y monedas pixeladas"],
                   ["comic", "Anime · Espadas", "Demon Slayer, Bleach, One Piece, Berserk y SAO"],

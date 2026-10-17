@@ -6,7 +6,16 @@ export function ThemeTally({ count, design }: { count: number; design: Design })
     {[0, 1, 2].map(group => {
       const points = Math.max(0, Math.min(5, count - group * 5));
       return <svg key={group} viewBox="0 0 64 64" data-points={points} className={points === 5 ? 'symbol-complete' : ''}>
-        <path className="symbol-placeholder" d={design === 'cyberpunk' ? 'M32 6A26 26 0 1 1 31.99 6M32 14A18 18 0 1 1 31.99 14' : 'M7 8H56V56H7ZM9 54L54 10'} />
+        <path className="symbol-placeholder" d={design === 'moderno' ? 'M32 5A27 27 0 1 1 31.99 5' : design === 'cyberpunk' ? 'M32 6A26 26 0 1 1 31.99 6M32 14A18 18 0 1 1 31.99 14' : 'M7 8H56V56H7ZM9 54L54 10'} />
+        {design === 'moderno' && <>
+          <circle className="football-outline" cx="32" cy="32" r="27" />
+          {[0,1,2,3].map(part=><g key={part} transform={`rotate(${part*90} 32 32)`} className={part < points ? 'ball-part filled' : 'ball-part empty'}>
+            <path className="ball-panel" d="M32 5A27 27 0 0 1 59 32H32Z" />
+            <path className="ball-patch" d="M45 9L54 18L49 26L40 23L38 15Z" />
+            <path className="ball-seam" d="M32 5V20M59 32H44M40 23L36 27" />
+          </g>)}
+          <path className={points===5?'ball-center filled':'ball-center empty'} d="M32 19L44 28L39 42H25L20 28Z" />
+        </>}
         {design === 'sakura' && <>
           {[0, 1, 2, 3, 4].map(part => <g key={part} className={part < points ? 'symbol-part filled' : 'symbol-part empty'} transform={`rotate(${part * 72} 32 32)`}>
             <path className="petal" d="M32 33C19 25 18 13 25 8L32 12L39 8C47 15 44 27 32 33Z" />
