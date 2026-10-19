@@ -370,3 +370,124 @@
 [data-design='fileteado'] .board-mode .main-controls button {
  box-shadow:inset 0 1px 2px #fff1c550,inset 0 -2px 3px #24170e70,0 3px 4px #0009;
 }
+
+/* Warm gilded highlights: steady light, without flashing while scoring. */
+:root[data-design='fileteado'] .score-columns::after {
+ width:30px;height:38px;
+ filter:brightness(1.35) saturate(1.15) drop-shadow(0 0 3px #ffe49c) drop-shadow(0 0 9px #e9a936a6);
+}
+:root[data-design='fileteado'] .board-mode .scoreboard {
+ border-color:#f0cd7d;
+ box-shadow:inset 0 0 0 2px #402c16,inset 0 0 0 3px #e7bc6590,0 0 5px #ffd88166,0 0 13px #e3a14035,0 3px 10px #0007;
+}
+:root[data-design='fileteado'] .board-mode .team {
+ border-color:#e9c16c;outline-color:#dcc08280;
+ box-shadow:inset 0 0 0 3px #100d0d,inset 0 0 0 4px #d9b16080,inset 0 0 16px #0006,0 0 5px #efbd573d;
+}
+:root[data-design='fileteado'] .header {
+ border-color:#eaca7b;
+ box-shadow:inset 0 0 0 2px #392817,inset 0 0 0 3px #d9b66380,inset 0 1px 2px #fff3b770,0 0 8px #e5b34f45;
+}
+:root[data-design='fileteado'] .team::before,
+:root[data-design='fileteado'] .team::after {
+ opacity:1;filter:brightness(1.25) drop-shadow(0 0 2px #e8c37b70);
+}
+:root[data-design='fileteado'] .score-columns::after {
+ width:42px;height:42px;
+ filter:drop-shadow(0 1px 1px #251305) drop-shadow(0 0 4px #edbc5b70);
+}
+:root[data-design='fileteado'] .score-columns::after {
+ background-image:url('../public/artesanal/sol-de-mayo.png');
+ width:46px;height:46px;
+ filter:drop-shadow(0 1px 2px #211005) drop-shadow(0 0 3px #e9bb5145);
+}
+
+/* Match the border gilding to the Sun of May's warm yellow-orange. */
+:root[data-design='fileteado'] { --sun-gold:#efa919; --sun-glow:#f6b52266; }
+:root[data-design='fileteado'] .board-mode .scoreboard {
+ border-color:var(--sun-gold);
+ box-shadow:inset 0 0 0 2px #57350e,inset 0 0 0 3px #efa919a0,0 0 5px var(--sun-glow),0 0 12px #efa91930,0 3px 10px #0007;
+}
+:root[data-design='fileteado'] .board-mode .team {
+ border-color:var(--sun-gold);outline-color:#efa91990;
+ box-shadow:inset 0 0 0 3px #100d0d,inset 0 0 0 4px #efa91980,inset 0 0 16px #0006,0 0 5px #efa91945;
+}
+:root[data-design='fileteado'] .header {
+ border-color:var(--sun-gold);
+ box-shadow:inset 0 0 0 2px #57350e,inset 0 0 0 3px #efa91990,inset 0 1px 2px #ffc94080,0 0 8px #efa91945;
+}
+:root[data-design='fileteado'] .team-name button,
+:root[data-design='fileteado'] .header .icon-button,
+:root[data-design='fileteado'] .board-mode .main-controls button,
+:root[data-design='fileteado'] .board-mode .actions button {
+ border-color:var(--sun-gold);outline-color:#efa91990;
+}
+
+/* Fine scrollwork around the original leather panels. */
+:root[data-design='fileteado'] .header { position:relative; }
+:root[data-design='fileteado'] .header::after {
+ content:"";position:absolute;pointer-events:none;bottom:2px;left:50%;transform:translateX(-50%);
+ width:150px;height:17px;background:url('../public/artesanal/guarda-fileteada.svg') center/contain no-repeat;opacity:.9;
+}
+:root[data-design='fileteado'] .team::before,
+:root[data-design='fileteado'] .team::after { width:39px;height:57px; }
+:root[data-design='fileteado'] .board-mode .tally-phases { position:relative; }
+:root[data-design='fileteado'] .board-mode .tally-phases::before {
+ content:"";position:absolute;pointer-events:none;top:-14px;left:50%;transform:translateX(-50%);
+ width:100%;height:22px;background:url('../public/artesanal/guarda-fileteada.svg') center/contain no-repeat;
+ filter:drop-shadow(0 1px 1px #0009);
+}
+:root[data-design='fileteado'] .board-mode .team-name button {
+ outline:1px solid #dca62e88;outline-offset:-5px;
+}
+:root[data-design='fileteado'] .team::before,
+:root[data-design='fileteado'] .team::after,
+:root[data-design='fileteado'] .score::before,
+:root[data-design='fileteado'] .score::after {
+ opacity:1;filter:brightness(1.15) saturate(1.3) drop-shadow(0 0 2px #ffd34855);
+}
+
+/* Balanced panel spacing and mirrored ornament pairs. */
+:root[data-design='fileteado'] .board-mode .score-columns {
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;
+}
+:root[data-design='fileteado'] .board-mode .team { padding-inline:10px;text-align:center; }
+:root[data-design='fileteado'] .team::before,
+:root[data-design='fileteado'] .team::after {
+ width:28px;height:40px;top:5px;bottom:auto;
+}
+:root[data-design='fileteado'] .team::before { left:4px;right:auto;transform:none; }
+:root[data-design='fileteado'] .team::after { right:4px;left:auto;transform:scaleX(-1); }
+:root[data-design='fileteado'] .team-caption { margin:5px 0 9px;min-height:12px;line-height:12px; }
+:root[data-design='fileteado'] .team-name button { position:relative;padding-inline:17px; }
+:root[data-design='fileteado'] .team-name button span { width:100%;text-align:center; }
+:root[data-design='fileteado'] .team-name button svg { position:absolute;right:5px;top:50%;transform:translateY(-50%);width:12px;height:12px; }
+:root[data-design='fileteado'] .score { text-align:center;letter-spacing:0; }
+:root[data-design='fileteado'] .score::before { left:0;right:auto;bottom:0;transform:none; }
+:root[data-design='fileteado'] .score::after { right:0;left:auto;bottom:0;transform:scaleX(-1); }
+:root[data-design='fileteado'] .tally-phases { gap:0; }
+:root[data-design='fileteado'] .tally-phase,
+:root[data-design='fileteado'] .tally-phase.buenas { padding-inline:4px; }
+:root[data-design='fileteado'] .tally-phase h3 { width:100%;text-align:center;letter-spacing:.6px; }
+:root[data-design='fileteado'] .score-columns::after { top:50%;left:50%; }
+:root[data-design='fileteado'] .board-mode .main-controls { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px; }
+:root[data-design='fileteado'] .board-mode .main-controls button { width:100%; }
+:root[data-design='fileteado'] .board-mode .score { font-variant-numeric:lining-nums tabular-nums;line-height:1; }
+
+/* Team controls echo their score colours, framed in the shared sun gold. */
+:root[data-design='fileteado'] .team-0 { --control-light:#d5f1fc;--control-mid:#91cee8;--control-deep:#234c60; }
+:root[data-design='fileteado'] .team-1 { --control-light:#fffdf4;--control-mid:#e8e4d6;--control-deep:#48483e; }
+:root[data-design='fileteado'] .board-mode .team .main-controls .add {
+ color:var(--control-deep);
+ background:linear-gradient(155deg,var(--control-light),var(--control-mid));
+ border-color:#efa919;
+ box-shadow:inset 0 1px 2px #fff9,inset 0 0 0 3px #ffffff26,inset 0 -2px 3px #15232b30,0 3px 5px #0009;
+}
+:root[data-design='fileteado'] .board-mode .team .main-controls .subtract {
+ color:var(--control-light);
+ background:linear-gradient(#182128a0,#0b1013b0),var(--materials);
+ background-position:center,left bottom;background-size:100% 100%,200% 200%;
+ border-color:#efa919;
+ box-shadow:inset 0 0 0 3px #ffffff08,0 2px 4px #0008;
+}
+:root[data-design='fileteado'] .board-mode .team .main-controls button:disabled { opacity:.45; }
