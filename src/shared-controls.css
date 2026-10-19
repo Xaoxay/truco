@@ -55,7 +55,6 @@
   outline-offset: 3px;
 }
 .touch-tally[aria-disabled="true"] { cursor: default; }
-.touch-tally:not([aria-disabled="true"]):active { filter: brightness(1.2); }
 
 :root[data-design] .shell .header .brand > img {
   display: block;

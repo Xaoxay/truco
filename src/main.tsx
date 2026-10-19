@@ -152,8 +152,6 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
   const won = winner(state.match);
   useEffect(() => {
     latest.current = state;
-    document.documentElement.dataset.theme = state.dark ? "dark" : "light";
-    document.documentElement.dataset.design = state.design;
     saveQueue = saveQueue
       .then(() =>
         Preferences.set({ key: STORAGE_KEY, value: JSON.stringify(state) }),
@@ -161,6 +159,10 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
       .then(() => setSaveError(false))
       .catch(() => setSaveError(true));
   }, [state]);
+  useEffect(() => {
+    document.documentElement.dataset.theme = state.dark ? "dark" : "light";
+    document.documentElement.dataset.design = state.design;
+  }, [state.dark, state.design]);
   useEffect(() => {
     if (!notice) return;
     const timer = setTimeout(() => setNotice(""), 3500);
@@ -736,7 +738,7 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
               Equipo 1
               <input
                 name="team0"
-                defaultValue={state.match.names[0]}
+                defaultValue="Nosotros"
                 maxLength={24}
                 required
                 autoComplete="off"
@@ -746,7 +748,7 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
               Equipo 2
               <input
                 name="team1"
-                defaultValue={state.match.names[1]}
+                defaultValue="Ellos"
                 maxLength={24}
                 required
                 autoComplete="off"

@@ -160,3 +160,18 @@ test("guarda el país y recupera partidas anteriores sin perder los puntos", () 
   assert.deepEqual(restore(JSON.stringify(legacy)), { ...s, country: "argentina" });
   assert.equal(restore(JSON.stringify({ ...s, country: "inexistente" }))?.country, "argentina");
 });
+
+test("nueva partida usa nombres predeterminados sin cambiar los nombres archivados", () => {
+  let s = initialState();
+  s.match = { ...s.match, names: ["Juan y Ana", "Pedro y Luz"] };
+  s.match = addPoints(s.match, 1, 30);
+  const previous = s.match;
+  s = startNext(s, ["Nosotros", "Ellos"], 30);
+  assert.deepEqual(s.match.names, ["Nosotros", "Ellos"]);
+  assert.deepEqual(s.finished[0].names, ["Juan y Ana", "Pedro y Luz"]);
+  assert.equal(s.finished[0].id, previous.id);
+  s.match = { ...s.match, names: ["Nuevo equipo", "Otro equipo"] };
+  assert.deepEqual(s.finished[0].names, ["Juan y Ana", "Pedro y Luz"]);
+  const recovered = restore(JSON.stringify(s));
+  assert.deepEqual(recovered?.finished[0].names, ["Juan y Ana", "Pedro y Luz"]);
+});
