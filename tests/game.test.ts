@@ -175,3 +175,12 @@ test("nueva partida usa nombres predeterminados sin cambiar los nombres archivad
   const recovered = restore(JSON.stringify(s));
   assert.deepEqual(recovered?.finished[0].names, ["Juan y Ana", "Pedro y Luz"]);
 });
+
+test("solo touch se guarda y las partidas anteriores conservan el modo con botones", () => {
+  const s = { ...initialState(), touchOnly: true };
+  assert.equal(restore(JSON.stringify(s))?.touchOnly, true);
+  const next = startNext(s, ["Nosotros", "Ellos"], 30);
+  assert.equal(next.touchOnly, true);
+  assert.equal(!!restore(JSON.stringify(initialState()))?.touchOnly, false);
+  assert.equal(restore(JSON.stringify({ ...s, touchOnly: "true" })), null);
+});

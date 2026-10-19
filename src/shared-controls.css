@@ -68,3 +68,12 @@
   :root[data-design] .shell .header .brand .brand-flag { width: 36px; height: 25px; }
   :root[data-design] .shell .header > .icon-button { width: 40px; height: 40px; }
 }
+
+:root[data-design] .board-mode.touch-only .main-controls { display:none; }
+:root[data-design] .board-mode.touch-only .touch-tally { touch-action:none; }
+.touch-hint {
+ flex-shrink:0;text-align:center;font:10px/1.4 system-ui,sans-serif;
+ color:var(--muted);margin:0 0 8px;padding-inline:2px;
+}
+:root[data-design] .board-mode.touch-only .matches svg { max-width:120px;max-height:120px; }
+@container (max-height:480px) { .touch-hint { font-size:9px;margin-bottom:3px; } }

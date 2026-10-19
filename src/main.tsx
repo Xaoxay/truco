@@ -43,6 +43,7 @@ import "./fileteado.css";
 import "./illustrated-themes.css";
 import "./responsive.css";
 import { ThemeTally } from './ThemeTally';
+import { touchPoints } from './touch';
 import { AnimeTally } from './AnimeTally';
 import './anime.css';
 import './moderno.css';
@@ -148,6 +149,8 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
   const vibrationAvailable = nativeHaptics || webHaptics;
   const dialog = useRef<HTMLDialogElement>(null);
   const latest = useRef(state);
+  const gesture = useRef<{ id: number; team: Team; x: number; y: number; travel: number } | null>(null);
+  const suppressTouchClick = useRef(false);
   const total = scores(state.match);
   const won = winner(state.match);
   useEffect(() => {
@@ -226,7 +229,7 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
     : [...state.finished.filter((m) => m.id !== state.match.id), state.match]
   ).slice(-100);
   return (
-    <div className={"shell " + (tab === "board" ? "board-mode" : "")}>
+    <div className={"shell " + (tab === "board" ? "board-mode " : "") + (state.touchOnly ? "touch-only" : "")}>
       <header className="header">
         <div className="brand">
           <img src={state.design === "fileteado" ? "./artesanal/mate.webp" : "./mate-criollo.svg"} alt="" />
@@ -287,12 +290,45 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
                       <div
                         className={"tally-phases touch-tally " + (state.match.goal === 15 ? "short-game" : "")}
                         role="button"
-                        tabIndex={won === null ? 0 : -1}
+                        tabIndex={state.touchOnly || won === null ? 0 : -1}
                         aria-label={`Sumar un tanto a ${state.match.names[team]} tocando ${state.design === "moderno" ? "las pelotas" : "los fósforos"}`}
-                        aria-disabled={won !== null}
-                        onClick={() => { if (won === null) score(team, 1); }}
+                        aria-disabled={!state.touchOnly && won !== null}
+                        aria-description={state.touchOnly ? "Tocá para sumar. Deslizá hacia abajo para restar. Con teclado, flecha abajo para restar." : undefined}
+                        onPointerDown={(event) => {
+                          if (!state.touchOnly || !event.isPrimary || event.button !== 0) return;
+                          suppressTouchClick.current = true;
+                          gesture.current = { id: event.pointerId, team, x: event.clientX, y: event.clientY, travel: 0 };
+                          event.currentTarget.setPointerCapture(event.pointerId);
+                        }}
+                        onPointerMove={(event) => {
+                          const start = gesture.current;
+                          if (start?.id === event.pointerId) {
+                            start.travel = Math.max(start.travel, Math.hypot(event.clientX - start.x, event.clientY - start.y));
+                          }
+                        }}
+                        onPointerUp={(event) => {
+                          const start = gesture.current;
+                          if (!start || start.id !== event.pointerId || start.team !== team) return;
+                          gesture.current = null;
+                          const dx = event.clientX - start.x;
+                          const dy = event.clientY - start.y;
+                          const amount = touchPoints(dx, dy, Math.max(start.travel, Math.hypot(dx, dy)));
+                          if (amount) score(team, amount);
+                        }}
+                        onPointerCancel={(event) => { if (gesture.current?.id === event.pointerId) gesture.current = null; }}
+                        onLostPointerCapture={(event) => { if (gesture.current?.id === event.pointerId) gesture.current = null; }}
+                        onClick={(event) => {
+                          if (suppressTouchClick.current) {
+                            suppressTouchClick.current = false;
+                            return;
+                          }
+                          if (won === null) score(team, 1);
+                        }}
                         onKeyDown={(event) => {
-                          if (event.key === "Enter" || event.key === " ") {
+                          if (state.touchOnly && event.key === "ArrowDown") {
+                            event.preventDefault();
+                            if (!event.repeat) score(team, -1);
+                          } else if (event.key === "Enter" || event.key === " ") {
                             event.preventDefault();
                             if (!event.repeat && won === null) score(team, 1);
                           }
@@ -312,6 +348,7 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
                           ? "¡La mesa es suya!"
                           : `A ${state.match.goal - total[team]} de ganar`}
                       </div>
+                      {state.touchOnly && <p className="touch-hint">Tocá +1 · Deslizá abajo −1</p>}
                       <div className="main-controls">
                         <button
                           className="subtract"
@@ -460,6 +497,19 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
               </div>
             </fieldset>
             <div className="settings-card">
+              <button
+                className="setting-row"
+                aria-pressed={!!state.touchOnly}
+                onClick={() => {
+                  gesture.current = null;
+                  suppressTouchClick.current = false;
+                  setState(s => ({ ...s, touchOnly: !s.touchOnly }));
+                }}
+              >
+                <Plus />
+                <span><strong>Solo touch</strong><small>Tocá para sumar y deslizá hacia abajo para restar. Oculta los botones + y −.</small></span>
+                <span className={"switch " + (state.touchOnly ? "on" : "")}><i /></span>
+              </button>
               <button
                 className="setting-row"
                 aria-pressed={state.dark}

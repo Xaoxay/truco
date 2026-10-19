@@ -20,6 +20,7 @@ export type State = {
   dark: boolean;
   design: Design;
   haptics: boolean;
+  touchOnly?: boolean;
   country: Country;
   clearedMatchId?: string;
 };
@@ -144,6 +145,7 @@ export function restore(raw: string): State | null {
       s.finished.length > 100 ||
       !s.finished.every((m: unknown) => validMatch(m) && winner(m) !== null) ||
       typeof s.dark !== "boolean" ||
+      (s.touchOnly !== undefined && typeof s.touchOnly !== "boolean") ||
       (s.clearedMatchId !== undefined && typeof s.clearedMatchId !== 'string') ||
       (s.design !== undefined && !designs.includes(s.design) && !retiredDesigns.includes(s.design)) ||
       typeof s.haptics !== "boolean"
