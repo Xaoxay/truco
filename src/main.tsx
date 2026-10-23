@@ -1,4 +1,6 @@
-import React, { useEffect, useId, useRef, useState } from "react";
+import React, { useEffect, useId, useReducer, useRef, useState } from "react";
+import { App as NativeApp } from '@capacitor/app';
+import { initialNavigation, navigate, type Tab, type Modal } from './navigation';
 import { createRoot } from "react-dom/client";
 import { Capacitor, registerPlugin } from "@capacitor/core";
 import { Preferences } from "@capacitor/preferences";
@@ -45,12 +47,16 @@ import "./responsive.css";
 import { ThemeTally } from './ThemeTally';
 import { touchPoints } from './touch';
 import { AnimeTally } from './AnimeTally';
+import { MatchFire, MatchAsh } from './MatchFire';
 import './anime.css';
 import './moderno.css';
 import './shared-controls.css';
 import { checkForUpdate, NativeUpdates } from './updates';
 
 const STORAGE_KEY = "truco-state-v1";
+document.documentElement.toggleAttribute('data-glow-preview', import.meta.env.DEV && new URLSearchParams(location.search).has('preview-glow'));
+const firePreview = import.meta.env.DEV && new URLSearchParams(location.search).has('preview-fire');
+const finishPreview = firePreview && new URLSearchParams(location.search).has('preview-finish');
 const AndroidHaptics = registerPlugin<{ vibrate(options: { duration: number }): Promise<void> }>('TrucoHaptics');
 let saveQueue = Promise.resolve();
 const arcadeDigits = [
@@ -130,10 +136,19 @@ function Matches({ count, design }: { count: number; design: State['design'] }) 
 }
 function App({ saved, warning }: { saved: State; warning: boolean }) {
   const [state, setState] = useState(saved);
-  const [tab, setTab] = useState<"board" | "history" | "settings">("board");
-  const [modal, setModal] = useState<
-    "new" | "help" | "cards" | "calls" | "names" | "menu" | "clear-history" | null
-  >(null);
+  const [fireEvents, setFireEvents] = useState<[number, number]>([0, 0]);
+  const [navigation, dispatchNavigation] = useReducer(navigate, initialNavigation);
+  const tab = navigation.tabs.at(-1)!;
+  const modal = navigation.modals.at(-1) ?? null;
+  const setTab = (tab: Tab) => dispatchNavigation({ type: 'tab', tab });
+  const setModal = (modal: Modal | null) => dispatchNavigation({ type: 'modal', modal });
+  useEffect(() => {
+    if (Capacitor.getPlatform() !== 'android') return;
+    const listener = NativeApp.addListener('backButton', () => {
+      dispatchNavigation({ type: 'back' });
+    });
+    return () => { void listener.then(handle => handle.remove()); };
+  }, []);
   const [customTeam, setCustomTeam] = useState<Team>(0);
   const [notice, setNotice] = useState(
     warning ? "No pudimos recuperar la partida guardada." : "",
@@ -155,6 +170,7 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
   const won = winner(state.match);
   useEffect(() => {
     latest.current = state;
+    if (firePreview) return;
     saveQueue = saveQueue
       .then(() =>
         Preferences.set({ key: STORAGE_KEY, value: JSON.stringify(state) }),
@@ -209,6 +225,13 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
     const current = latest.current;
     const next = addPoints(current.match, team, amount);
     if (next === current.match) return;
+    if (current.match.goal === 30 && scores(current.match)[team] < 15 && scores(next)[team] >= 15) {
+      setFireEvents(events => {
+        const updated: [number, number] = [...events];
+        updated[team] = Date.now();
+        return updated;
+      });
+    }
     if (winner(next) === null) setDeclinedRematch(null);
     latest.current = { ...current, match: next };
     setState(latest.current);
@@ -336,11 +359,17 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
                       >
                         <section className="tally-phase" aria-label={`${state.match.names[team]}: ${Math.min(total[team],15)} malas de 15`}>
                           <h3>{state.match.goal === 30 ? "Malas" : "Tantos"}<span>{Math.min(total[team],15)}/15</span></h3>
-                          <Matches count={Math.min(total[team],15)} design={state.design}/>
+                          <div className={"match-fire-stage " + (won !== null && won !== team ? "burn-to-ash" : "")} key={`${state.match.id}-${won ?? "playing"}-malas`}>
+                            <Matches count={Math.min(total[team],15)} design={state.design}/>
+                            {won !== null && <><MatchFire preview={firePreview} persistent={won === team} count={Math.min(total[team],15)} caption="" />{won !== team && <MatchAsh count={Math.min(total[team],15)} />}</>}
+                            {won === null && phase && Date.now() - fireEvents[team] < 2800 && <MatchFire preview={firePreview} key={`${state.match.id}-${fireEvents[team]}`} />}
+                          </div>
                         </section>
                         {state.match.goal === 30 && <section className={"tally-phase buenas " + (phase ? "active" : "")} aria-label={`${state.match.names[team]}: ${Math.max(total[team]-15,0)} buenas de 15`}>
                           <h3>Buenas<span>{Math.max(total[team]-15,0)}/15</span></h3>
-                          <Matches count={Math.max(total[team]-15,0)} design={state.design}/>
+                          <div className={"match-fire-stage " + (won !== null && won !== team ? "burn-to-ash" : "")} key={`${state.match.id}-${won ?? "playing"}-buenas`}> <Matches count={Math.max(total[team]-15,0)} design={state.design}/>
+                            {won !== null && <><MatchFire preview={firePreview} persistent={won === team} count={Math.max(total[team]-15,0)} caption="" />{won !== team && <MatchAsh count={Math.max(total[team]-15,0)} />}</>}
+                          </div>
                         </section>}
                       </div>
                       <div className="distance">
@@ -646,7 +675,10 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
                   ? "Valor de las cartas"
                   : "Cómo usar el anotador"
         }
-        onCancel={() => setModal(null)}
+        onCancel={(event) => {
+          event.preventDefault();
+          dispatchNavigation({ type: 'back' });
+        }}
         onClick={(e) => {
           if (e.target === e.currentTarget) setModal(null);
         }}
@@ -956,6 +988,11 @@ async function boot() {
     warning = true;
   }
   if (disposed) return;
+  if (firePreview) {
+    state = initialState();
+    state.match = addPoints(state.match, 0, finishPreview ? 29 : 14);
+    if (finishPreview) state.match = addPoints(state.match, 1, 23);
+  }
   document.documentElement.dataset.design = state.design;
   document.documentElement.dataset.theme = state.dark ? 'dark' : 'light';
   root = createRoot(document.getElementById("root")!);

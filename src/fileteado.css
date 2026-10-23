@@ -491,3 +491,79 @@
  box-shadow:inset 0 0 0 3px #ffffff08,0 2px 4px #0008;
 }
 :root[data-design='fileteado'] .board-mode .team .main-controls button:disabled { opacity:.45; }
+
+/* Pale gold and dark separation keep the frame distinct from the wood. */
+:root[data-design='fileteado'] { --sun-gold:#f5dca0; }
+:root[data-design='fileteado'] .board-mode .scoreboard,
+:root[data-design='fileteado'] .header {
+ border-color:var(--sun-gold);
+ box-shadow:0 0 0 2px #101a20,inset 0 0 0 2px #101a20,inset 0 0 0 3px #e7c887,0 3px 10px #0009;
+}
+:root[data-design='fileteado'] .board-mode .team {
+ border-color:var(--sun-gold);outline-color:#f5dca080;
+ box-shadow:inset 0 0 0 3px #101a20,inset 0 0 0 4px #d7bb7f,inset 0 0 16px #0006,0 0 0 1px #101a20;
+}
+:root[data-design='fileteado'] .score-columns::after {
+ width:46px;height:46px;border-radius:0;
+ background-image:url('../public/artesanal/sol-de-mayo.png');
+ background-size:100% 100%;
+ filter:brightness(1.5) saturate(.65) drop-shadow(0 1px 2px #000) drop-shadow(0 0 2px #101a20);
+ box-shadow:none;
+}
+:root[data-design='fileteado'] .board-mode .team .main-controls .add,
+:root[data-design='fileteado'] .board-mode .team .main-controls .subtract {
+ border-color:var(--sun-gold);
+}
+
+
+
+/* A continuous golden halo follows the complete frame without covering controls. */
+:root[data-design='fileteado'] .board-mode .scoreboard,
+:root[data-design='fileteado'] .header {
+ animation:frame-golden-glow 30s ease-in-out infinite;
+}
+:root[data-design='fileteado'] .board-mode .team {
+ animation:panel-golden-glow 30s ease-in-out infinite;
+}
+@keyframes frame-golden-glow {
+ 0%, 90%, 100% { box-shadow:0 0 0 2px #101a20,inset 0 0 0 2px #101a20,inset 0 0 0 3px #e7c887,0 0 5px #ffe4a46b,0 0 12px #ffc65c35,0 3px 10px #0009; }
+ 95% { box-shadow:0 0 0 2px #101a20,inset 0 0 0 2px #101a20,inset 0 0 0 3px #ffe8ab,0 0 8px #ffe4a4a0,0 0 21px #ffc65c65,0 3px 10px #0009; }
+}
+@keyframes panel-golden-glow {
+ 0%, 90%, 100% { box-shadow:inset 0 0 0 3px #101a20,inset 0 0 0 4px #d7bb7f,inset 0 0 12px #ffce6020,0 0 0 1px #101a20,0 0 5px #ffe4a43d; }
+ 95% { box-shadow:inset 0 0 0 3px #101a20,inset 0 0 0 4px #ffe8ab,inset 0 0 17px #ffce6038,0 0 0 1px #101a20,0 0 9px #ffe4a478; }
+}
+@media (prefers-reduced-motion:reduce) {
+ :root[data-design='fileteado']:not([data-glow-preview]) .board-mode .scoreboard,
+ :root[data-design='fileteado']:not([data-glow-preview]) .header {
+  animation:none;
+  box-shadow:0 0 0 2px #101a20,inset 0 0 0 2px #101a20,inset 0 0 0 3px #ffe8ab,0 0 8px #ffe4a48c,0 0 18px #ffc65c50,0 3px 10px #0009;
+ }
+ :root[data-design='fileteado']:not([data-glow-preview]) .board-mode .team {
+  animation:none;
+  box-shadow:inset 0 0 0 3px #101a20,inset 0 0 0 4px #ffe8ab,inset 0 0 15px #ffce6030,0 0 0 1px #101a20,0 0 7px #ffe4a460;
+ }
+}
+
+
+:root[data-design='fileteado'] .score-columns::after {
+ animation:sun-golden-glow 30s ease-in-out infinite;
+}
+@keyframes sun-golden-glow {
+ 0%,90%,100% { filter:brightness(1.5) saturate(.65) drop-shadow(0 1px 2px #000) drop-shadow(0 0 2px #101a20); }
+ 95% { filter:brightness(1.8) saturate(.7) drop-shadow(0 1px 2px #000) drop-shadow(0 0 6px #ffe6a1) drop-shadow(0 0 12px #ffc34b99); }
+}
+:root[data-design='fileteado'][data-glow-preview] .board-mode .scoreboard,
+:root[data-design='fileteado'][data-glow-preview] .header,
+:root[data-design='fileteado'][data-glow-preview] .board-mode .team,
+:root[data-design='fileteado'][data-glow-preview] .score-columns::after {
+ animation-delay:-27s;
+}
+@media (prefers-reduced-motion:reduce) {
+ :root[data-design='fileteado']:not([data-glow-preview]) .score-columns::after { animation:none; }
+}
+/* Explicit demonstration only; normal builds retain reduced-motion preferences. */
+:root[data-design='fileteado'][data-glow-preview] .board-mode .scoreboard,
+:root[data-design='fileteado'][data-glow-preview] .header { animation:frame-golden-glow 30s ease-in-out -27s infinite !important; }
+:root[data-design='fileteado'][data-glow-preview] .board-mode .team { animation:panel-golden-glow 30s ease-in-out -27s infinite !important; }
+:root[data-design='fileteado'][data-glow-preview] .score-columns::after { animation:sun-golden-glow 30s ease-in-out -27s infinite !important; }
