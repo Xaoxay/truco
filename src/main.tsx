@@ -136,6 +136,7 @@ function Matches({ count, design }: { count: number; design: State['design'] }) 
 }
 function App({ saved, warning }: { saved: State; warning: boolean }) {
   const [state, setState] = useState(saved);
+  const touchEnabled = !!state.classic || !!state.touchOnly;
   const [fireEvents, setFireEvents] = useState<[number, number]>([0, 0]);
   const [navigation, dispatchNavigation] = useReducer(navigate, initialNavigation);
   const tab = navigation.tabs.at(-1)!;
@@ -180,8 +181,9 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
   }, [state]);
   useEffect(() => {
     document.documentElement.dataset.theme = state.dark ? "dark" : "light";
-    document.documentElement.dataset.design = state.design;
-  }, [state.dark, state.design]);
+    document.documentElement.dataset.design = state.classic ? "fileteado" : state.design;
+    document.documentElement.toggleAttribute("data-classic", !!state.classic);
+  }, [state.dark, state.design, state.classic]);
   useEffect(() => {
     if (!notice) return;
     const timer = setTimeout(() => setNotice(""), 3500);
@@ -252,7 +254,7 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
     : [...state.finished.filter((m) => m.id !== state.match.id), state.match]
   ).slice(-100);
   return (
-    <div className={"shell " + (tab === "board" ? "board-mode " : "") + (state.touchOnly ? "touch-only" : "")}>
+    <div className={"shell " + (tab === "board" ? "board-mode " : "") + (state.touchOnly && !state.classic ? "touch-only" : "")}>
       <header className="header">
         <div className="brand">
           <img src={state.design === "fileteado" ? "./artesanal/mate.webp" : "./mate-criollo.svg"} alt="" />
@@ -313,12 +315,12 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
                       <div
                         className={"tally-phases touch-tally " + (state.match.goal === 15 ? "short-game" : "")}
                         role="button"
-                        tabIndex={state.touchOnly || won === null ? 0 : -1}
+                        tabIndex={touchEnabled || won === null ? 0 : -1}
                         aria-label={`Sumar un tanto a ${state.match.names[team]} tocando ${state.design === "moderno" ? "las pelotas" : "los fósforos"}`}
-                        aria-disabled={!state.touchOnly && won !== null}
-                        aria-description={state.touchOnly ? "Tocá para sumar. Deslizá hacia abajo para restar. Con teclado, flecha abajo para restar." : undefined}
+                        aria-disabled={!touchEnabled && won !== null}
+                        aria-description={touchEnabled ? "Tocá para sumar. Deslizá hacia abajo para restar. Con teclado, flecha abajo para restar." : undefined}
                         onPointerDown={(event) => {
-                          if (!state.touchOnly || !event.isPrimary || event.button !== 0) return;
+                          if (!touchEnabled || !event.isPrimary || event.button !== 0) return;
                           suppressTouchClick.current = true;
                           gesture.current = { id: event.pointerId, team, x: event.clientX, y: event.clientY, travel: 0 };
                           event.currentTarget.setPointerCapture(event.pointerId);
@@ -348,7 +350,7 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
                           if (won === null) score(team, 1);
                         }}
                         onKeyDown={(event) => {
-                          if (state.touchOnly && event.key === "ArrowDown") {
+                          if (touchEnabled && event.key === "ArrowDown") {
                             event.preventDefault();
                             if (!event.repeat) score(team, -1);
                           } else if (event.key === "Enter" || event.key === " ") {
@@ -359,16 +361,16 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
                       >
                         <section className="tally-phase" aria-label={`${state.match.names[team]}: ${Math.min(total[team],15)} malas de 15`}>
                           <h3>{state.match.goal === 30 ? "Malas" : "Tantos"}<span>{Math.min(total[team],15)}/15</span></h3>
-                          <div className={"match-fire-stage " + (won !== null && won !== team ? "burn-to-ash" : "")} key={`${state.match.id}-${won ?? "playing"}-malas`}>
+                          <div className={"match-fire-stage " + (!state.classic && won !== null && won !== team ? "burn-to-ash" : "")} key={`${state.match.id}-${won ?? "playing"}-malas`}>
                             <Matches count={Math.min(total[team],15)} design={state.design}/>
-                            {won !== null && <><MatchFire preview={firePreview} persistent={won === team} count={Math.min(total[team],15)} caption="" />{won !== team && <MatchAsh count={Math.min(total[team],15)} />}</>}
-                            {won === null && phase && Date.now() - fireEvents[team] < 2800 && <MatchFire preview={firePreview} key={`${state.match.id}-${fireEvents[team]}`} />}
+                            {!state.classic && won !== null && <><MatchFire preview={firePreview} persistent={won === team} count={Math.min(total[team],15)} caption="" />{won !== team && <MatchAsh count={Math.min(total[team],15)} />}</>}
+                            {!state.classic && won === null && phase && Date.now() - fireEvents[team] < 2800 && <MatchFire preview={firePreview} key={`${state.match.id}-${fireEvents[team]}`} />}
                           </div>
                         </section>
                         {state.match.goal === 30 && <section className={"tally-phase buenas " + (phase ? "active" : "")} aria-label={`${state.match.names[team]}: ${Math.max(total[team]-15,0)} buenas de 15`}>
                           <h3>Buenas<span>{Math.max(total[team]-15,0)}/15</span></h3>
-                          <div className={"match-fire-stage " + (won !== null && won !== team ? "burn-to-ash" : "")} key={`${state.match.id}-${won ?? "playing"}-buenas`}> <Matches count={Math.max(total[team]-15,0)} design={state.design}/>
-                            {won !== null && <><MatchFire preview={firePreview} persistent={won === team} count={Math.max(total[team]-15,0)} caption="" />{won !== team && <MatchAsh count={Math.max(total[team]-15,0)} />}</>}
+                          <div className={"match-fire-stage " + (!state.classic && won !== null && won !== team ? "burn-to-ash" : "")} key={`${state.match.id}-${won ?? "playing"}-buenas`}> <Matches count={Math.max(total[team]-15,0)} design={state.design}/>
+                            {!state.classic && won !== null && <><MatchFire preview={firePreview} persistent={won === team} count={Math.max(total[team]-15,0)} caption="" />{won !== team && <MatchAsh count={Math.max(total[team]-15,0)} />}</>}
                           </div>
                         </section>}
                       </div>
@@ -377,7 +379,7 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
                           ? "¡La mesa es suya!"
                           : `A ${state.match.goal - total[team]} de ganar`}
                       </div>
-                      {state.touchOnly && <p className="touch-hint">Tocá +1 · Deslizá abajo −1</p>}
+                      {touchEnabled && <p className="touch-hint">Tocá +1 · Deslizá abajo −1</p>}
                       <div className="main-controls">
                         <button
                           className="subtract"
@@ -505,7 +507,19 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
                 ))}
               </div>
             </fieldset>
-            <fieldset className="design-picker">
+            <div className="settings-card">
+              <button className="setting-row" aria-pressed={!!state.classic} onClick={() => {
+                gesture.current = null;
+                suppressTouchClick.current = false;
+                setFireEvents([0, 0]);
+                setState(s => ({ ...s, classic: !s.classic, design: 'fileteado', touchOnly: false }));
+              }}>
+                <BookOpen />
+                <span><strong>Anotador clásico</strong><small>Fileteado sin animaciones. Botones + y −, toque para sumar y deslizamiento para restar, juntos.</small></span>
+                <span className={"switch " + (state.classic ? "on" : "")}><i /></span>
+              </button>
+            </div>
+            <fieldset className="design-picker" disabled={!!state.classic}>
               <legend>Elegí tu mesa</legend>
               <p className="muted">Elegí un estilo, de día o de noche.</p>
               <div className="design-options">
@@ -528,7 +542,8 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
             <div className="settings-card">
               <button
                 className="setting-row"
-                aria-pressed={!!state.touchOnly}
+                disabled={!!state.classic}
+                aria-pressed={!!state.touchOnly && !state.classic}
                 onClick={() => {
                   gesture.current = null;
                   suppressTouchClick.current = false;
@@ -993,7 +1008,8 @@ async function boot() {
     state.match = addPoints(state.match, 0, finishPreview ? 29 : 14);
     if (finishPreview) state.match = addPoints(state.match, 1, 23);
   }
-  document.documentElement.dataset.design = state.design;
+  document.documentElement.dataset.design = state.classic ? "fileteado" : state.design;
+    document.documentElement.toggleAttribute("data-classic", !!state.classic);
   document.documentElement.dataset.theme = state.dark ? 'dark' : 'light';
   root = createRoot(document.getElementById("root")!);
   root.render(

@@ -184,3 +184,11 @@ test("solo touch se guarda y las partidas anteriores conservan el modo con boton
   assert.equal(!!restore(JSON.stringify(initialState()))?.touchOnly, false);
   assert.equal(restore(JSON.stringify({ ...s, touchOnly: "true" })), null);
 });
+
+test('classic mode survives saving and starting another match', () => {
+  const state = { ...initialState(), classic: true, design: 'fileteado' as const, touchOnly: false };
+  const loaded = restore(JSON.stringify(state));
+  assert.equal(loaded?.classic, true);
+  assert.equal(startNext(state, ['Uno', 'Dos'], 30).classic, true);
+  assert.equal(restore(JSON.stringify({ ...state, classic: 'yes' })), null);
+});

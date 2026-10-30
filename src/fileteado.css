@@ -567,3 +567,12 @@
 :root[data-design='fileteado'][data-glow-preview] .header { animation:frame-golden-glow 30s ease-in-out -27s infinite !important; }
 :root[data-design='fileteado'][data-glow-preview] .board-mode .team { animation:panel-golden-glow 30s ease-in-out -27s infinite !important; }
 :root[data-design='fileteado'][data-glow-preview] .score-columns::after { animation:sun-golden-glow 30s ease-in-out -27s infinite !important; }
+
+/* Classic mode is still even when the development preview requests motion. */
+html:root[data-design][data-classic] .shell,
+html:root[data-design][data-classic] .shell *,
+html:root[data-design][data-classic] .shell *::before,
+html:root[data-design][data-classic] .shell *::after {
+ animation:none !important;
+ transition:none !important;
+}
