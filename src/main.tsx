@@ -1,4 +1,4 @@
-import React, { useEffect, useId, useReducer, useRef, useState } from "react";
+import React, { memo, useEffect, useId, useReducer, useRef, useState } from "react";
 import { App as NativeApp } from '@capacitor/app';
 import { initialNavigation, navigate, type Tab, type Modal } from './navigation';
 import { createRoot } from "react-dom/client";
@@ -77,7 +77,7 @@ function ArcadeScore({value}:{value:number}) {
     {digits.flatMap((digit,index)=>arcadeDigits[Number(digit)].flatMap((row,y)=>row.split('').map((pixel,x)=>pixel==='1'?<rect key={`${index}-${x}-${y}`} x={index*6+x} y={y} width="1" height="1"/>:null)))}
   </svg></>;
 }
-function Matches({ count, design }: { count: number; design: State['design'] }) {
+const Matches = memo(function Matches({ count, design }: { count: number; design: State['design'] }) {
   const id = useId().replaceAll(":", "");
   if (design === 'moderno') return <ThemeTally count={count} design={design} />;
   if (design === 'comic') return <AnimeTally count={count}/>;
@@ -133,7 +133,7 @@ function Matches({ count, design }: { count: number; design: State['design'] }) 
       ))}
     </div>
   );
-}
+});
 function App({ saved, warning }: { saved: State; warning: boolean }) {
   const [state, setState] = useState(saved);
   const touchEnabled = !!state.classic || !!state.touchOnly;

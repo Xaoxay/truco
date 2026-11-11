@@ -1,7 +1,7 @@
 import { readdir, readFile, writeFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
 const assets = (await readdir("dist", { recursive: true, withFileTypes: true }))
-  .filter((e) => e.isFile() && e.name !== "sw.js")
+  .filter((e) => e.isFile() && e.name !== "sw.js" && e.name !== "tru-co-logo.png")
   .map((e) =>
     (e.parentPath + "/" + e.name)
       .replaceAll("\\", "/")

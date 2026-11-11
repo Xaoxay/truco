@@ -1,7 +1,8 @@
+import { memo } from 'react';
 import type { Design } from './game';
 
 // Each symbol is built from five independently lit parts: one part per point.
-export function ThemeTally({ count, design }: { count: number; design: Design }) {
+export const ThemeTally = memo(function ThemeTally({ count, design }: { count: number; design: Design }) {
   return <div className={`matches themed-tally tally-${design}`} aria-hidden="true">
     {[0, 1, 2].map(group => {
       const points = Math.max(0, Math.min(5, count - group * 5));
@@ -41,4 +42,4 @@ export function ThemeTally({ count, design }: { count: number; design: Design })
       </svg>;
     })}
   </div>;
-}
+});

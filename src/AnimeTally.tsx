@@ -1,7 +1,7 @@
-import { useId } from 'react';
+import { memo, useId } from 'react';
 
 // Ilustraciones vectoriales propias inspiradas en cinco espadas de anime.
-export function AnimeTally({ count }: { count: number }) {
+export const AnimeTally = memo(function AnimeTally({ count }: { count: number }) {
   const id = useId().replaceAll(':', '');
   return <div className="matches anime-tally" aria-hidden="true">
     {[0,1,2].map(group => <svg key={group} viewBox="0 0 110 110" data-points={Math.max(0,Math.min(5,count-group*5))}>
@@ -22,4 +22,4 @@ export function AnimeTally({ count }: { count: number }) {
       </g>)}
     </svg>)}
   </div>;
-}
+});
