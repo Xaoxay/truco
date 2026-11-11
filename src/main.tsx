@@ -198,11 +198,12 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
           ?.focus();
     } else dialog.current?.close();
   }, [modal, customTeam]);
-  async function vibrate(duration = 100) {
+  async function vibrate(duration = 100, isTest = false) {
     try {
       if (!nativeHaptics) {
-        if (!webHaptics || !navigator.vibrate(duration))
-          setNotice("Este navegador no permite vibrar. Probá la app instalada en Android.");
+        if (!webHaptics || !navigator.vibrate(duration)) {
+          if (isTest) setNotice("Este navegador no permite vibrar. Probá la app instalada en Android.");
+        }
         return;
       }
       if (Capacitor.getPlatform() === 'android' && Capacitor.isPluginAvailable('TrucoHaptics')) {
@@ -216,11 +217,13 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
       }
       await Haptics.vibrate({ duration });
     } catch (error) {
-      setNotice((error as { code?: string }).code === 'VIBRATION_DISABLED'
-        ? 'Android tiene desactivada la vibración táctil. Activala en Ajustes del celular → Sonido y vibración.'
-        : (error as { code?: string }).code === 'NO_VIBRATOR'
-        ? 'Este dispositivo no tiene vibrador.'
-        : 'No se pudo vibrar. Activá la vibración táctil del celular y actualizá la app.');
+      if (isTest) {
+        setNotice((error as { code?: string }).code === 'VIBRATION_DISABLED'
+          ? 'Android tiene desactivada la vibración táctil. Activala en Ajustes del celular → Sonido y vibración.'
+          : (error as { code?: string }).code === 'NO_VIBRATOR'
+          ? 'Este dispositivo no tiene vibrador.'
+          : 'No se pudo vibrar. Activá la vibración táctil del celular y actualizá la app.');
+      }
     }
   }
   function score(team: Team, amount: number) {
@@ -573,7 +576,7 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
                 aria-pressed={vibrationAvailable && state.haptics}
                 disabled={!vibrationAvailable}
                 onClick={() => {
-                  if (!state.haptics) vibrate(180);
+                  if (!state.haptics) vibrate(180, true);
                   setState((s) => ({ ...s, haptics: !s.haptics }));
                 }}
               >
@@ -586,7 +589,7 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
                   <i />
                 </span>
               </button>
-              {vibrationAvailable && <button className="setting-row" onClick={() => vibrate(180)}>
+              {vibrationAvailable && <button className="setting-row" onClick={() => vibrate(180, true)}>
                 <Vibrate />
                 <span><strong>Probar vibración</strong><small>Un pulso de prueba, sin cambiar tu preferencia</small></span>
                 <ChevronRight />

@@ -147,8 +147,12 @@
 [data-design="fileteado"][data-theme="dark"] .board-mode .team { background-image: linear-gradient(#070707a0,#070707a0),var(--materials); }
 [data-design="fileteado"][data-theme="dark"] .header { background-image: linear-gradient(#0c0806a0,#0c0806a0),var(--materials); }
 /* Pulido artesanal: cuero más sereno, pergamino y oro envejecido. */
+@media (min-height: 541px) and (orientation: portrait) {
+  [data-design="fileteado"] .board-mode.shell {
+    min-height: 600px;
+  }
+}
 [data-design="fileteado"] .board-mode.shell {
-  min-height: 600px;
   padding: max(7px, var(--safe-area-inset-top, env(safe-area-inset-top, 0px))) max(7px, var(--safe-area-inset-right, env(safe-area-inset-right, 0px))) max(7px, var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0px))) max(7px, var(--safe-area-inset-left, env(safe-area-inset-left, 0px)));
 }
 [data-design="fileteado"] .header {

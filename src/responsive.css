@@ -11,6 +11,7 @@ html,body,#root { width: 100%; min-width: 0; }
   padding: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left);
   container-type: size;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 :root[data-design='fileteado'] .board-mode.shell {
   padding: calc(var(--safe-top) + 6px) calc(var(--safe-right) + 6px) calc(var(--safe-bottom) + 6px) calc(var(--safe-left) + 6px);
@@ -30,6 +31,7 @@ html,body,#root { width: 100%; min-width: 0; }
   max-height: calc(100dvh - var(--safe-top) - var(--safe-bottom) - 24px);
   margin-block: auto;
   overflow-y: auto; overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 }
 :root[data-design] .board-mode .team { min-width: 0; }
 :root[data-design] .board-mode .scoreboard { min-height: 210px; }

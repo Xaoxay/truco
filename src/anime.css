@@ -202,7 +202,7 @@
  color:#fff7d9;font:700 italic 37px Georgia,serif;letter-spacing:-1px;
  text-shadow:0 2px 2px #294738b3,2px 3px #29473850;
 }
-[data-design='comic'] .header .icon-button { background:#31513a8f;backdrop-filter:blur(6px);border:1px solid #f5e7bf;box-shadow:inset 0 0 0 3px #eee5c01a; }
+[data-design='comic'] .header .icon-button { background:#31513a8f;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border:1px solid #f5e7bf;box-shadow:inset 0 0 0 3px #eee5c01a; }
 [data-design='comic'] .mesa-heading {
  width:fit-content;align-self:center;min-height:28px;padding:5px 18px;margin:8px 12px;
  color:#354e35;background:#fff7dfdc;border:1px solid #aeb68a;border-radius:2px 14px;
