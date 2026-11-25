@@ -123,7 +123,7 @@ test("limita el archivo a las últimas 100 partidas", () => {
 });
 
 test("conserva cada diseño y modo oscuro al recuperar la partida", () => {
-  for (const design of ["fileteado", "moderno", "sakura", "retro", "comic", "cyberpunk"] as const) {
+  for (const design of ["fileteado", "primavera", "verano", "otono", "invierno", "sakura", "retro", "cyberpunk"] as const) {
     const s = { ...initialState(), design, dark: true };
     assert.deepEqual(restore(JSON.stringify(s)), s);
   }
@@ -141,7 +141,7 @@ test("los temas retirados migran al original sin perder partida ni preferencias"
   const playing = startNext(s, s.match.names, 30);
   playing.match = addPoints(playing.match, 0, 12);
   playing.dark = true;
-  for (const design of ["criollo", "patriota", "rosa", "rustico", "pampa"]) {
+  for (const design of ["criollo", "patriota", "rosa", "rustico", "pampa", "moderno", "comic"]) {
     const restored = restore(JSON.stringify({ ...playing, design }));
     assert.deepEqual(restored, { ...playing, design: "fileteado" });
   }

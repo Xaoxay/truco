@@ -1,19 +1,5 @@
 /* Identidades independientes. Fileteado conserva su hoja original. */
 :root { --header-text: #f7ebd3; --header-muted: #d1b991; --button-text: #fff0d7; --button-bg: var(--green); --guard-ink: #eaddc2; }
-:root[data-design="moderno"] {
-  --bg: #f5f7fa; --surface: #ffffff; --text: #192d3c; --muted: #536572;
-  --line: #ccd6df; --soft: #e7edf2; --nav: #f5f7fa; --green: #245674; --poncho: #6c457e;
-  --team-ink: #6c457e; --leather: #ffffff; --header-text: #192d3c; --header-muted: #192d3c;
-  --silver: #192d3c; --button-bg: #245674; --button-text: #ffffff;
-  --ghost: #53657240; --match: #192d3c; --guard-ink: #ffffff;
-}
-:root[data-design="moderno"][data-theme="dark"] {
-  --bg: #121b23; --surface: #1c2934; --text: #eef4fa; --muted: #b2c1ce;
-  --line: #4c6070; --soft: #233340; --nav: #121b23; --green: #93c7e5; --poncho: #d4b7eb;
-  --team-ink: #d4b7eb; --leather: #17232d; --header-text: #eef4fa; --header-muted: #eef4fa;
-  --silver: #eef4fa; --button-bg: #93c7e5; --button-text: #18222c;
-  --ghost: #b2c1ce40; --match: #eef4fa; --guard-ink: #1c2934;
-}
 :root[data-design="sakura"] {
   --bg: #fff3f5; --surface: #fffafb; --text: #532c42; --muted: #86566d;
   --line: #d8abc1; --soft: #f8dfeb; --nav: #fff3f5; --green: #963d69; --poncho: #75528d;
@@ -41,20 +27,6 @@
   --team-ink: #b4ccb1; --leather: #35251b; --header-text: #fff0cd; --header-muted: #fff0cd;
   --silver: #fff0cd; --button-bg: #f0b474; --button-text: #18222c;
   --ghost: #d5bf9540; --match: #fff0cd; --guard-ink: #352c21;
-}
-:root[data-design="comic"] {
-  --bg: #fff6d3; --surface: #fffef4; --text: #202039; --muted: #5d586e;
-  --line: #38334d; --soft: #f0e4b6; --nav: #fff6d3; --green: #473bbe; --poncho: #a52e53;
-  --team-ink: #a52e53; --leather: #ffe35a; --header-text: #202039; --header-muted: #202039;
-  --silver: #202039; --button-bg: #473bbe; --button-text: #ffffff;
-  --ghost: #5d586e40; --match: #202039; --guard-ink: #fffef4;
-}
-:root[data-design="comic"][data-theme="dark"] {
-  --bg: #1c1b30; --surface: #2c2841; --text: #fff2cd; --muted: #cac1df;
-  --line: #9188b5; --soft: #3c3552; --nav: #1c1b30; --green: #c5b9ff; --poncho: #ffb4cb;
-  --team-ink: #ffb4cb; --leather: #2d2545; --header-text: #fff2cd; --header-muted: #fff2cd;
-  --silver: #fff2cd; --button-bg: #c5b9ff; --button-text: #18222c;
-  --ghost: #cac1df40; --match: #fff2cd; --guard-ink: #2c2841;
 }
 :root[data-design="cyberpunk"] {
   --bg: #edf8fc; --surface: #f9fcff; --text: #102c43; --muted: #49677d;
@@ -98,6 +70,7 @@
 .design-swatch i:nth-child(2) { background: var(--sample-paper); }
 .design-swatch i:nth-child(3) { background: var(--sample-accent); }
 
+.design-picker:disabled { opacity: 0.55; pointer-events: none; }
 .setting-row:disabled { opacity: 1; }
 .setting-row:disabled .switch { opacity: .5; }
 :where(:root:not([data-design="fileteado"])) .shell { background-image: none; }
@@ -113,14 +86,6 @@
 :where(:root:not([data-design="fileteado"])) .mesa-edition { display: none; }
 :where(:root:not([data-design="fileteado"])) .board-mode .saved { color: var(--muted); }
 :where(:root:not([data-design="fileteado"])) .toast { background: var(--text); color: var(--bg); }
-/* Moderno: jerarquía limpia, superficies lisas y tipografía de sistema. */
-[data-design="moderno"] .brand-title,
-[data-design="moderno"] .team-name button,
-[data-design="moderno"] .board-mode .score { font-family: system-ui, sans-serif; letter-spacing: -1.5px; }
-[data-design="moderno"] .board-mode .score { font-weight: 650; }
-[data-design="moderno"] .mesa-heading { font: 13px system-ui; }
-[data-design="moderno"] .team-caption { letter-spacing: 1px; }
-[data-design="moderno"] .board-mode .main-controls button { border-radius: 10px; }
 /* Sakura: papel rosado, ramas y pétalos; las flores no tapan los tantos. */
 [data-design="sakura"] .header { background-image: url('../public/themes/sakura.svg'); background-repeat: no-repeat; background-position: right top; background-size: 170px auto; }
 [data-design="sakura"] .mesa-heading { font-style: italic; color: var(--team-ink); }
@@ -139,17 +104,6 @@
 [data-design="retro"] .team-caption { font-family: monospace; }
 [data-design="retro"] .board-mode .score { font-weight: bold; }
 [data-design="retro"] .board-mode .main-controls button { border-radius: 30px; box-shadow: 0 3px 0 var(--line); }
-/* Anime / cómic: viñetas con tinta gruesa y trama de puntos. */
-[data-design="comic"] .shell { background-image: radial-gradient(var(--line) .65px,transparent .8px); background-size: 7px 7px; }
-[data-design="comic"] .header { border-bottom: 3px solid var(--line); }
-[data-design="comic"] .brand-title { font: 900 32px system-ui; font-style: italic; letter-spacing: -2px; text-shadow: 2px 2px var(--surface); }
-[data-design="comic"] .mesa-heading { font: bold 12px system-ui; text-transform: uppercase; letter-spacing: 1px; background: var(--bg); margin-block: 4px; }
-[data-design="comic"] .board-mode .team { border: 3px solid var(--line); border-radius: 2px; box-shadow: 3px 3px 0 var(--line); }
-[data-design="comic"] .team-name button { font: 900 clamp(20px,4vw,30px) system-ui; font-style: italic; }
-[data-design="comic"] .board-mode .score { font-family: system-ui; font-weight: 900; font-style: italic; text-shadow: 2px 2px var(--soft); }
-[data-design="comic"] .team-caption { font-weight: 900; }
-[data-design="comic"] .board-mode .main-controls button { border-radius: 2px; border: 2px solid var(--line); box-shadow: 2px 2px 0 var(--line); }
-[data-design="comic"] .primary-button, [data-design="comic"] .secondary-button { border: 2px solid var(--line); border-radius: 2px; }
 /* Cyberpunk: circuitos, números monoespaciados y luz estática. */
 [data-design="cyberpunk"] .shell { background-image: linear-gradient(#488eaa15 1px, transparent 1px),linear-gradient(90deg,#488eaa15 1px,transparent 1px); background-size: 22px 22px; }
 [data-design="cyberpunk"] .header { border-bottom: 2px solid #43cbdf; box-shadow: 0 2px 12px #43cbdf30; }
@@ -162,10 +116,8 @@
 [data-design="cyberpunk"] .board-mode .team-1 .score { color: var(--team-ink); }
 [data-design="cyberpunk"] .team-caption, [data-design="cyberpunk"] .tally-phase h3 { font-family: monospace; }
 [data-design="cyberpunk"] .board-mode .main-controls button { border-radius: 2px 10px 2px 10px; }
-.swatch-moderno { --sample:#245674; --sample-paper:#f5f7fa; --sample-accent:#6c457e; }
 .swatch-sakura { --sample:#963d69; --sample-paper:#fff3f5; --sample-accent:#dca4c3; }
 .swatch-retro { --sample:#a34824; --sample-paper:#f8ecd3; --sample-accent:#346760; }
-.swatch-comic { --sample:#473bbe; --sample-paper:#ffe35a; --sample-accent:#a52e53; }
 .swatch-cyberpunk { --sample:#080e1b; --sample-paper:#55ebee; --sample-accent:#ff8ccc; }
 @media(max-width:359px) {
   :where(:root:not([data-design="fileteado"])) .board-mode .score-columns { gap: 8px; padding-inline: 8px; }

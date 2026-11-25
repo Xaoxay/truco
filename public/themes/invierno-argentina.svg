@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300">
+<defs>
+<linearGradient id="sky" x2="0" y2="1"><stop stop-color="#8bb8db"/><stop offset=".6" stop-color="#cbe3f5"/><stop offset="1" stop-color="#eef7fc"/></linearGradient>
+<linearGradient id="glacier" x2="0" y2="1"><stop stop-color="#ffffff"/><stop offset=".6" stop-color="#b8e0f7"/><stop offset="1" stop-color="#4e8eb8"/></linearGradient>
+</defs>
+<path fill="url(#sky)" d="M0 0H800V300H0Z"/>
+<path fill="#5d83a3" d="M0 242L125 112 248 205 398 78 552 200 688 106 800 206V300H0Z"/>
+<path fill="url(#glacier)" d="M125 112L176 154 146 150 128 170 105 148 80 162ZM398 78L462 132 426 126 398 152 368 126 334 138ZM688 106L744 154 710 148 688 170 664 146 632 158Z"/>
+<path fill="#d8edf9" d="M0 248Q220 226 430 246T800 238V300H0Z"/>
+<g>
+<path fill="#2d5773" d="M44 260L68 176L92 260ZM92 266L114 192L136 266ZM680 262L704 176L728 262ZM726 266L748 192L770 266Z"/>
+<path fill="#f5fbff" d="M68 176L78 210L68 204L58 210ZM114 192L123 220L114 215L105 220ZM704 176L714 210L704 204L694 210ZM748 192L757 220L748 215L739 220Z"/>
+</g>
+<g fill="#ffffff" opacity=".8">
+<circle cx="230" cy="64" r="3"/><circle cx="310" cy="96" r="2.5"/><circle cx="495" cy="68" r="3"/><circle cx="570" cy="112" r="2.5"/><circle cx="170" cy="94" r="2"/><circle cx="624" cy="72" r="2"/>
+</g>
+</svg>

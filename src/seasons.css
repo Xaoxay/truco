@@ -1,0 +1,195 @@
+/* Cuatro estaciones de Argentina: Primavera, Verano, Otoño e Invierno. */
+
+/* === PRIMAVERA · JACARANDÁS === */
+:root[data-design="primavera"] {
+  --bg: #f6f2fc; --surface: #fffdff; --text: #2c1e44; --muted: #6c578a;
+  --line: #cbbbe6; --soft: #ece3fa; --nav: #f6f2fc; --leather: #e3d6f7;
+  --green: #6942a8; --poncho: #b84274; --team-ink: #b84274;
+  --header-text: #2c1e44; --header-muted: #523b78; --silver: #2c1e44;
+  --button-bg: #6942a8; --button-text: #ffffff; --ghost: #6c578a40;
+  --match: #6942a8; --guard-ink: #fffdff;
+}
+:root[data-design="primavera"][data-theme="dark"] {
+  --bg: #181226; --surface: #231b36; --text: #f3ecff; --muted: #c2b1de;
+  --line: #5b4780; --soft: #2e2447; --nav: #181226; --leather: #140f21;
+  --green: #b794f4; --poncho: #f294bd; --team-ink: #f294bd;
+  --header-text: #f3ecff; --header-muted: #d6c4f5; --silver: #f3ecff;
+  --button-bg: #b794f4; --button-text: #181226; --ghost: #c2b1de40;
+  --match: #b794f4; --guard-ink: #231b36;
+}
+[data-design="primavera"] .shell {
+  background: radial-gradient(ellipse at 20% 0%, #dcd0f950, transparent 60%), var(--bg);
+}
+[data-design="primavera"] .board-mode .header {
+  background-image: linear-gradient(var(--leather), #ffffff20 75%), url('../public/themes/primavera-argentina.svg');
+  border-color: var(--line);
+}
+[data-design="primavera"][data-theme="dark"] .board-mode .header {
+  background-image: linear-gradient(#181226c8, #18122666), url('../public/themes/primavera-argentina.svg');
+}
+[data-design="primavera"] .mesa-heading {
+  margin: 4px 8px; border-radius: 99px; border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  color: var(--green); font: italic 600 14px Georgia, serif;
+}
+[data-design="primavera"] .board-mode .team {
+  border-radius: 22px 10px 22px 10px;
+  background: color-mix(in srgb, var(--surface) 95%, transparent);
+  box-shadow: 0 4px 14px #5e3b9914;
+}
+[data-design="primavera"] .board-mode .team-1 { border-radius: 10px 22px 10px 22px; }
+[data-design="primavera"] .board-mode .score { color: var(--green); }
+[data-design="primavera"] .board-mode .team-1 .score { color: var(--poncho); }
+[data-design="primavera"] .board-mode .main-controls button { border-radius: 16px; }
+.tally-primavera .jacaranda-stem { fill: none; stroke: #7d6752; stroke-width: 1.8; stroke-linecap: round; opacity: .65; }
+.tally-primavera .jacaranda-bell { fill: #9b70e5; stroke: #5a3596; stroke-width: 1; }
+.tally-primavera .jacaranda-core { fill: #ffe694; }
+[data-theme="dark"] .tally-primavera .jacaranda-bell { fill: #bfa0f7; stroke: #f2e8ff; }
+[data-theme="dark"] .tally-primavera .jacaranda-stem { stroke: #bfa995; }
+.swatch-primavera { --sample: #6942a8; --sample-paper: #f6f2fc; --sample-accent: #b84274; }
+
+/* === VERANO · COSTA Y SOL === */
+:root[data-design="verano"] {
+  --bg: #fbf4e2; --surface: #fffdf6; --text: #12374b; --muted: #4b6d7c;
+  --line: #d6c18f; --soft: #f3e6c5; --nav: #fbf4e2; --leather: #f3e3ba;
+  --green: #0d7c86; --poncho: #cf5636; --team-ink: #cf5636;
+  --header-text: #12374b; --header-muted: #1b506b; --silver: #12374b;
+  --button-bg: #0d7c86; --button-text: #ffffff; --ghost: #4b6d7c40;
+  --match: #0d7c86; --guard-ink: #fffdf6;
+}
+:root[data-design="verano"][data-theme="dark"] {
+  --bg: #0c1f2c; --surface: #132d3f; --text: #f5f1e4; --muted: #a6cbd6;
+  --line: #346078; --soft: #193b52; --nav: #0c1f2c; --leather: #091822;
+  --green: #4ed3de; --poncho: #ff8c69; --team-ink: #ff8c69;
+  --header-text: #f5f1e4; --header-muted: #b8e4ef; --silver: #f5f1e4;
+  --button-bg: #4ed3de; --button-text: #0c1f2c; --ghost: #a6cbd640;
+  --match: #4ed3de; --guard-ink: #132d3f;
+}
+[data-design="verano"] .shell {
+  background: radial-gradient(ellipse at 50% 0%, #ffe69b42, transparent 58%), var(--bg);
+}
+[data-design="verano"] .board-mode .header {
+  background-image: linear-gradient(var(--leather), transparent 72%), url('../public/themes/verano-argentina.svg');
+  border-color: var(--line);
+}
+[data-design="verano"][data-theme="dark"] .board-mode .header {
+  background-image: linear-gradient(#0c1f2ccc, #0c1f2c66), url('../public/themes/verano-argentina.svg');
+}
+[data-design="verano"] .mesa-heading {
+  margin: 4px 8px; border-block: 2px solid var(--line);
+  background: color-mix(in srgb, var(--surface) 90%, transparent);
+  color: var(--green); font: 700 13px system-ui, sans-serif; letter-spacing: 1px; text-transform: uppercase;
+}
+[data-design="verano"] .board-mode .team {
+  border-radius: 14px; border-top: 4px solid var(--green);
+  background: color-mix(in srgb, var(--surface) 96%, transparent);
+  box-shadow: 0 4px 12px #0c4d5e14;
+}
+[data-design="verano"] .board-mode .team-1 { border-top-color: var(--poncho); }
+[data-design="verano"] .board-mode .score { color: var(--green); }
+[data-design="verano"] .board-mode .team-1 .score { color: var(--poncho); }
+[data-design="verano"] .board-mode .main-controls button { border-radius: 12px; }
+.tally-verano .sun-ray-main { fill: #f5b82e; stroke: #b86a16; stroke-width: .9; }
+.tally-verano .sun-ray-flare { fill: #ff8e47; stroke: #b84d1b; stroke-width: .8; }
+.tally-verano .sun-disc { fill: #ffd54f; stroke: #c27813; stroke-width: 1.2; }
+.tally-verano .sun-ring { fill: none; stroke: #fff5bd; stroke-width: 1.2; }
+[data-theme="dark"] .tally-verano .sun-ray-main { fill: #ffd45c; stroke: #ffeeb3; }
+[data-theme="dark"] .tally-verano .sun-disc { fill: #ffe06b; stroke: #ffd45c; }
+.swatch-verano { --sample: #0d7c86; --sample-paper: #fbf4e2; --sample-accent: #cf5636; }
+
+/* === OTOÑO · PATAGONIA === */
+:root[data-design="otono"] {
+  --bg: #f6ebdd; --surface: #fff8ee; --text: #3b2214; --muted: #7a5842;
+  --line: #cfa882; --soft: #ebd6be; --nav: #f6ebdd; --leather: #ebd2b2;
+  --green: #b84a24; --poncho: #996515; --team-ink: #996515;
+  --header-text: #3b2214; --header-muted: #5c3722; --silver: #3b2214;
+  --button-bg: #b84a24; --button-text: #fff9f0; --ghost: #7a584240;
+  --match: #b84a24; --guard-ink: #fff8ee;
+}
+:root[data-design="otono"][data-theme="dark"] {
+  --bg: #1f140f; --surface: #2d1e17; --text: #fae8d0; --muted: #d1b293;
+  --line: #6e4e39; --soft: #3a271e; --nav: #1f140f; --leather: #19100c;
+  --green: #f08354; --poncho: #e8b354; --team-ink: #e8b354;
+  --header-text: #fae8d0; --header-muted: #ecc8a2; --silver: #fae8d0;
+  --button-bg: #f08354; --button-text: #1f140f; --ghost: #d1b29340;
+  --match: #f08354; --guard-ink: #2d1e17;
+}
+[data-design="otono"] .shell {
+  background: radial-gradient(ellipse at 75% 0%, #e5a96b33, transparent 60%), var(--bg);
+}
+[data-design="otono"] .board-mode .header {
+  background-image: linear-gradient(var(--leather), transparent 72%), url('../public/themes/otono-argentina.svg');
+  border-color: var(--line);
+}
+[data-design="otono"][data-theme="dark"] .board-mode .header {
+  background-image: linear-gradient(#1f140fcc, #1f140f66), url('../public/themes/otono-argentina.svg');
+}
+[data-design="otono"] .mesa-heading {
+  margin: 4px 8px; border-block: 1px dashed var(--line);
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  color: var(--green); font: italic 15px Georgia, serif;
+}
+[data-design="otono"] .board-mode .team {
+  border-radius: 16px 4px 16px 4px; border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--surface) 95%, transparent);
+  box-shadow: 0 4px 12px #5c2e1416;
+}
+[data-design="otono"] .board-mode .team-1 { border-radius: 4px 16px 4px 16px; }
+[data-design="otono"] .board-mode .score { color: var(--green); }
+[data-design="otono"] .board-mode .team-1 .score { color: var(--poncho); }
+[data-design="otono"] .board-mode .main-controls button { border-radius: 8px; }
+.tally-otono .lenga-leaf { stroke: #5d2b13; stroke-width: .9; }
+.tally-otono .leaf-0 { fill: #c84b24; }
+.tally-otono .leaf-1 { fill: #e08426; }
+.tally-otono .leaf-2 { fill: #d4a62a; }
+.tally-otono .lenga-vein { fill: none; stroke: #fff0d4; stroke-width: .7; opacity: .85; }
+[data-theme="dark"] .tally-otono .lenga-leaf { stroke: #fae0be; }
+.swatch-otono { --sample: #b84a24; --sample-paper: #f6ebdd; --sample-accent: #d4a62a; }
+
+/* === INVIERNO · CORDILLERA === */
+:root[data-design="invierno"] {
+  --bg: #edf5fc; --surface: #fbfdff; --text: #152b40; --muted: #4e6b85;
+  --line: #acc6dc; --soft: #dbeaf6; --nav: #edf5fc; --leather: #d5e7f7;
+  --green: #1d6496; --poncho: #7b4166; --team-ink: #7b4166;
+  --header-text: #152b40; --header-muted: #294c6b; --silver: #152b40;
+  --button-bg: #1d6496; --button-text: #ffffff; --ghost: #4e6b8540;
+  --match: #1d6496; --guard-ink: #fbfdff;
+}
+:root[data-design="invierno"][data-theme="dark"] {
+  --bg: #0c1824; --surface: #132538; --text: #eaf4fc; --muted: #9ec0db;
+  --line: #3b5b78; --soft: #1a334a; --nav: #0c1824; --leather: #09131c;
+  --green: #74c7f2; --poncho: #d99ac2; --team-ink: #d99ac2;
+  --header-text: #eaf4fc; --header-muted: #b6d8f2; --silver: #eaf4fc;
+  --button-bg: #74c7f2; --button-text: #0c1824; --ghost: #9ec0db40;
+  --match: #74c7f2; --guard-ink: #132538;
+}
+[data-design="invierno"] .shell {
+  background: radial-gradient(ellipse at 50% 0%, #bfe2fb45, transparent 60%), var(--bg);
+}
+[data-design="invierno"] .board-mode .header {
+  background-image: linear-gradient(var(--leather), transparent 74%), url('../public/themes/invierno-argentina.svg');
+  border-color: var(--line);
+}
+[data-design="invierno"][data-theme="dark"] .board-mode .header {
+  background-image: linear-gradient(#0c1824cc, #0c182466), url('../public/themes/invierno-argentina.svg');
+}
+[data-design="invierno"] .mesa-heading {
+  margin: 4px 8px; border: 1px solid var(--line); border-radius: 8px;
+  background: color-mix(in srgb, var(--surface) 90%, transparent);
+  color: var(--green); font: 600 13px Georgia, serif; letter-spacing: .5px;
+}
+[data-design="invierno"] .board-mode .team {
+  border-radius: 10px; border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--surface) 95%, transparent);
+  box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--soft) 60%, transparent), 0 4px 12px #15344f12;
+}
+[data-design="invierno"] .board-mode .score { color: var(--green); }
+[data-design="invierno"] .board-mode .team-1 .score { color: var(--poncho); }
+[data-design="invierno"] .board-mode .main-controls button { border-radius: 10px; }
+.tally-invierno .ice-arm,
+.tally-invierno .ice-diag { fill: none; stroke: #2b7bb3; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.tally-invierno .ice-core { fill: #bce3fa; stroke: #1d6496; stroke-width: 1.4; }
+[data-theme="dark"] .tally-invierno .ice-arm,
+[data-theme="dark"] .tally-invierno .ice-diag { stroke: #8fd6fb; }
+[data-theme="dark"] .tally-invierno .ice-core { fill: #4a9fd1; stroke: #d7f0ff; }
+.swatch-invierno { --sample: #1d6496; --sample-paper: #edf5fc; --sample-accent: #7b4166; }

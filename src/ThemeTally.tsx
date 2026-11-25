@@ -7,15 +7,75 @@ export const ThemeTally = memo(function ThemeTally({ count, design }: { count: n
     {[0, 1, 2].map(group => {
       const points = Math.max(0, Math.min(5, count - group * 5));
       return <svg key={group} viewBox="0 0 64 64" data-points={points} className={points === 5 ? 'symbol-complete' : ''}>
-        <path className="symbol-placeholder" d={design === 'moderno' ? 'M32 5A27 27 0 1 1 31.99 5' : design === 'cyberpunk' ? 'M32 6A26 26 0 1 1 31.99 6M32 14A18 18 0 1 1 31.99 14' : 'M7 8H56V56H7ZM9 54L54 10'} />
-        {design === 'moderno' && <>
-          <circle className="football-outline" cx="32" cy="32" r="27" />
-          {[0,1,2,3].map(part=><g key={part} transform={`rotate(${part*90} 32 32)`} className={part < points ? 'ball-part filled' : 'ball-part empty'}>
-            <path className="ball-panel" d="M32 5A27 27 0 0 1 59 32H32Z" />
-            <path className="ball-patch" d="M45 9L54 18L49 26L40 23L38 15Z" />
-            <path className="ball-seam" d="M32 5V20M59 32H44M40 23L36 27" />
-          </g>)}
-          <path className={points===5?'ball-center filled':'ball-center empty'} d="M32 19L44 28L39 42H25L20 28Z" />
+        <path className="symbol-placeholder" d={
+          design === 'cyberpunk'
+            ? 'M32 6A26 26 0 1 1 31.99 6M32 14A18 18 0 1 1 31.99 14'
+            : design === 'verano' || design === 'invierno'
+            ? 'M32 8A24 24 0 1 1 31.99 8'
+            : design === 'primavera' || design === 'otono'
+            ? 'M12 50Q32 12 52 50'
+            : 'M7 8H56V56H7ZM9 54L54 10'
+        } />
+        {design === 'primavera' && <>
+          <path className="jacaranda-stem" d="M10 49Q28 24 54 17" />
+          {[
+            { x: 16, y: 42, r: -35 },
+            { x: 25, y: 31, r: -20 },
+            { x: 36, y: 24, r: -10 },
+            { x: 47, y: 20, r: 10 },
+            { x: 32, y: 42, r: 22 },
+          ].map((bell, part) => (
+            <g
+              key={part}
+              transform={`translate(${bell.x} ${bell.y}) rotate(${bell.r})`}
+              className={part < points ? 'symbol-part filled' : 'symbol-part empty'}
+            >
+              <path className="jacaranda-bell" d="M0 -8C-5 -6 -8 0 -6 6Q0 9 6 6C8 0 5 -6 0 -8Z" />
+              <circle className="jacaranda-core" cx="0" cy="1" r="1.8" />
+            </g>
+          ))}
+        </>}
+        {design === 'verano' && <>
+          {[0, 1, 2, 3].map(part => (
+            <g key={part} transform={`rotate(${part * 90} 32 32)`} className={part < points ? 'symbol-part filled' : 'symbol-part empty'}>
+              <path className="sun-ray-main" d="M32 5L37 16L27 16Z" />
+              <path className="sun-ray-flare" d="M49 12L46 21L41 16Z" />
+            </g>
+          ))}
+          <g className={points === 5 ? 'symbol-part filled' : 'symbol-part empty'}>
+            <circle className="sun-disc" cx="32" cy="32" r="13" />
+            <circle className="sun-ring" cx="32" cy="32" r="9" />
+          </g>
+        </>}
+        {design === 'otono' && <>
+          {[
+            { x: 17, y: 40, r: -54 },
+            { x: 24, y: 24, r: -25 },
+            { x: 38, y: 20, r: 8 },
+            { x: 48, y: 31, r: 42 },
+            { x: 34, y: 43, r: 18 },
+          ].map((leaf, part) => (
+            <g
+              key={part}
+              transform={`translate(${leaf.x} ${leaf.y}) rotate(${leaf.r})`}
+              className={part < points ? 'symbol-part filled' : 'symbol-part empty'}
+            >
+              <path className={`lenga-leaf leaf-${part % 3}`} d="M0 -12C5 -8 8 -1 5 6L0 11L-5 6C-8 -1 -5 -8 0 -12Z" />
+              <path className="lenga-vein" d="M0 -8V12M0 -2L4 -5M0 3L-4 0" />
+            </g>
+          ))}
+        </>}
+        {design === 'invierno' && <>
+          {[0, 1, 2, 3].map(part => (
+            <g key={part} transform={`rotate(${part * 90} 32 32)`} className={part < points ? 'symbol-part filled' : 'symbol-part empty'}>
+              <path className="ice-arm" d="M32 6V23M32 13L27 9M32 13L37 9M32 19L28 16M32 19L36 16" />
+              <path className="ice-diag" d="M47 17L39 25M44 15L44 20M49 20L44 20" />
+            </g>
+          ))}
+          <polygon
+            className={points === 5 ? 'ice-core symbol-part filled' : 'ice-core symbol-part empty'}
+            points="32,23 40,27.5 40,36.5 32,41 24,36.5 24,27.5"
+          />
         </>}
         {design === 'sakura' && <>
           {[0, 1, 2, 3, 4].map(part => <g key={part} className={part < points ? 'symbol-part filled' : 'symbol-part empty'} transform={`rotate(${part * 72} 32 32)`}>

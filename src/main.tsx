@@ -22,7 +22,6 @@ import {
   ShieldCheck,
   Sun,
   Trophy,
-  Swords,
   Vibrate,
   X,
 } from "lucide-react";
@@ -43,13 +42,11 @@ import "./gaucho.css";
 import "./themes.css";
 import "./fileteado.css";
 import "./illustrated-themes.css";
+import "./seasons.css";
 import "./responsive.css";
 import { ThemeTally } from './ThemeTally';
 import { touchPoints } from './touch';
-import { AnimeTally } from './AnimeTally';
 import { MatchFire, MatchAsh } from './MatchFire';
-import './anime.css';
-import './moderno.css';
 import './shared-controls.css';
 import { checkForUpdate, NativeUpdates } from './updates';
 
@@ -79,9 +76,7 @@ function ArcadeScore({value}:{value:number}) {
 }
 const Matches = memo(function Matches({ count, design }: { count: number; design: State['design'] }) {
   const id = useId().replaceAll(":", "");
-  if (design === 'moderno') return <ThemeTally count={count} design={design} />;
-  if (design === 'comic') return <AnimeTally count={count}/>;
-  if (design === 'sakura' || design === 'cyberpunk' || design === 'retro') {
+  if (design !== 'fileteado') {
     return <ThemeTally count={count} design={design} />;
   }
   const lines = [
@@ -167,8 +162,29 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
   const latest = useRef(state);
   const gesture = useRef<{ id: number; team: Team; x: number; y: number; travel: number } | null>(null);
   const suppressTouchClick = useRef(false);
+  const suppressResetTimer = useRef<number | undefined>(undefined);
   const total = scores(state.match);
   const won = winner(state.match);
+  useEffect(() => {
+    suppressTouchClick.current = false;
+    clearTimeout(suppressResetTimer.current);
+  }, [touchEnabled]);
+  useEffect(() => {
+    const active = fireEvents.map((ts, idx) => (ts > 0 ? { ts, idx } : null)).filter(Boolean) as { ts: number; idx: number }[];
+    if (active.length === 0) return;
+    const timers = active.map(({ ts, idx }) => {
+      const remaining = Math.max(0, 2800 - (Date.now() - ts));
+      return setTimeout(() => {
+        setFireEvents((events) => {
+          if (events[idx] !== ts) return events;
+          const next: [number, number] = [...events];
+          next[idx] = 0;
+          return next;
+        });
+      }, remaining);
+    });
+    return () => timers.forEach(clearTimeout);
+  }, [fireEvents]);
   useEffect(() => {
     latest.current = state;
     if (firePreview) return;
@@ -191,12 +207,14 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
   }, [notice]);
   useEffect(() => {
     if (modal) {
-      dialog.current?.showModal();
+      if (!dialog.current?.open) dialog.current?.showModal();
       if (modal === "names")
         dialog.current
           ?.querySelector<HTMLInputElement>(`[name="name${customTeam}"]`)
           ?.focus();
-    } else dialog.current?.close();
+    } else if (dialog.current?.open) {
+      dialog.current.close();
+    }
   }, [modal, customTeam]);
   async function vibrate(duration = 100, isTest = false) {
     try {
@@ -275,11 +293,17 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
       <main>
         {tab === "board" && (
           <>
-            {state.design === "moderno" ? <div className="champions-banner"><img src="./champions-cup.svg" alt="Copa del Mundo"/><div><span className="champions-stars" aria-label="Tres estrellas">★ ★ ★</span><strong>CAMPEONES DEL MUNDO</strong><span className="champions-years">1978 · 1986 · 2022</span></div></div> : <div className="mesa-heading">
-              <span>{state.design === "comic" ? "Cada espada, un tanto" : "Entre mates y cantos"}</span>
+            <div className="mesa-heading">
+              <span>{
+                state.design === "primavera" ? "Aromas de jacarandá"
+                : state.design === "verano" ? "Sol de enero y mar"
+                : state.design === "otono" ? "Hojas de lenga y viento"
+                : state.design === "invierno" ? "Nieve en la cordillera"
+                : "Entre mates y cantos"
+              }</span>
               <img className="criollo-hat" src={state.design === "fileteado" ? "./artesanal/mate.webp" : "./sombrero-criollo.svg"} alt="" />
               <span className="mesa-edition">ANOTADOR CRIOLLO</span>
-            </div>}
+            </div>
             <section className="scoreboard" aria-label="Marcador de la partida">
               <div className="score-columns">
                 {([0, 1] as Team[]).map((team) => {
@@ -319,14 +343,24 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
                         className={"tally-phases touch-tally " + (state.match.goal === 15 ? "short-game" : "")}
                         role="button"
                         tabIndex={touchEnabled || won === null ? 0 : -1}
-                        aria-label={`Sumar un tanto a ${state.match.names[team]} tocando ${state.design === "moderno" ? "las pelotas" : "los fósforos"}`}
+                        aria-label={`Sumar un tanto a ${state.match.names[team]} tocando ${
+                          state.design === "primavera" ? "las flores de jacarandá"
+                          : state.design === "verano" ? "los soles de verano"
+                          : state.design === "otono" ? "las hojas de otoño"
+                          : state.design === "invierno" ? "los cristales de nieve"
+                          : state.design === "sakura" ? "las flores"
+                          : state.design === "retro" ? "las monedas"
+                          : state.design === "cyberpunk" ? "las fichas"
+                          : "los fósforos"
+                        }`}
                         aria-disabled={!touchEnabled && won !== null}
                         aria-description={touchEnabled ? "Tocá para sumar. Deslizá hacia abajo para restar. Con teclado, flecha abajo para restar." : undefined}
                         onPointerDown={(event) => {
                           if (!touchEnabled || !event.isPrimary || event.button !== 0) return;
+                          clearTimeout(suppressResetTimer.current);
                           suppressTouchClick.current = true;
                           gesture.current = { id: event.pointerId, team, x: event.clientX, y: event.clientY, travel: 0 };
-                          event.currentTarget.setPointerCapture(event.pointerId);
+                          try { event.currentTarget.setPointerCapture(event.pointerId); } catch {}
                         }}
                         onPointerMove={(event) => {
                           const start = gesture.current;
@@ -338,18 +372,31 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
                           const start = gesture.current;
                           if (!start || start.id !== event.pointerId || start.team !== team) return;
                           gesture.current = null;
+                          suppressResetTimer.current = window.setTimeout(() => { suppressTouchClick.current = false; }, 350);
                           const dx = event.clientX - start.x;
                           const dy = event.clientY - start.y;
                           const amount = touchPoints(dx, dy, Math.max(start.travel, Math.hypot(dx, dy)));
                           if (amount) score(team, amount);
                         }}
-                        onPointerCancel={(event) => { if (gesture.current?.id === event.pointerId) gesture.current = null; }}
-                        onLostPointerCapture={(event) => { if (gesture.current?.id === event.pointerId) gesture.current = null; }}
+                        onPointerCancel={(event) => {
+                          if (gesture.current?.id === event.pointerId) {
+                            gesture.current = null;
+                            suppressResetTimer.current = window.setTimeout(() => { suppressTouchClick.current = false; }, 350);
+                          }
+                        }}
+                        onLostPointerCapture={(event) => {
+                          if (gesture.current?.id === event.pointerId) {
+                            gesture.current = null;
+                            suppressResetTimer.current = window.setTimeout(() => { suppressTouchClick.current = false; }, 350);
+                          }
+                        }}
                         onClick={(event) => {
                           if (suppressTouchClick.current) {
+                            clearTimeout(suppressResetTimer.current);
                             suppressTouchClick.current = false;
                             return;
                           }
+                          if (touchEnabled && event.detail !== 0) return;
                           if (won === null) score(team, 1);
                         }}
                         onKeyDown={(event) => {
@@ -367,7 +414,7 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
                           <div className={"match-fire-stage " + (!state.classic && won !== null && won !== team ? "burn-to-ash" : "")} key={`${state.match.id}-${won ?? "playing"}-malas`}>
                             <Matches count={Math.min(total[team],15)} design={state.design}/>
                             {!state.classic && won !== null && <><MatchFire preview={firePreview} persistent={won === team} count={Math.min(total[team],15)} caption="" />{won !== team && <MatchAsh count={Math.min(total[team],15)} />}</>}
-                            {!state.classic && won === null && phase && Date.now() - fireEvents[team] < 2800 && <MatchFire preview={firePreview} key={`${state.match.id}-${fireEvents[team]}`} />}
+                            {!state.classic && won === null && phase && fireEvents[team] > 0 && <MatchFire preview={firePreview} key={`${state.match.id}-${fireEvents[team]}`} />}
                           </div>
                         </section>
                         {state.match.goal === 30 && <section className={"tally-phase buenas " + (phase ? "active" : "")} aria-label={`${state.match.names[team]}: ${Math.max(total[team]-15,0)} buenas de 15`}>
@@ -420,6 +467,7 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
                 <button
                   className="primary-button"
                   onClick={() => {
+                    setFireEvents([0, 0]);
                     setState((s) => startNext(s, s.match.names, s.match.goal));
                     setNotice("¡Arrancó la revancha!");
                   }}
@@ -528,10 +576,12 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
               <div className="design-options">
                 {([
                   ["fileteado", "Fileteado · Original", "Cuero, madera y detalles dorados"],
-                  ["moderno", "Moderno · Campeones del mundo", "Tres estrellas, la copa y la celeste y blanca"],
+                  ["primavera", "Primavera · Jacarandás", "Cielo porteño, flores violetas y brotes de septiembre"],
+                  ["verano", "Verano · Costa y Sol", "Arena dorada, olas atlánticas y sol de enero"],
+                  ["otono", "Otoño · Patagonia", "Bosques cobrizos, ocres andinos y hojas doradas"],
+                  ["invierno", "Invierno · Cordillera", "Picos nevados, azul glaciar y aire patagónico"],
                   ["sakura", "Sakura", "Flores de cerezo, rosa y delicadeza"],
                   ["retro", "Retro · Arcade", "Máquina recreativa, botones y monedas pixeladas"],
-                  ["comic", "Anime · Espadas", "Demon Slayer, Bleach, One Piece, Berserk y SAO"],
                   ["cyberpunk", "Cyberpunk", "Neón, circuitos y contraste"],
                 ] as const).map(([value, name, description]) => (
                   <label className="design-option" key={value}>
@@ -616,27 +666,45 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
                 terminadas en este dispositivo.
               </p>
             </div>
-            <button className="setting-row" disabled={updateBusy || !androidUpdates} onClick={async () => {
-              setUpdateBusy(true);
-              try {
-                if (updateUrl) {
-                  await NativeUpdates.openDownload({ url: updateUrl });
-                  setUpdateMessage('Abrí el APK descargado y confirmá Actualizar en Android');
-                } else {
-                  const update = await checkForUpdate();
-                  setUpdateUrl(update?.url ?? null);
-                  setUpdateMessage(update ? 'Hay una versión nueva lista para descargar' : 'Tu app está actualizada');
-                }
-              } catch {
-                setUpdateMessage('No pudimos comprobar o abrir la actualización. Revisá tu conexión y volvé a intentar.');
-              } finally { setUpdateBusy(false); }
-            }}>
-              <ArrowRight />
-              <span><strong>{updateBusy ? 'Comprobando…' : updateUrl ? 'Descargar actualización' : 'Buscar actualización'}</strong>
-              <small role="status">{androidUpdates ? updateMessage : 'Disponible en la app de Android'}</small></span>
-              <ChevronRight />
-            </button>
-            {androidUpdates && <p className="muted">Android te pedirá confirmar la instalación. Actualizar conserva tus partidas.</p>}
+            {androidUpdates ? (
+              <>
+                <button className="setting-row" disabled={updateBusy} onClick={async () => {
+                  setUpdateBusy(true);
+                  try {
+                    if (updateUrl) {
+                      await NativeUpdates.openDownload({ url: updateUrl });
+                      setUpdateMessage('Abrí el APK descargado y confirmá Actualizar en Android');
+                    } else {
+                      const update = await checkForUpdate();
+                      setUpdateUrl(update?.url ?? null);
+                      setUpdateMessage(update ? 'Hay una versión nueva lista para descargar' : 'Tu app está actualizada');
+                    }
+                  } catch {
+                    setUpdateMessage('No pudimos comprobar o abrir la actualización. Revisá tu conexión y volvé a intentar.');
+                  } finally { setUpdateBusy(false); }
+                }}>
+                  <ArrowRight />
+                  <span><strong>{updateBusy ? 'Comprobando…' : updateUrl ? 'Descargar actualización' : 'Buscar actualización'}</strong>
+                  <small role="status">{updateMessage}</small></span>
+                  <ChevronRight />
+                </button>
+                <p className="muted">Android te pedirá confirmar la instalación. Actualizar conserva tus partidas.</p>
+              </>
+            ) : !Capacitor.isNativePlatform() && (
+              <a
+                className="setting-row"
+                href="https://github.com/Xaoxay/truco/releases/latest/download/truco.apk"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <ArrowRight />
+                <span>
+                  <strong>Descargar para Android (APK)</strong>
+                  <small>Instalador directo desde GitHub Releases (Android 10+)</small>
+                </span>
+                <ChevronRight />
+              </a>
+            )}
             <button
               className="secondary-button"
               onClick={() => setModal("help")}
@@ -697,6 +765,9 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
           event.preventDefault();
           dispatchNavigation({ type: 'back' });
         }}
+        onClose={() => {
+          if (modal !== null) setModal(null);
+        }}
         onClick={(e) => {
           if (e.target === e.currentTarget) setModal(null);
         }}
@@ -729,8 +800,8 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
               e.preventDefault();
               const data = new FormData(e.currentTarget);
               const names = [
-                String(data.get("name0")).trim() || "Nosotros",
-                String(data.get("name1")).trim() || "Ellos",
+                String(data.get("name0") ?? "").trim().slice(0, 24) || "Nosotros",
+                String(data.get("name1") ?? "").trim().slice(0, 24) || "Ellos",
               ] as [string, string];
               setState((s) => ({ ...s, match: { ...s.match, names } }));
               setModal(null);
@@ -817,10 +888,11 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
             onSubmit={(e) => {
               e.preventDefault();
               const d = new FormData(e.currentTarget);
+              setFireEvents([0, 0]);
               setState((s) =>
                 startNext(
                   s,
-                  [String(d.get("team0")), String(d.get("team1"))],
+                  [String(d.get("team0") ?? ""), String(d.get("team1") ?? "")],
                   Number(d.get("goal")) as Goal,
                 ),
               );
@@ -967,6 +1039,9 @@ function App({ saved, warning }: { saved: State; warning: boolean }) {
             <p>
               <b>Android:</b> en Chrome, abrí el menú y elegí «Agregar a la
               pantalla principal» o «Instalar app».
+              {!Capacitor.isNativePlatform() && (
+                <> También podés <a href="https://github.com/Xaoxay/truco/releases/latest/download/truco.apk" target="_blank" rel="noreferrer">descargar el APK para Android</a>.</>
+              )}
             </p>
             <p>
               <b>iPhone:</b> en Safari, tocá Compartir → «Agregar a inicio».

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300">
+<defs>
+<linearGradient id="sky" x2="0" y2="1"><stop stop-color="#f2b880"/><stop offset=".55" stop-color="#fad9a6"/><stop offset="1" stop-color="#fdebd0"/></linearGradient>
+<linearGradient id="lake" x2="0" y2="1"><stop stop-color="#5c7d8a"/><stop offset="1" stop-color="#37525e"/></linearGradient>
+</defs>
+<path fill="url(#sky)" d="M0 0H800V300H0Z"/>
+<circle cx="400" cy="128" r="46" fill="#ffcf78" opacity=".8"/>
+<path fill="#9c7a69" opacity=".6" d="M0 218L130 132 260 198 395 104 545 196 680 120 800 186V300H0Z"/>
+<path fill="#6d4f43" d="M0 228L95 162 215 215 340 144 480 210 620 154 800 222V300H0Z"/>
+<path fill="url(#lake)" d="M0 232H800V300H0Z"/>
+<path fill="#d48942" opacity=".32" d="M260 232H540L580 300H220Z"/>
+<g>
+<path fill="#b84422" d="M32 238Q58 148 86 238ZM660 240Q690 140 722 240Z"/>
+<path fill="#d97228" d="M74 242Q102 165 130 242ZM704 242Q734 156 764 242Z"/>
+<path fill="#e3a634" d="M114 244Q138 182 162 244ZM620 244Q645 178 670 244Z"/>
+</g>
+<g fill="#c94e26" opacity=".85">
+<path d="M240 84Q254 78 250 96Q238 94 240 84ZM528 74Q542 68 538 86Q526 84 528 74ZM456 146Q468 140 464 156Q454 154 456 146Z"/>
+</g>
+</svg>

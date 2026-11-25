@@ -2,8 +2,25 @@ export type Team = 0 | 1;
 export const countries = ["argentina", "paraguay", "uruguay"] as const;
 export type Country = (typeof countries)[number];
 export type Goal = 15 | 30;
-export const designs = ["fileteado", "moderno", "sakura", "retro", "comic", "cyberpunk"] as const;
-const retiredDesigns = ["criollo", "patriota", "rosa", "rustico", "pampa"];
+export const designs = [
+  "fileteado",
+  "primavera",
+  "verano",
+  "otono",
+  "invierno",
+  "sakura",
+  "retro",
+  "cyberpunk",
+] as const;
+const retiredDesigns = [
+  "criollo",
+  "patriota",
+  "rosa",
+  "rustico",
+  "pampa",
+  "moderno",
+  "comic",
+];
 export type Design = (typeof designs)[number];
 export type Move = { team: Team; points: number; at: number };
 export type Match = {
@@ -140,6 +157,8 @@ export function restore(raw: string): State | null {
   try {
     const s = JSON.parse(raw);
     if (
+      !s ||
+      typeof s !== "object" ||
       s.version !== 1 ||
       !validMatch(s.match) ||
       !Array.isArray(s.finished) ||
