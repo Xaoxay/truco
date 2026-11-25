@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300">
+<defs>
+<linearGradient id="sky" x2="0" y2="1"><stop stop-color="#69c6eb"/><stop offset=".6" stop-color="#b8ebfb"/><stop offset="1" stop-color="#fef1c7"/></linearGradient>
+<linearGradient id="sea" x2="0" y2="1"><stop stop-color="#0d8aa1"/><stop offset="1" stop-color="#095670"/></linearGradient>
+<linearGradient id="sand" x2="0" y2="1"><stop stop-color="#f7df9d"/><stop offset="1" stop-color="#e5bc69"/></linearGradient>
+</defs>
+<path fill="url(#sky)" d="M0 0H800V300H0Z"/>
+<circle cx="400" cy="108" r="48" fill="#ffe26a"/>
+<circle cx="400" cy="108" r="64" fill="#ffe98c" opacity=".35"/>
+<path fill="url(#sea)" d="M0 194Q140 184 280 194T560 192T800 195V300H0Z"/>
+<path fill="none" stroke="#c8f7ff" stroke-width="4" stroke-linecap="round" opacity=".8" d="M35 212Q95 204 155 212M230 220Q310 212 390 220M475 210Q555 202 635 210M670 222Q725 215 775 222"/>
+<path fill="url(#sand)" d="M0 246Q175 224 380 248T800 238V300H0Z"/>
+<g transform="translate(88 86)">
+<path d="M18 154L28 32H52L62 154Z" fill="#fffaf0" stroke="#184359" stroke-width="2.5"/>
+<path d="M23 114H57L55 88H25Z" fill="#d95436"/>
+<path d="M26 62H54L52 38H28Z" fill="#d95436"/>
+<rect x="24" y="18" width="32" height="16" rx="3" fill="#ffdf70" stroke="#184359" stroke-width="2.5"/>
+<path d="M20 18L40 4L60 18Z" fill="#184359"/>
+</g>
+<g transform="translate(658 182)">
+<path d="M26 0L32 76" stroke="#855129" stroke-width="4" stroke-linecap="round"/>
+<path d="M-12 22Q28 -8 68 22Q48 16 28 22Q8 16 -12 22Z" fill="#e25d3a" stroke="#fff7df" stroke-width="2"/>
+<path d="M8 20Q28 -2 48 20Q36 16 28 20Q20 16 8 20Z" fill="#fff7df"/>
+</g>
+</svg>
