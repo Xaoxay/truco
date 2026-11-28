@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300">
+<defs>
+  <linearGradient id="p-sky" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#8ec7f0"/>
+    <stop offset=".52" stop-color="#cde9fb"/>
+    <stop offset="1" stop-color="#fbeee8"/>
+  </linearGradient>
+  <radialGradient id="p-sun" cx=".5" cy=".42" r=".42">
+    <stop offset="0" stop-color="#fffce0" stop-opacity=".95"/>
+    <stop offset=".35" stop-color="#ffe7a8" stop-opacity=".45"/>
+    <stop offset="1" stop-color="#ffe7a8" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="p-hill1" x2="0" y2="1"><stop stop-color="#a8c796"/><stop offset="1" stop-color="#769b69"/></linearGradient>
+  <linearGradient id="p-hill2" x2="0" y2="1"><stop stop-color="#89b174"/><stop offset="1" stop-color="#4e7448"/></linearGradient>
+  <linearGradient id="p-bark" x1="0" y1="0" x2="1" y2="0">
+    <stop stop-color="#3c2924"/><stop offset=".45" stop-color="#6e4f44"/><stop offset="1" stop-color="#4a332b"/>
+  </linearGradient>
+  <radialGradient id="p-canopy-a" cx=".38" cy=".3" r=".7">
+    <stop stop-color="#d5b8ff"/><stop offset=".45" stop-color="#9e72e3"/><stop offset="1" stop-color="#5d3699"/>
+  </radialGradient>
+  <radialGradient id="p-canopy-b" cx=".35" cy=".28" r=".72">
+    <stop stop-color="#f2c4e8"/><stop offset=".5" stop-color="#b986ec"/><stop offset="1" stop-color="#6b41a8"/>
+  </radialGradient>
+  <g id="p-bell">
+    <path d="M0 0C-7-3-10-12-4-16Q0-13 4-16C10-12 7-3 0 0Z" fill="url(#p-canopy-a)" stroke="#532d8f" stroke-width=".7"/>
+    <path d="M-3-4Q0-9 3-4" fill="none" stroke="#efe2ff" stroke-width=".8" opacity=".7"/>
+    <circle cx="0" cy="-3" r="1.4" fill="#ffeb99"/>
+  </g>
+</defs>
+<rect width="800" height="300" fill="url(#p-sky)"/>
+<circle cx="430" cy="112" r="170" fill="url(#p-sun)"/>
+<g fill="#ffffff" opacity=".65">
+  <path d="M160 72Q188 52 222 64Q250 48 280 68Q302 68 308 82H148Q146 72 160 72Z"/>
+  <path d="M486 58Q514 40 546 52Q578 38 606 58Q628 58 634 72H472Q472 58 486 58Z"/>
+</g>
+<path fill="#c8d8be" opacity=".75" d="M0 228Q170 198 355 222T800 205V300H0Z"/>
+<path fill="url(#p-hill1)" d="M0 245Q205 215 415 240T800 228V300H0Z"/>
+<path fill="url(#p-hill2)" d="M0 266Q260 244 510 262T800 254V300H0Z"/>
+<g opacity=".35" fill="#4f6c47">
+  <rect x="290" y="218" width="220" height="6" rx="2"/>
+  <rect x="315" y="224" width="6" height="16"/><rect x="355" y="224" width="6" height="16"/><rect x="395" y="224" width="6" height="16"/><rect x="435" y="224" width="6" height="16"/><rect x="475" y="224" width="6" height="16"/>
+</g>
+<g fill="none" stroke="url(#p-bark)" stroke-linecap="round">
+  <path stroke-width="24" d="M36 302Q54 216 38 128"/>
+  <path stroke-width="12" d="M44 198Q114 142 188 118M40 166Q16 114 8 62M98 158Q136 106 168 68"/>
+  <path stroke-width="24" d="M764 302Q748 214 762 126"/>
+  <path stroke-width="12" d="M756 196Q688 140 612 116M760 162Q784 112 792 58M700 156Q662 104 632 66"/>
+</g>
+<g opacity=".95">
+  <circle cx="38" cy="96" r="56" fill="url(#p-canopy-a)"/>
+  <circle cx="108" cy="108" r="48" fill="url(#p-canopy-b)"/>
+  <circle cx="164" cy="120" r="36" fill="url(#p-canopy-a)"/>
+  <circle cx="72" cy="54" r="46" fill="url(#p-canopy-b)"/>
+  <circle cx="140" cy="72" r="34" fill="url(#p-canopy-a)"/>
+  <circle cx="762" cy="94" r="56" fill="url(#p-canopy-a)"/>
+  <circle cx="692" cy="106" r="48" fill="url(#p-canopy-b)"/>
+  <circle cx="636" cy="118" r="36" fill="url(#p-canopy-a)"/>
+  <circle cx="728" cy="52" r="46" fill="url(#p-canopy-b)"/>
+  <circle cx="660" cy="70" r="34" fill="url(#p-canopy-a)"/>
+</g>
+<g>
+  <use href="#p-bell" transform="translate(26 78) rotate(-18)"/>
+  <use href="#p-bell" transform="translate(76 62) rotate(12)"/>
+  <use href="#p-bell" transform="translate(122 92) rotate(24)"/>
+  <use href="#p-bell" transform="translate(166 112) rotate(35)"/>
+  <use href="#p-bell" transform="translate(56 122) rotate(-25)"/>
+  <use href="#p-bell" transform="translate(772 78) rotate(18)"/>
+  <use href="#p-bell" transform="translate(724 60) rotate(-12)"/>
+  <use href="#p-bell" transform="translate(678 90) rotate(-24)"/>
+  <use href="#p-bell" transform="translate(634 112) rotate(-35)"/>
+  <use href="#p-bell" transform="translate(744 120) rotate(25)"/>
+</g>
+<g fill="#b48af2" opacity=".78">
+  <ellipse cx="242" cy="104" rx="6" ry="2.8" transform="rotate(24 242 104)"/>
+  <ellipse cx="298" cy="158" rx="5.5" ry="2.5" transform="rotate(-18 298 158)"/>
+  <ellipse cx="512" cy="144" rx="6" ry="2.8" transform="rotate(15 512 144)"/>
+  <ellipse cx="566" cy="96" rx="5.5" ry="2.5" transform="rotate(-26 566 96)"/>
+  <ellipse cx="386" cy="274" rx="6" ry="2.5" transform="rotate(8 386 274)"/>
+  <ellipse cx="212" cy="282" rx="5" ry="2" transform="rotate(-12 212 282)"/>
+</g>
+</svg>

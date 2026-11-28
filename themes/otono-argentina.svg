@@ -1,20 +1,47 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300">
 <defs>
-<linearGradient id="sky" x2="0" y2="1"><stop stop-color="#f2b880"/><stop offset=".55" stop-color="#fad9a6"/><stop offset="1" stop-color="#fdebd0"/></linearGradient>
-<linearGradient id="lake" x2="0" y2="1"><stop stop-color="#5c7d8a"/><stop offset="1" stop-color="#37525e"/></linearGradient>
+  <linearGradient id="o-sky" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#c97d56"/>
+    <stop offset=".45" stop-color="#f2b87e"/>
+    <stop offset="1" stop-color="#fde3ba"/>
+  </linearGradient>
+  <radialGradient id="o-sun" cx=".5" cy=".5" r=".5">
+    <stop offset="0" stop-color="#fff8d6"/>
+    <stop offset=".45" stop-color="#ffcf78" stop-opacity=".6"/>
+    <stop offset="1" stop-color="#ffcf78" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="o-mtn-far" x2="0" y2="1"><stop stop-color="#8b6978"/><stop offset="1" stop-color="#b98f82"/></linearGradient>
+  <linearGradient id="o-mtn-near" x2="0" y2="1"><stop stop-color="#5d4039"/><stop offset="1" stop-color="#3a251f"/></linearGradient>
+  <linearGradient id="o-lake" x2="0" y2="1"><stop stop-color="#6b8691"/><stop offset=".5" stop-color="#486472"/><stop offset="1" stop-color="#2c414d"/></linearGradient>
+  <radialGradient id="o-red" cx=".35" cy=".3" r=".7"><stop stop-color="#e86e3c"/><stop offset=".55" stop-color="#b53d1c"/><stop offset="1" stop-color="#6c1f0e"/></radialGradient>
+  <radialGradient id="o-gold" cx=".35" cy=".3" r=".7"><stop stop-color="#ffd56b"/><stop offset=".55" stop-color="#df8c24"/><stop offset="1" stop-color="#9c4f14"/></radialGradient>
 </defs>
-<path fill="url(#sky)" d="M0 0H800V300H0Z"/>
-<circle cx="400" cy="128" r="46" fill="#ffcf78" opacity=".8"/>
-<path fill="#9c7a69" opacity=".6" d="M0 218L130 132 260 198 395 104 545 196 680 120 800 186V300H0Z"/>
-<path fill="#6d4f43" d="M0 228L95 162 215 215 340 144 480 210 620 154 800 222V300H0Z"/>
-<path fill="url(#lake)" d="M0 232H800V300H0Z"/>
-<path fill="#d48942" opacity=".32" d="M260 232H540L580 300H220Z"/>
-<g>
-<path fill="#b84422" d="M32 238Q58 148 86 238ZM660 240Q690 140 722 240Z"/>
-<path fill="#d97228" d="M74 242Q102 165 130 242ZM704 242Q734 156 764 242Z"/>
-<path fill="#e3a634" d="M114 244Q138 182 162 244ZM620 244Q645 178 670 244Z"/>
+<rect width="800" height="300" fill="url(#o-sky)"/>
+<circle cx="400" cy="126" r="115" fill="url(#o-sun)"/>
+<circle cx="400" cy="126" r="32" fill="#fff5cf" opacity=".9"/>
+<path fill="url(#o-mtn-far)" d="M0 218L112 126 218 192 342 96 474 190 598 108 720 182 800 132V300H0Z"/>
+<path fill="#f7dec2" opacity=".45" d="M342 96L382 126 356 122 338 138 318 122ZM598 108L632 134 610 130 594 142 578 128Z"/>
+<path fill="url(#o-mtn-near)" d="M0 232L96 158 205 216 322 142 454 214 584 150 704 206 800 162V300H0Z"/>
+<rect y="226" width="800" height="74" fill="url(#o-lake)"/>
+<g opacity=".4">
+  <path fill="#e39249" d="M280 226H520L560 300H240Z"/>
+  <path fill="#a33c1b" d="M0 226H180L150 300H0ZM610 226H800V300H640Z"/>
 </g>
-<g fill="#c94e26" opacity=".85">
-<path d="M240 84Q254 78 250 96Q238 94 240 84ZM528 74Q542 68 538 86Q526 84 528 74ZM456 146Q468 140 464 156Q454 154 456 146Z"/>
+<g stroke="#f6c78c" stroke-width="1.4" opacity=".45">
+  <line x1="330" y1="242" x2="470" y2="242"/><line x1="295" y1="258" x2="505" y2="258"/><line x1="350" y1="274" x2="450" y2="274"/>
+</g>
+<g stroke="#3e2318" stroke-width="5" stroke-linecap="round">
+  <line x1="60" y1="244" x2="60" y2="195"/><line x1="112" y1="248" x2="112" y2="202"/><line x1="686" y1="246" x2="686" y2="194"/><line x1="740" y1="248" x2="740" y2="204"/>
+</g>
+<g>
+  <ellipse cx="60" cy="186" rx="34" ry="48" fill="url(#o-red)"/>
+  <ellipse cx="112" cy="194" rx="30" ry="42" fill="url(#o-gold)"/>
+  <ellipse cx="156" cy="212" rx="26" ry="30" fill="url(#o-red)"/>
+  <ellipse cx="686" cy="184" rx="34" ry="50" fill="url(#o-gold)"/>
+  <ellipse cx="740" cy="196" rx="32" ry="42" fill="url(#o-red)"/>
+  <ellipse cx="634" cy="212" rx="26" ry="30" fill="url(#o-red)"/>
+</g>
+<g fill="#d15426" opacity=".85">
+  <path d="M235 84Q249 78 245 95Q233 93 235 84ZM534 72Q548 66 544 83Q532 81 534 72ZM460 156Q472 150 468 166Q458 164 460 156Z"/>
 </g>
 </svg>
